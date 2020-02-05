@@ -85,7 +85,7 @@ const SearchResults = () => {
   return (
     <div>
       <h3>{isLoading ? "Loading..." : "Search results"}</h3>
-      <Table>
+      <Table className="table-hover table-sm">
         <thead>
           <tr>
             <th>Name</th>

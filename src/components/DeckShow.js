@@ -268,53 +268,74 @@ const DeckShow = () => {
   }
 
   return (
-    <div>
-      <Container>
-        <h3>
-          {deckInfo.name} - A {deckInfo.format} deck by{" "}
-          <Link to={`/users/${deckInfo.author}`}>
-            {deckInfo.authorUsername}
-          </Link>
-        </h3>
+    <Container>
+      <div className="row">
+        <div className="col-md-9">
+          {" "}
+          <h3>
+            {deckInfo.name} - A {deckInfo.format} deck by{" "}
+            <Link to={`/users/${deckInfo.author}`}>
+              {deckInfo.authorUsername}
+            </Link>
+          </h3>
+        </div>
+        <div className="col-md-3">
+          {deckInfo.author === auth.authUserId && (
+            <div className="float-md-right">
+              <Button className="btn-sm" onClick={e => editHandleClick(e)}>
+                Edit
+              </Button>
+              <Button
+                className="btn-sm btn-danger "
+                onClick={e => deleteHandleClick(e)}
+              >
+                Delete
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
 
-        <h5>Creatures</h5>
-        {creaturesShow}
-        <h5>Spells</h5>
-        {spellsShow}
-        <h5>Lands</h5>
-        {landsShow}
-        <h5>Sideboard</h5>
-        {sideboardShow}
-        {deckInfo.author === auth.authUserId && (
-          <div>
-            <Button onClick={e => editHandleClick(e)}>Edit</Button>
-            <Button onClick={e => deleteHandleClick(e)}>Delete</Button>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-6">
+            <h5>Creatures</h5>
+            {creaturesShow}
+            <h5>Spells</h5>
+            {spellsShow}
           </div>
-        )}
-        {auth.isAuthenticated && (
-          <div>
-            <h3>Leave a comment!</h3>
-            <Form onSubmit={e => commentHandleSubmit(e)}>
-              <InputGroup>
-                <FormControl
-                  as="textarea"
-                  value={comment}
-                  onChange={e => setComment(e.target.value)}
-                  aria-label="With textarea"
-                />
-                <InputGroup.Append>
-                  <Button type="submit" variant="outline-secondary">
-                    Button
-                  </Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </Form>
+          <div className="col-md-6">
+            <h5>Lands</h5>
+            {landsShow}
+            <h5>Sideboard</h5>
+            {sideboardShow}
           </div>
-        )}
-        <h3>Comments</h3>
-        <div>{commentsArr}</div>
-      </Container>
-    </div>
+        </div>
+      </div>
+
+      {auth.isAuthenticated && (
+        <div>
+          <h3>Leave a comment!</h3>
+          <Form onSubmit={e => commentHandleSubmit(e)}>
+            <InputGroup>
+              <FormControl
+                as="textarea"
+                value={comment}
+                onChange={e => setComment(e.target.value)}
+                aria-label="With textarea"
+              />
+              <InputGroup.Append>
+                <Button type="submit" variant="outline-secondary">
+                  Button
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </Form>
+        </div>
+      )}
+      <h3>Comments</h3>
+      <div>{commentsArr}</div>
+    </Container>
   )
 }
 

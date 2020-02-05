@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react"
-import { Container } from "react-bootstrap"
+import { Container, Card, Row, Col } from "react-bootstrap"
 import axios from "axios"
+import { LinkContainer } from "react-router-bootstrap"
 import { SearchContext } from "../contexts/SearchContext"
 
 const Index = () => {
@@ -18,11 +19,31 @@ const Index = () => {
       let list = []
       for (let deck of response.data) {
         list.push(
-          <li key={`li${deck._id}`}>
-            <a key={`key${deck._id}`} href={`/decks/${deck._id}`}>
-              {deck.name}
-            </a>
-          </li>
+          <Col md={3} key={`key${deck._id}`}>
+            <Card
+              className="m-1"
+              key={`card${deck._id}`}
+              style={{ width: "15rem" }}
+            >
+              <Card.Body>
+                <LinkContainer to={`/decks/${deck._id}`}>
+                  <Card.Title>
+                    <a href="#">{deck.name}</a>
+                  </Card.Title>
+                </LinkContainer>
+
+                <Card.Text>
+                  A {deck.format} deck by {deck.authorUsername}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          /*<li key={`li${deck._id}`}>
+            <LinkContainer to={`/decks/${deck._id}`}>
+              <a key={`key${deck._id}`}>{deck.name}</a>
+            </LinkContainer>
+          </li>*/
         )
       }
       setIndexList(list)
@@ -36,8 +57,14 @@ const Index = () => {
   }
   return (
     <Container>
-      <h1>This is the index</h1>
-      {isLoading ? <h3>Loading...</h3> : <ul>{indexList}</ul>}
+      <h1 className="text-center">Latest Decks</h1>
+      {isLoading ? (
+        <h3>Loading...</h3>
+      ) : (
+        <Container>
+          <Row>{indexList}</Row>
+        </Container>
+      )}
     </Container>
   )
 }

@@ -6,13 +6,13 @@ import { Container, Row, Col } from "react-bootstrap"
 
 function DeckBuilder() {
   return (
-    <Container>
-      <DeckBuilderSearch />
+    <Container className="my-3">
       <Row>
-        <Col>
+        <Col sm>
+          <DeckBuilderSearch />
           <DeckBuilderResults />
         </Col>
-        <Col>
+        <Col sm>
           <DeckBuilderForm />
         </Col>
       </Row>

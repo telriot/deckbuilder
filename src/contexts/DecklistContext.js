@@ -41,7 +41,7 @@ const DecklistContextProvider = props => {
     //create list
     for (let i of keys) {
       actualList.push(
-        <div key={`div${i}`}>
+        <div className="mb-1" key={`div${i}`}>
           {/* delete button */}
           <button
             onClick={e => {

@@ -29,20 +29,17 @@ const DeckEdit = () => {
   }
 
   return (
-    <div>
-      <h1>DeckEdit view</h1>
-      <Container>
-        <DeckBuilderSearch />
-        <Row>
-          <Col>
-            <DeckBuilderResults />
-          </Col>
-          <Col>
-            <DeckBuilderForm />
-          </Col>
-        </Row>
-      </Container>
-    </div>
+    <Container className="my-3">
+      <Row>
+        <Col>
+          <DeckBuilderSearch />
+          <DeckBuilderResults />
+        </Col>
+        <Col>
+          <DeckBuilderForm />
+        </Col>
+      </Row>
+    </Container>
   )
 }
 
