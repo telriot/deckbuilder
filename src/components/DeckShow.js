@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react"
-import { useParams, useHistory } from "react-router-dom"
+import { useParams, useHistory, Link } from "react-router-dom"
 import { SearchContext } from "../contexts/SearchContext"
 import { DecklistContext } from "../contexts/DecklistContext"
+import { AuthContext } from "../contexts/AuthContext"
 import {
   Container,
   Button,
@@ -20,6 +21,7 @@ const DeckShow = () => {
     commentsArr,
     setCommentsArr
   } = useContext(DecklistContext)
+  const { auth } = useContext(AuthContext)
   let params = useParams()
   let history = useHistory()
 
@@ -43,7 +45,6 @@ const DeckShow = () => {
       setIsLoading(true)
       const response = await axios.get(`/api/decks/${params.id}`)
       setDeckInfo(response.data)
-      console.log(response.data)
     } catch (error) {
       if (axios.isCancel(error)) {
       } else {
@@ -63,16 +64,24 @@ const DeckShow = () => {
       for (let comment of deckInfo.comments) {
         commentsShow.push(
           <div key={`commentDiv${comment._id}`}>
-            <h5 key={`commentH5${comment._id}`}>{comment.author.username}</h5>
+            <h5 key={`commentH5${comment._id}`}>
+              <Link to={`users/${comment.author._id}`}>
+                {comment.author.username}
+              </Link>
+            </h5>
             <p key={`commentP${comment._id}`}>{comment.text}</p>
-            <Button
-              data-commentid={comment._id}
-              onClick={e => {
-                destroyComment(e)
-              }}
-            >
-              Delete me!
-            </Button>
+            {comment.author._id === auth.authUserId && (
+              <div>
+                <Button
+                  data-commentid={comment._id}
+                  onClick={e => {
+                    destroyComment(e)
+                  }}
+                >
+                  Delete me!
+                </Button>
+              </div>
+            )}
           </div>
         )
       }
@@ -263,7 +272,9 @@ const DeckShow = () => {
       <Container>
         <h3>
           {deckInfo.name} - A {deckInfo.format} deck by{" "}
-          {deckInfo.authorUsername}
+          <Link to={`/users/${deckInfo.author}`}>
+            {deckInfo.authorUsername}
+          </Link>
         </h3>
 
         <h5>Creatures</h5>
@@ -274,24 +285,33 @@ const DeckShow = () => {
         {landsShow}
         <h5>Sideboard</h5>
         {sideboardShow}
-        <Button onClick={e => editHandleClick(e)}>Edit</Button>
-        <Button onClick={e => deleteHandleClick(e)}>Delete</Button>
-        <h3>Leave a comment!</h3>
-        <Form onSubmit={e => commentHandleSubmit(e)}>
-          <InputGroup>
-            <FormControl
-              as="textarea"
-              value={comment}
-              onChange={e => setComment(e.target.value)}
-              aria-label="With textarea"
-            />
-            <InputGroup.Append>
-              <Button type="submit" variant="outline-secondary">
-                Button
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
-        </Form>
+        {deckInfo.author === auth.authUserId && (
+          <div>
+            <Button onClick={e => editHandleClick(e)}>Edit</Button>
+            <Button onClick={e => deleteHandleClick(e)}>Delete</Button>
+          </div>
+        )}
+        {auth.isAuthenticated && (
+          <div>
+            <h3>Leave a comment!</h3>
+            <Form onSubmit={e => commentHandleSubmit(e)}>
+              <InputGroup>
+                <FormControl
+                  as="textarea"
+                  value={comment}
+                  onChange={e => setComment(e.target.value)}
+                  aria-label="With textarea"
+                />
+                <InputGroup.Append>
+                  <Button type="submit" variant="outline-secondary">
+                    Button
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Form>
+          </div>
+        )}
+        <h3>Comments</h3>
         <div>{commentsArr}</div>
       </Container>
     </div>

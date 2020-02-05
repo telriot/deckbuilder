@@ -21,7 +21,7 @@ const SearchForm = () => {
   }${type}${cmc ? "+cmc%3A" : ""}${cmc}`
 
   useEffect(() => {
-    cardSearch(searchString)
+    searchString && cardSearch(searchString)
     return
   }, [userInput, rarity, type, cmc])
 
@@ -29,7 +29,7 @@ const SearchForm = () => {
     <div>
       <InputGroup>
         <DebounceInput
-          debounceTimeout={200}
+          debounceTimeout={400}
           placeholder="Type to search..."
           value={userInput}
           onChange={e => setUserInput(e.target.value)}

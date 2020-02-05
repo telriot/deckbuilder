@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { DecklistContext } from "../contexts/DecklistContext"
 import { SearchContext } from "../contexts/SearchContext"
 import { AuthContext } from "../contexts/AuthContext"
@@ -25,14 +25,12 @@ const DeckForm = () => {
     setDeckFormat
   } = useContext(DecklistContext)
   const { auth } = useContext(AuthContext)
-  const { cards, setIsLoading, deckInfo, setDeckInfo } = useContext(
-    SearchContext
-  )
+  const { cards, deckInfo, setDeckInfo } = useContext(SearchContext)
   const params = useParams()
   const history = useHistory()
+  const [validation, setValidation] = useState({})
 
   //keep decklists updated
-
   useEffect(() => {
     createList(mainDeck, setMainDeck, deckObj)
   }, [setDeckObj])
@@ -41,8 +39,19 @@ const DeckForm = () => {
     createList(sideboard, setSideboard, sideObj)
   }, [setSideObj])
 
+  // if params.id find deck to edit
+  async function showDeck() {
+    try {
+      const response = await axios.get(`/api/decks/${params.id}`)
+      await setDeckInfo(response.data)
+    } catch (error) {
+      if (axios.isCancel(error)) {
+      } else {
+        console.error(error.response)
+      }
+    }
+  }
   // if params.id update editable decklist
-
   useEffect(() => {
     if (params.id !== undefined) {
       showDeck()
@@ -64,20 +73,7 @@ const DeckForm = () => {
     }
   }, [deckInfo.mainboard && deckInfo.mainboard.length])
 
-  // if params.id find deck to edit
-  async function showDeck() {
-    try {
-      const response = await axios.get(`/api/decks/${params.id}`)
-      await setDeckInfo(response.data)
-    } catch (error) {
-      if (axios.isCancel(error)) {
-      } else {
-        console.error(error.response)
-      }
-    }
-  }
   // drag and drop handlers
-
   const onDragOver = e => {
     e.preventDefault()
   }
@@ -118,8 +114,24 @@ const DeckForm = () => {
     }
   }
 
+  // Validate deck input
+  const validateInput = () => {
+    setValidation({})
+    if (deckName.trim().length < 1) {
+      setValidation({ name: "Please enter a name" })
+      return
+    } else if (deckFormat.length < 1) {
+      setValidation({ format: "Please choose a format" })
+      return
+    } else if (mainDeck.length < 1) {
+      setValidation({ deck: "Your deck is still empty" })
+      return
+    }
+  }
+
   // Save decklist
   const handleSave = () => {
+    validateInput()
     axios
       .post(
         "api/decks/",
@@ -136,21 +148,21 @@ const DeckForm = () => {
       )
       .then(response => {
         if (!response.data.errmsg) {
-          console.log("decklist submitted", response.data)
           history.push(`/decks/${response.data._id}`)
         } else {
           console.log(response.data.errmsg)
         }
       })
       .catch(error => {
-        console.log("decklist submission error: ")
         console.log(error)
       })
   }
+
   // Save changes
-  const handleSaveChanges = e => {
+  const handleSaveChanges = async e => {
     e.persist()
-    axios
+    validateInput()
+    await axios
       .put(
         `/api/decks/${params.id}`,
         {
@@ -177,6 +189,7 @@ const DeckForm = () => {
         console.log(error)
       })
   }
+
   return (
     <div>
       <FormGroup>
@@ -190,6 +203,7 @@ const DeckForm = () => {
               type="text"
               value={deckName}
               onChange={e => setDeckName(e.target.value)}
+              required
             />
           </label>
           <label htmlFor="format-select">
@@ -198,6 +212,7 @@ const DeckForm = () => {
               id="format-select"
               value={deckFormat}
               onChange={e => setDeckFormat(e.target.value)}
+              required
             >
               <option value="" disabled>
                 Pick a format
@@ -258,6 +273,9 @@ const DeckForm = () => {
             </Button>
           </div>
         )}
+        {validation.name && <h5>{validation.name}</h5>}
+        {validation.format && <h5>{validation.format}</h5>}
+        {validation.deck && <h5>{validation.deck}</h5>}
       </FormGroup>
     </div>
   )

@@ -21,8 +21,7 @@ const AuthLogin = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-
-    axios
+    await axios
       .post(
         "api/auth/login",
         {
@@ -35,8 +34,11 @@ const AuthLogin = () => {
       )
       .then(response => {
         if (response.status === 200) {
-          console.log(response)
-          setAuth({ isAuthenticated: true, authUser: response.data.username })
+          setAuth({
+            isAuthenticated: true,
+            authUser: response.data.username,
+            authUserId: response.data.id
+          })
           history.push("/")
         }
       })

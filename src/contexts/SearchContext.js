@@ -33,22 +33,23 @@ const SearchContextProvider = props => {
         console.error(error.response)
       }
     }
-    const foundCardsMap = foundCards.map(card => {
-      return {
-        name: card.name,
-        image_small: card.image_uris ? card.image_uris.small : "",
-        mana_cost: card.mana_cost ? card.mana_cost : "",
-        cmc: card.cmc ? card.cmc : "",
-        type_line: card.type_line ? card.type_line : "",
-        oracle_text: card.oracle_text ? card.oracle_text : "",
-        power: card.power ? card.power : "",
-        toughness: card.toughness ? card.toughness : "",
-        colors: card.colors ? card.colors : "",
-        rarity: card.rarity ? card.rarity : "",
-        flavor_text: card.flavor_text ? card.flavor_text : ""
-      }
-    })
-    setCards(foundCardsMap)
+    setCards(
+      foundCards.map(card => {
+        return {
+          name: card.name,
+          image_small: card.image_uris ? card.image_uris.small : "",
+          mana_cost: card.mana_cost ? card.mana_cost : "",
+          cmc: card.cmc ? card.cmc : "",
+          type_line: card.type_line ? card.type_line : "",
+          oracle_text: card.oracle_text ? card.oracle_text : "",
+          power: card.power ? card.power : "",
+          toughness: card.toughness ? card.toughness : "",
+          colors: card.colors ? card.colors : "",
+          rarity: card.rarity ? card.rarity : "",
+          flavor_text: card.flavor_text ? card.flavor_text : ""
+        }
+      })
+    )
     setIsLoading(false)
   }
 
