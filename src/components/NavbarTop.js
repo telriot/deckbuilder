@@ -1,6 +1,5 @@
 import React, { Fragment, useContext } from "react"
-import { Switch, Route, Link } from "react-router-dom"
-import { Navbar, Nav, NavDropdown, NavItem, Button } from "react-bootstrap"
+import { Navbar, Nav, Button } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
 import { AuthContext } from "../contexts/AuthContext"
 import axios from "axios"
