@@ -1,6 +1,5 @@
 import React from "react"
 import DeckBuilderSearch from "./DeckBuilderSearch"
-import DeckBuilderResults from "./DeckBuilderResults"
 import DeckBuilderForm from "./DeckBuilderForm"
 import { Container, Row, Col } from "react-bootstrap"
 
@@ -10,7 +9,6 @@ function DeckBuilder() {
       <Row>
         <Col sm>
           <DeckBuilderSearch />
-          <DeckBuilderResults />
         </Col>
         <Col sm>
           <DeckBuilderForm />

@@ -1,11 +1,10 @@
 import React, { useContext, useEffect } from "react"
-import { useParams } from "react-router-dom"
 import { SearchContext } from "../contexts/SearchContext"
-import axios from "axios"
 import DeckBuilderSearch from "./DeckBuilderSearch"
-import DeckBuilderResults from "./DeckBuilderResults"
 import DeckBuilderForm from "./DeckBuilderForm"
+import { useParams } from "react-router-dom"
 import { Container, Row, Col } from "react-bootstrap"
+import axios from "axios"
 
 const DeckEdit = () => {
   let params = useParams()
@@ -33,7 +32,6 @@ const DeckEdit = () => {
       <Row>
         <Col>
           <DeckBuilderSearch />
-          <DeckBuilderResults />
         </Col>
         <Col>
           <DeckBuilderForm />

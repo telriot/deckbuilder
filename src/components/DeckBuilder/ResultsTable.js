@@ -1,21 +1,16 @@
-import React, { useEffect, useContext } from "react"
-import { SearchContext } from "../contexts/SearchContext"
-import { DecklistContext } from "../contexts/DecklistContext"
+import React, { useContext, useEffect } from "react"
+import { SearchContext } from "../../contexts/SearchContext"
+import { DecklistContext } from "../../contexts/DecklistContext"
 import { Table } from "react-bootstrap"
 
-const SearchResults = () => {
-  const { cards, displayList, setDisplayList, isLoading } = useContext(
-    SearchContext
-  )
-  const {
-    mainDeck,
-    setMainDeck,
-    groupByName,
-    setDeckObj,
-    sideboard,
-    setSideboard,
-    setSideObj
-  } = useContext(DecklistContext)
+const ResultsTable = () => {
+  const { cards, displayList, setDisplayList } = useContext(SearchContext)
+  const { setMainDeck, setSideboard } = useContext(DecklistContext)
+
+  //create new tables on cards status change
+  useEffect(() => {
+    createTable(8)
+  }, [cards])
 
   // handler for dragstart
   const onDragStart = e => {
@@ -23,21 +18,6 @@ const SearchResults = () => {
     let draggedCardName = e.target.dataset.name
     e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
   }
-
-  //keep the deck objects updated
-  useEffect(() => {
-    let mainDeckCopy = mainDeck.slice()
-    let copyToObj = groupByName(mainDeckCopy)
-    setDeckObj(copyToObj)
-    return
-  }, [mainDeck.length])
-
-  useEffect(() => {
-    let sideboardCopy = sideboard.slice()
-    let sideCopyToObj = groupByName(sideboardCopy)
-    setSideObj(sideCopyToObj)
-    return
-  }, [sideboard.length])
 
   //handle double click on found cards
   const dblClickHandler = (e, index) => {
@@ -77,27 +57,19 @@ const SearchResults = () => {
     }
   }
 
-  //create new tables on cards status change
-  useEffect(() => {
-    createTable(8)
-  }, [cards])
-
   return (
-    <div>
-      <h3>{isLoading ? "Loading..." : "Search results"}</h3>
-      <Table className="table-hover table-sm">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>CMC</th>
-            <th>Rarity</th>
-          </tr>
-        </thead>
-        {displayList}
-      </Table>
-    </div>
+    <Table className="table-hover table-sm">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>CMC</th>
+          <th>Rarity</th>
+        </tr>
+      </thead>
+      {displayList}
+    </Table>
   )
 }
 
-export default SearchResults
+export default ResultsTable
