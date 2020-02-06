@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useContext } from "react"
+import React, { useEffect, useContext } from "react"
 import { SearchContext } from "../contexts/SearchContext"
 import { DebounceInput } from "react-debounce-input"
 import { Form, Col, Row } from "react-bootstrap"
