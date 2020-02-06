@@ -1,5 +1,11 @@
 import React, { useContext } from "react"
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap"
+import {
+  Button,
+  InputGroup,
+  FormControl,
+  Form,
+  Container
+} from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import { SearchContext } from "../../../contexts/SearchContext"
 import { DecklistContext } from "../../../contexts/DecklistContext"
@@ -44,21 +50,23 @@ const CommentForm = () => {
   return (
     <div>
       <h3>Leave a comment!</h3>
-      <Form onSubmit={e => commentHandleSubmit(e)}>
-        <InputGroup>
-          <FormControl
-            as="textarea"
-            value={comment}
-            onChange={e => setComment(e.target.value)}
-            aria-label="With textarea"
-          />
-          <InputGroup.Append>
-            <Button type="submit" variant="outline-secondary">
-              Button
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </Form>
+      <Container>
+        <Form onSubmit={e => commentHandleSubmit(e)}>
+          <InputGroup>
+            <FormControl
+              as="textarea"
+              value={comment}
+              onChange={e => setComment(e.target.value)}
+              aria-label="With textarea"
+            />
+            <InputGroup.Append>
+              <Button type="submit" variant="outline-secondary">
+                Button
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </Form>
+      </Container>
     </div>
   )
 }

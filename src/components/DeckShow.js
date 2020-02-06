@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { SearchContext } from "../contexts/SearchContext"
 import { AuthContext } from "../contexts/AuthContext"
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Card } from "react-bootstrap"
 import DeckContainer from "./DeckShow/DeckContainer"
 import CommentSection from "./DeckShow/CommentSection"
 import DeckHeader from "./DeckShow/DeckHeader"
@@ -34,15 +34,22 @@ const DeckShow = () => {
 
   return (
     <Container>
-      <Row>
-        <Col md={9}>
-          <DeckHeader />
-        </Col>
-        <Col md={3}>
-          {deckInfo.author === auth.authUserId && <DeckEditButtonGroup />}
-        </Col>
-      </Row>
-      <DeckContainer />
+      <Card className="m-2">
+        <Card.Header>
+          <Row>
+            <Col md={9}>
+              <DeckHeader />
+            </Col>
+            <Col md={3}>
+              {deckInfo.author === auth.authUserId && <DeckEditButtonGroup />}
+            </Col>
+          </Row>
+        </Card.Header>
+        <Card.Body>
+          <DeckContainer />
+        </Card.Body>
+      </Card>
+
       <CommentSection />
     </Container>
   )

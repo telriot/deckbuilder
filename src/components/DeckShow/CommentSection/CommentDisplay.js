@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, Fragment } from "react"
-import { Button } from "react-bootstrap"
+import { Button, Row, Col, Card, Container } from "react-bootstrap"
 import { useParams, Link } from "react-router-dom"
 import { SearchContext } from "../../../contexts/SearchContext"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { AuthContext } from "../../../contexts/AuthContext"
+import Moment from "react-moment"
 import axios from "axios"
 
 const CommentDisplay = () => {
@@ -17,32 +18,50 @@ const CommentDisplay = () => {
   useEffect(() => {
     setCommentsArr(commentsShow)
     createComments()
-  }, [deckInfo.comments])
+  }, [deckInfo.comments, auth.authUserId])
 
   const createComments = () => {
     if (deckInfo.comments && deckInfo.comments.length) {
       for (let comment of deckInfo.comments) {
         commentsShow.push(
-          <div key={`commentDiv${comment._id}`}>
-            <h5 key={`commentH5${comment._id}`}>
-              <Link to={`users/${comment.author._id}`}>
-                {comment.author.username}
-              </Link>
-            </h5>
-            <p key={`commentP${comment._id}`}>{comment.text}</p>
-            {comment.author._id === auth.authUserId && (
-              <div>
-                <Button
-                  data-commentid={comment._id}
-                  onClick={e => {
-                    destroyComment(e)
-                  }}
-                >
-                  Delete me!
-                </Button>
-              </div>
-            )}
-          </div>
+          <Card className="m-1" key={`commentDiv${comment._id}`}>
+            <Card.Header
+              className="container-fluid p-1"
+              key={`commentH5${comment._id}`}
+            >
+              <Row>
+                <Col xs={8}>
+                  <p className="m-1">
+                    <Link to={`/users/${comment.author._id}`}>
+                      {comment.author.username}
+                    </Link>{" "}
+                    commented <Moment fromNow>{comment.date}</Moment>
+                  </p>
+                </Col>
+                <Col xs={4}>
+                  {comment.author._id === auth.authUserId && (
+                    <div>
+                      <Button
+                        className="float-right"
+                        size="sm"
+                        data-commentid={comment._id}
+                        onClick={e => {
+                          destroyComment(e)
+                        }}
+                      >
+                        Delete me!
+                      </Button>
+                    </div>
+                  )}
+                </Col>
+              </Row>
+            </Card.Header>
+            <Card.Body>
+              <Card.Text key={`commentP${comment._id}`}>
+                {comment.text}
+              </Card.Text>
+            </Card.Body>
+          </Card>
         )
       }
     }
@@ -79,10 +98,10 @@ const CommentDisplay = () => {
   }
 
   return (
-    <Fragment>
+    <div>
       <h3>Comments</h3>
-      <div>{commentsArr}</div>
-    </Fragment>
+      <Container>{commentsArr}</Container>
+    </div>
   )
 }
 
