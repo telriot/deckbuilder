@@ -46,8 +46,8 @@ const DecklistContextProvider = props => {
           <button
             onClick={e => {
               let updatedDeck = deck.slice()
+              let index = updatedDeck.findIndex(el => el === obj[i][0])
               for (let j = 0; j < obj[i].length; j++) {
-                let index = updatedDeck.findIndex(el => el === obj[i][0])
                 updatedDeck.splice(index, 1)
                 setDeck(updatedDeck)
               }
