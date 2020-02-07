@@ -33,6 +33,8 @@ const SearchContextProvider = props => {
         console.error(error.response)
       }
     }
+
+    //set found cards
     setCards(
       foundCards.map(card => {
         return {
@@ -51,6 +53,13 @@ const SearchContextProvider = props => {
       })
     )
     setIsLoading(false)
+  }
+
+  // handler for results table dragstart
+  const resultsTableDragStart = e => {
+    e.persist()
+    let draggedCardName = e.target.dataset.name
+    e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
   }
 
   return (
@@ -75,7 +84,8 @@ const SearchContextProvider = props => {
         indexList,
         setIndexList,
         deckInfo,
-        setDeckInfo
+        setDeckInfo,
+        resultsTableDragStart
       }}
     >
       {props.children}

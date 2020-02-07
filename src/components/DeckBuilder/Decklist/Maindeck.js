@@ -1,6 +1,7 @@
 import React, { useContext, Fragment } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { SearchContext } from "../../../contexts/SearchContext"
+import { Card } from "react-bootstrap"
 
 const Maindeck = () => {
   const {
@@ -55,20 +56,24 @@ const Maindeck = () => {
   }
 
   return (
-    <Fragment>
-      <h3>Main</h3>
-      <div
+    <Card className="mb-1 mb-sm-2">
+      <Card.Header
         data-origin="main"
-        style={{
-          minHeight: "80px",
-          border: "1px grey solid"
-        }}
+        onDragOver={e => onDragOver(e)}
+        onDrop={e => onDrop(e)}
+        className="py-1 px-2 p-md-2"
+      >
+        Main
+      </Card.Header>
+      <Card.Body
+        className="p-2"
+        data-origin="main"
         onDragOver={e => onDragOver(e)}
         onDrop={e => onDrop(e)}
       >
         {createList(mainDeck, setMainDeck, deckObj)}
-      </div>
-    </Fragment>
+      </Card.Body>
+    </Card>
   )
 }
 

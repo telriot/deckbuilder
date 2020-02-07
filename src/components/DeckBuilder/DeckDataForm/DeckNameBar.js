@@ -6,7 +6,7 @@ const DeckNameBar = () => {
   const { deckName, setDeckName } = useContext(DecklistContext)
 
   return (
-    <Form.Group as={Form.Row}>
+    <Form.Group as={Form.Row} className="align-items-center mb-0">
       <Form.Label column md={4} lg={3}>
         Deck Name
       </Form.Label>

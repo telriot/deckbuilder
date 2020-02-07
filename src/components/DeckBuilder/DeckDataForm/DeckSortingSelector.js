@@ -6,7 +6,7 @@ const DeckSortingSelector = () => {
   const { sortingCriteria, setSortingCriteria } = useContext(DecklistContext)
 
   return (
-    <Form.Group as={Row}>
+    <Form.Group as={Row} className="align-items-center mb-1 mb-sm-2">
       <Form.Label column md={6} lg={4}>
         Sort by
       </Form.Label>
@@ -18,10 +18,10 @@ const DeckSortingSelector = () => {
           value={sortingCriteria}
           onChange={e => setSortingCriteria(e.target.value)}
         >
-          <option value={"data-name"}>Name</option>
-          <option value={"data-type"}>Type</option>
-          <option value={"data-cmc"}>CMC</option>
-          <option value={"data-rarity"}>Rarity</option>
+          <option value={"name"}>Name</option>
+          <option value={"type_line"}>Type</option>
+          <option value={"cmc"}>CMC</option>
+          <option value={"rarity"}>Rarity</option>
         </Form.Control>
       </Col>
     </Form.Group>

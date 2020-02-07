@@ -1,6 +1,7 @@
 import React, { useContext, Fragment } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { SearchContext } from "../../../contexts/SearchContext"
+import { Card } from "react-bootstrap"
 
 const Sideboard = () => {
   const {
@@ -55,20 +56,24 @@ const Sideboard = () => {
   }
 
   return (
-    <Fragment>
-      <h3>Sideboard</h3>
-      <div
+    <Card className="mb-1">
+      <Card.Header
+        className="py-1 px-2 p-md-2"
         data-origin="side"
-        style={{
-          minHeight: "80px",
-          border: "1px grey solid"
-        }}
+        onDragOver={e => onDragOver(e)}
+        onDrop={e => onDrop(e)}
+      >
+        Sideboard
+      </Card.Header>
+      <Card.Body
+        className="p-2"
+        data-origin="side"
         onDragOver={e => onDragOver(e)}
         onDrop={e => onDrop(e)}
       >
         {createList(sideboard, setSideboard, sideObj)}
-      </div>
-    </Fragment>
+      </Card.Body>
+    </Card>
   )
 }
 

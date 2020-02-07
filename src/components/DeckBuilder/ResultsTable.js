@@ -4,7 +4,12 @@ import { DecklistContext } from "../../contexts/DecklistContext"
 import { Table } from "react-bootstrap"
 
 const ResultsTable = () => {
-  const { cards, displayList, setDisplayList } = useContext(SearchContext)
+  const {
+    cards,
+    displayList,
+    setDisplayList,
+    resultsTableDragStart
+  } = useContext(SearchContext)
   const { setMainDeck, setSideboard } = useContext(DecklistContext)
 
   //create new tables on cards status change
@@ -12,15 +17,8 @@ const ResultsTable = () => {
     createTable(8)
   }, [cards])
 
-  // handler for dragstart
-  const onDragStart = e => {
-    e.persist()
-    let draggedCardName = e.target.dataset.name
-    e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
-  }
-
-  //handle double click on found cards
-  const dblClickHandler = (e, index) => {
+  //add cards to deck after double click on found cards
+  const handleResultsTableDblClick = (e, index) => {
     if (e.shiftKey) {
       setSideboard(previousDeck => [...previousDeck, cards[index]])
     } else setMainDeck(previousDeck => [...previousDeck, cards[index]])
@@ -37,11 +35,11 @@ const ResultsTable = () => {
             //table setup
             <tbody key={`${index}tbody`}>
               <tr
-                onDoubleClick={e => dblClickHandler(e, index)}
+                onDoubleClick={e => handleResultsTableDblClick(e, index)}
                 data-origin="search"
                 data-name={cards[index].name}
                 key={`${index}tr`}
-                onDragStart={e => onDragStart(e)}
+                onDragStart={e => resultsTableDragStart(e)}
                 draggable
               >
                 <td key={`${index}name`}>{cards[index].name}</td>
@@ -58,8 +56,8 @@ const ResultsTable = () => {
   }
 
   return (
-    <Table className="table-hover table-sm">
-      <thead>
+    <Table size="sm" bordered hover responsive="sm">
+      <thead style={{ backgroundColor: "#F7F7F7" }}>
         <tr>
           <th>Name</th>
           <th>Type</th>

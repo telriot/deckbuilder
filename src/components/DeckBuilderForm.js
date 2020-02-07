@@ -71,9 +71,9 @@ const DeckForm = () => {
 
   return (
     <Fragment>
-      <Form.Row>
+      <Form.Row className="align-items-center mb-1">
         <Col xs={4} lg>
-          <h2>Decklist</h2>
+          <h2 className="m-0">Decklist</h2>
         </Col>
         <Col xs={8} lg>
           <SaveButtonToggler />

@@ -7,10 +7,10 @@ function DeckBuilder() {
   return (
     <Container className="my-3">
       <Row>
-        <Col sm>
+        <Col md>
           <DeckBuilderSearch />
         </Col>
-        <Col sm>
+        <Col md>
           <DeckBuilderForm />
         </Col>
       </Row>

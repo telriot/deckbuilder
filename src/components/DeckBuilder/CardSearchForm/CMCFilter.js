@@ -12,7 +12,7 @@ const CMCFilter = () => {
       <Form.Control
         size="sm"
         as={DebounceInput}
-        className="form-control mx-1"
+        className="form-control m-1"
         style={{ width: "50px" }}
         name="cmc"
         debounceTimeout={200}
