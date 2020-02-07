@@ -1,10 +1,10 @@
 import React, { Fragment, useContext } from "react"
-import { SearchContext } from "../../../contexts/SearchContext"
+import { DecklistContext } from "../../../contexts/DecklistContext"
 import { DebounceInput } from "react-debounce-input"
 import { Form } from "react-bootstrap"
 
 const SearchBar = () => {
-  const { userInput, setUserInput } = useContext(SearchContext)
+  const { userInput, setUserInput } = useContext(DecklistContext)
 
   return (
     <Fragment>

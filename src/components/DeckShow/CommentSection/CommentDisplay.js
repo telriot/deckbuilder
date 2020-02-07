@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, Fragment } from "react"
 import { Button, Row, Col, Card, Container } from "react-bootstrap"
 import { useParams, Link } from "react-router-dom"
-import { SearchContext } from "../../../contexts/SearchContext"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { AuthContext } from "../../../contexts/AuthContext"
 import Moment from "react-moment"
 import axios from "axios"
 
 const CommentDisplay = () => {
-  const { deckInfo, setDeckInfo } = useContext(SearchContext)
-  const { commentsArr, setCommentsArr } = useContext(DecklistContext)
+  const { deckInfo, setDeckInfo, commentsArr, setCommentsArr } = useContext(
+    DecklistContext
+  )
   const { auth } = useContext(AuthContext)
   let params = useParams()
 

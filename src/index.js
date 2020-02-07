@@ -5,17 +5,15 @@ import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 import { BrowserRouter as Router } from "react-router-dom"
 import AuthContextProvider from "./contexts/AuthContext"
-import SearchContextProvider from "./contexts/SearchContext"
+
 import DecklistContextProvider from "./contexts/DecklistContext"
 
 ReactDOM.render(
   <Router>
     <AuthContextProvider>
-      <SearchContextProvider>
-        <DecklistContextProvider>
-          <App />
-        </DecklistContextProvider>
-      </SearchContextProvider>
+      <DecklistContextProvider>
+        <App />
+      </DecklistContextProvider>
     </AuthContextProvider>
   </Router>,
   document.getElementById("root")

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { SearchContext } from "../contexts/SearchContext"
+import { DecklistContext } from "../contexts/DecklistContext"
 import { AuthContext } from "../contexts/AuthContext"
 import { Container, Row, Col, Card } from "react-bootstrap"
 import DeckContainer from "./DeckShow/DeckContainer"
@@ -10,7 +10,7 @@ import DeckEditButtonGroup from "./DeckShow/DeckEditButtonGroup"
 import axios from "axios"
 
 const DeckShow = () => {
-  const { setIsLoading, deckInfo, setDeckInfo } = useContext(SearchContext)
+  const { setIsLoading, deckInfo, setDeckInfo } = useContext(DecklistContext)
   const { auth } = useContext(AuthContext)
   let params = useParams()
 

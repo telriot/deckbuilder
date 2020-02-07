@@ -1,10 +1,10 @@
 import React, { useContext } from "react"
-import { SearchContext } from "../../../contexts/SearchContext"
+import { DecklistContext } from "../../../contexts/DecklistContext"
 import { DebounceInput } from "react-debounce-input"
 import { Form } from "react-bootstrap"
 
 const CMCFilter = () => {
-  const { cmc, setCmc } = useContext(SearchContext)
+  const { cmc, setCmc } = useContext(DecklistContext)
 
   return (
     <Form.Group>

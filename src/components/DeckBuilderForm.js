@@ -1,6 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from "react"
 import { DecklistContext } from "../contexts/DecklistContext"
-import { SearchContext } from "../contexts/SearchContext"
 import { Form, Col } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import axios from "axios"
@@ -10,6 +9,8 @@ import Decklist from "./DeckBuilder/Decklist"
 
 const DeckForm = () => {
   const {
+    deckInfo,
+    setDeckInfo,
     deckObj,
     setDeckObj,
     createList,
@@ -22,7 +23,6 @@ const DeckForm = () => {
     setDeckName,
     setDeckFormat
   } = useContext(DecklistContext)
-  const { deckInfo, setDeckInfo } = useContext(SearchContext)
   const params = useParams()
   const [validation] = useState({})
 

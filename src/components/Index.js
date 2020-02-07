@@ -2,11 +2,11 @@ import React, { useEffect, useContext } from "react"
 import { Container, Card, Row, Col } from "react-bootstrap"
 import axios from "axios"
 import { LinkContainer } from "react-router-bootstrap"
-import { SearchContext } from "../contexts/SearchContext"
+import { DecklistContext } from "../contexts/DecklistContext"
 
 const Index = () => {
   const { isLoading, setIsLoading, indexList, setIndexList } = useContext(
-    SearchContext
+    DecklistContext
   )
 
   useEffect(() => {

@@ -1,9 +1,9 @@
 import React, { useContext } from "react"
 import { Link } from "react-router-dom"
-import { SearchContext } from "../../contexts/SearchContext"
+import { DecklistContext } from "../../contexts/DecklistContext"
 
 const DeckHeader = () => {
-  const { deckInfo } = useContext(SearchContext)
+  const { deckInfo } = useContext(DecklistContext)
 
   return (
     <h3>

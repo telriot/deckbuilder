@@ -1,9 +1,9 @@
 import React, { createContext, useState } from "react"
-import { Button, Form, Row, Col } from "react-bootstrap"
+import { Form, Col } from "react-bootstrap"
 import CardCopiesController from "../components/DeckBuilder/DeckDataForm/CardCopiesController"
 import CardDataSpan from "../components/DeckBuilder/DeckDataForm/CardDataSpan"
-import MainSideController from "../components/DeckBuilder/DeckDataForm/ControllerButton"
 import ControllerButton from "../components/DeckBuilder/DeckDataForm/ControllerButton"
+import axios from "axios"
 
 export const DecklistContext = createContext()
 
@@ -17,6 +17,56 @@ const DecklistContextProvider = props => {
   const [deckFormat, setDeckFormat] = useState("")
   const [comment, setComment] = useState("")
   const [commentsArr, setCommentsArr] = useState([])
+  const [userInput, setUserInput] = useState("")
+  const [cards, setCards] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [displayList, setDisplayList] = useState([])
+  const [rarity, setRarity] = useState("")
+  const [cmc, setCmc] = useState("")
+  const [type, setType] = useState("")
+  const [indexList, setIndexList] = useState([])
+  const [deckInfo, setDeckInfo] = useState({})
+
+  const URL = "https://api.scryfall.com/cards"
+
+  // card search scryfall api get request
+  async function cardSearch(input) {
+    let foundCards = []
+    try {
+      setIsLoading(true)
+      const response = await axios.get(
+        input && input.length ? `${URL}/search?q=${input}` : URL
+      )
+      foundCards = response.data.data
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        //request cancelled
+      } else {
+        setDisplayList([])
+        console.error(error.response)
+      }
+    }
+
+    //set found cards
+    setCards(
+      foundCards.map(card => {
+        return {
+          name: card.name,
+          image_small: card.image_uris ? card.image_uris.small : "",
+          mana_cost: card.mana_cost ? card.mana_cost : "",
+          cmc: card.cmc ? card.cmc : "",
+          type_line: card.type_line ? card.type_line : "",
+          oracle_text: card.oracle_text ? card.oracle_text : "",
+          power: card.power ? card.power : "",
+          toughness: card.toughness ? card.toughness : "",
+          colors: card.colors ? card.colors : "",
+          rarity: card.rarity ? card.rarity : "",
+          flavor_text: card.flavor_text ? card.flavor_text : ""
+        }
+      })
+    )
+    setIsLoading(false)
+  }
 
   //generic object grouping by key values
   const groupBy = key => array =>
@@ -28,6 +78,12 @@ const DecklistContextProvider = props => {
   //group objects by name, returning a new object
   const groupByName = groupBy("name")
 
+  // handler for results table dragstart
+  const resultsTableDragStart = e => {
+    e.persist()
+    let draggedCardName = e.target.dataset.name
+    e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
+  }
   // handler for decklist dragstart
   const onDragStart = e => {
     e.persist()
@@ -36,6 +92,47 @@ const DecklistContextProvider = props => {
       e.target.dataset.name,
       e.target.dataset.origin
     ])
+  }
+
+  // drag and drop handlers
+  const onDragOver = e => {
+    e.preventDefault()
+  }
+
+  const onDrop = e => {
+    e.persist()
+    let dropTarget = e.target.dataset.origin
+    let droppedCardObject = []
+    let droppedCardData = e.dataTransfer.getData("id").split(",")
+    let droppedCardName = droppedCardData[0]
+    let droppedCardOrigin = droppedCardData[1]
+    //card gets dragged from the search results
+    if (droppedCardOrigin === "search") {
+      droppedCardObject = cards.find(card => card.name === droppedCardName)
+      //to the maindeck
+      if (dropTarget === "main") {
+        setMainDeck(prevDeck => [...prevDeck, droppedCardObject])
+        //to the sideboard
+      } else if (dropTarget === "side") {
+        setSideboard(prevDeck => [...prevDeck, droppedCardObject])
+      }
+      //card gets dragged from the main to the side
+    } else if (droppedCardOrigin === "main" && dropTarget === "side") {
+      droppedCardObject = mainDeck.find(card => card.name === droppedCardName)
+      let updatedDeck = mainDeck.slice()
+      let index = updatedDeck.findIndex(el => el === droppedCardObject)
+      updatedDeck.splice(index, 1)
+      setMainDeck(updatedDeck)
+      setSideboard(prevDeck => [...prevDeck, droppedCardObject])
+      //card gets dragged from the side to the main
+    } else if (droppedCardOrigin === "side" && dropTarget === "main") {
+      droppedCardObject = sideboard.find(card => card.name === droppedCardName)
+      let updatedDeck = sideboard.slice()
+      let index = updatedDeck.findIndex(el => el === droppedCardObject)
+      updatedDeck.splice(index, 1)
+      setSideboard(updatedDeck)
+      setMainDeck(prevDeck => [...prevDeck, droppedCardObject])
+    }
   }
 
   // handler for copies n. change
@@ -90,6 +187,7 @@ const DecklistContextProvider = props => {
     }
     setDeck(updatedDeck)
   }
+
   // create decklist(mainDeck/sideboard, setMainDeck/setSideboard, deckObj/sideObj)
   const createList = (deck, setDeck, obj) => {
     let keys = Object.keys(obj)
@@ -97,7 +195,11 @@ const DecklistContextProvider = props => {
 
     for (let i of keys) {
       actualList.push(
-        <Form.Row className="mb-1" key={i}>
+        <Form.Row
+          data-origin={`${deck === mainDeck ? "main" : "side"}`}
+          className="mb-1"
+          key={i}
+        >
           <Col xs={8}>
             {/* n. of copies controller */}
             <CardCopiesController
@@ -109,7 +211,11 @@ const DecklistContextProvider = props => {
             {/* card data */}
             <CardDataSpan i={i} obj={obj} deck={deck} setDeck={setDeck} />
           </Col>
-          <Col xs={4} className="m-0">
+          <Col
+            xs={4}
+            className="m-0"
+            data-origin={`${deck === mainDeck ? "main" : "side"}`}
+          >
             {/* delete button */}
             <ControllerButton
               i={i}
@@ -188,9 +294,29 @@ const DecklistContextProvider = props => {
         setComment,
         commentsArr,
         setCommentsArr,
+        userInput,
+        setUserInput,
+        cards,
+        cardSearch,
+        isLoading,
+        displayList,
+        setDisplayList,
+        rarity,
+        setRarity,
+        cmc,
+        setCmc,
+        type,
+        setType,
+        indexList,
+        setIndexList,
+        deckInfo,
+        setDeckInfo,
         handleCopiesChange,
         handleCardDoubleClick,
         onDragStart,
+        resultsTableDragStart,
+        onDragOver,
+        onDrop,
         handleDeleteButton,
         handleSideToMainButton
       }}

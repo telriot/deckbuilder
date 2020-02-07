@@ -1,14 +1,16 @@
 import React, { useEffect, useContext, Fragment } from "react"
-import { SearchContext } from "../contexts/SearchContext"
 import { DecklistContext } from "../contexts/DecklistContext"
 import CardSearchForm from "./DeckBuilder/CardSearchForm"
 import ResultsTable from "./DeckBuilder/ResultsTable"
 
 const SearchForm = () => {
-  const { userInput, cardSearch, rarity, cmc, type, isLoading } = useContext(
-    SearchContext
-  )
   const {
+    userInput,
+    cardSearch,
+    rarity,
+    cmc,
+    type,
+    isLoading,
     mainDeck,
     groupByName,
     setDeckObj,

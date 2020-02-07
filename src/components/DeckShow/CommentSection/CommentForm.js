@@ -7,13 +7,11 @@ import {
   Container
 } from "react-bootstrap"
 import { useParams } from "react-router-dom"
-import { SearchContext } from "../../../contexts/SearchContext"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import axios from "axios"
 
 const CommentForm = () => {
-  const { setDeckInfo } = useContext(SearchContext)
-  const { comment, setComment } = useContext(DecklistContext)
+  const { setDeckInfo, comment, setComment } = useContext(DecklistContext)
 
   let params = useParams()
 

@@ -1,11 +1,9 @@
 import React, { useContext } from "react"
 import { Container, Col, Row } from "react-bootstrap"
-import { SearchContext } from "../../contexts/SearchContext"
 import { DecklistContext } from "../../contexts/DecklistContext"
 
 const DeckContainer = () => {
-  const { deckInfo } = useContext(SearchContext)
-  const { groupByName } = useContext(DecklistContext)
+  const { deckInfo, groupByName } = useContext(DecklistContext)
 
   //Create type arrays
   let creaturesShow = []

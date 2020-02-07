@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react"
-import { SearchContext } from "../../contexts/SearchContext"
+
 import { DecklistContext } from "../../contexts/DecklistContext"
 import { Table } from "react-bootstrap"
 
@@ -8,9 +8,10 @@ const ResultsTable = () => {
     cards,
     displayList,
     setDisplayList,
-    resultsTableDragStart
-  } = useContext(SearchContext)
-  const { setMainDeck, setSideboard } = useContext(DecklistContext)
+    resultsTableDragStart,
+    setMainDeck,
+    setSideboard
+  } = useContext(DecklistContext)
 
   //create new tables on cards status change
   useEffect(() => {

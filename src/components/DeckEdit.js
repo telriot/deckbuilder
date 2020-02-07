@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react"
-import { SearchContext } from "../contexts/SearchContext"
+import { DecklistContext } from "../contexts/DecklistContext"
 import DeckBuilderSearch from "./DeckBuilderSearch"
 import DeckBuilderForm from "./DeckBuilderForm"
 import { useParams } from "react-router-dom"
@@ -8,7 +8,7 @@ import axios from "axios"
 
 const DeckEdit = () => {
   let params = useParams()
-  const { setIsLoading, setDeckInfo } = useContext(SearchContext)
+  const { setIsLoading, setDeckInfo } = useContext(DecklistContext)
 
   useEffect(() => {
     showDeck()
