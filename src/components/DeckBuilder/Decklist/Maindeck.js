@@ -24,6 +24,7 @@ const Maindeck = () => {
         Main
       </Card.Header>
       <Card.Body
+        style={{ fontSize: "0.85rem" }}
         className="p-2"
         data-origin="main"
         onDragOver={e => onDragOver(e)}

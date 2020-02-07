@@ -24,6 +24,7 @@ const Sideboard = () => {
         Sideboard
       </Card.Header>
       <Card.Body
+        style={{ fontSize: "0.85rem" }}
         className="p-2"
         data-origin="side"
         onDragOver={e => onDragOver(e)}

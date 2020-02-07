@@ -78,13 +78,13 @@ const DecklistContextProvider = props => {
   //group objects by name, returning a new object
   const groupByName = groupBy("name")
 
-  // handler for results table dragstart
+  // drag and drop handlers
   const resultsTableDragStart = e => {
     e.persist()
     let draggedCardName = e.target.dataset.name
     e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
   }
-  // handler for decklist dragstart
+
   const onDragStart = e => {
     e.persist()
     console.log("dragstart", e)
@@ -94,7 +94,6 @@ const DecklistContextProvider = props => {
     ])
   }
 
-  // drag and drop handlers
   const onDragOver = e => {
     e.preventDefault()
   }
@@ -154,7 +153,6 @@ const DecklistContextProvider = props => {
   }
 
   //handler for doubleclick on card elements
-
   const handleCardDoubleClick = (deck, obj, i, setDeck) => {
     let updatedDeck = deck.slice()
     let index = updatedDeck.findIndex(el => el === obj[i][0])
@@ -299,6 +297,7 @@ const DecklistContextProvider = props => {
         cards,
         cardSearch,
         isLoading,
+        setIsLoading,
         displayList,
         setDisplayList,
         rarity,

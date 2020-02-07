@@ -99,7 +99,6 @@ const CommentDisplay = () => {
 
   return (
     <div>
-      <h3>Comments</h3>
       <Container>{commentsArr}</Container>
     </div>
   )

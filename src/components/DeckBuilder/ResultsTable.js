@@ -34,7 +34,7 @@ const ResultsTable = () => {
         if (cards[index]) {
           tableData.push(
             //table setup
-            <tbody key={`${index}tbody`}>
+            <tbody style={{ fontSize: "0.85rem" }} key={`${index}tbody`}>
               <tr
                 onDoubleClick={e => handleResultsTableDblClick(e, index)}
                 data-origin="search"
@@ -58,7 +58,7 @@ const ResultsTable = () => {
 
   return (
     <Table size="sm" bordered hover responsive="sm">
-      <thead style={{ backgroundColor: "#F7F7F7" }}>
+      <thead style={{ backgroundColor: "#F7F7F7", fontSize: "0.9rem" }}>
         <tr>
           <th>Name</th>
           <th>Type</th>

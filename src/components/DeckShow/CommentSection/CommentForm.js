@@ -52,13 +52,19 @@ const CommentForm = () => {
         <Form onSubmit={e => commentHandleSubmit(e)}>
           <InputGroup>
             <FormControl
+              className="p-0 mt-0 ml-1 mb-3 mr-0"
+              style={{ minHeight: "30px" }}
               as="textarea"
               value={comment}
               onChange={e => setComment(e.target.value)}
               aria-label="With textarea"
             />
             <InputGroup.Append>
-              <Button type="submit" variant="outline-secondary">
+              <Button
+                className="py-0 mt-0 mb-3 mr-1"
+                type="submit"
+                variant="outline-secondary"
+              >
                 Button
               </Button>
             </InputGroup.Append>
