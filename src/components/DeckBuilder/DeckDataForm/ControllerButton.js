@@ -10,7 +10,7 @@ const ControllerButton = props => {
     switch (type) {
       case "mainSideController":
         return deck === mainDeck ? "Side" : "Main"
-      case "deleteCard":
+      default:
         return "x"
     }
   }
@@ -18,8 +18,9 @@ const ControllerButton = props => {
   return (
     <Button
       size="sm"
-      className="py-0 px-1 float-right mx-1"
+      className="py-0 px-1res float-right mx-1"
       onClick={() => handleFunction(deck, obj, i, setDeck)}
+      style={{ fontSize: "0.6rem" }}
     >
       {renderSwitch(type)}
     </Button>

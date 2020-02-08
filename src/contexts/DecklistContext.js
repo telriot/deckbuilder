@@ -30,6 +30,7 @@ const DecklistContextProvider = props => {
   const [activePage, setActivePage] = useState(1)
   const [tableLength, setTableLength] = useState(35)
   const [currentServerPage, setCurrentServerPage] = useState(1)
+  const [activeTab, setActiveTab] = useState("#main")
 
   const URL = "https://api.scryfall.com/cards"
 
@@ -71,6 +72,8 @@ const DecklistContextProvider = props => {
         }
       })
     )
+    setActivePage(1)
+    setCurrentServerPage(1)
     setIsLoading(false)
   }
 
@@ -201,7 +204,6 @@ const DecklistContextProvider = props => {
       actualList.push(
         <Form.Row
           data-origin={`${deck === mainDeck ? "main" : "side"}`}
-          className="mb-1"
           key={i}
         >
           <Col xs={8} data-origin={`${deck === mainDeck ? "main" : "side"}`}>
@@ -330,7 +332,9 @@ const DecklistContextProvider = props => {
         setActivePage,
         tableLength,
         currentServerPage,
-        setCurrentServerPage
+        setCurrentServerPage,
+        activeTab,
+        setActiveTab
       }}
     >
       {props.children}

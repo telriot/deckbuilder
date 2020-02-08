@@ -13,19 +13,21 @@ const ResultsTable = () => {
     setMainDeck,
     setSideboard,
     activePage,
-    tableLength
+    tableLength,
+    activeTab
   } = useContext(DecklistContext)
 
   //create new tables on cards status change
   useEffect(() => {
     createTable(tableLength, activePage - 1)
-  }, [cards, activePage])
+  }, [cards, activePage, activeTab])
 
   //add cards to deck after double click on found cards
-  const handleResultsTableDblClick = (e, index) => {
-    if (e.shiftKey) {
-      setSideboard(previousDeck => [...previousDeck, cards[index]])
-    } else setMainDeck(previousDeck => [...previousDeck, cards[index]])
+  const handleResultsTableDblClick = (e, index, activeTab) => {
+    console.log(activeTab)
+    if (activeTab === "#main") {
+      setMainDeck(previousDeck => [...previousDeck, cards[index]])
+    } else setSideboard(previousDeck => [...previousDeck, cards[index]])
   }
 
   //display found cards in a table, num = items shown
@@ -38,9 +40,11 @@ const ResultsTable = () => {
         if (cards[index]) {
           tableData.push(
             //table setup
-            <tbody style={{ fontSize: "0.85rem" }} key={`${index}tbody`}>
+            <tbody style={{ fontSize: "0.75rem" }} key={`${index}tbody`}>
               <tr
-                onDoubleClick={e => handleResultsTableDblClick(e, index)}
+                onDoubleClick={e =>
+                  handleResultsTableDblClick(e, index, activeTab)
+                }
                 data-origin="search"
                 data-name={cards[index].name}
                 key={`${index}tr`}
@@ -68,8 +72,15 @@ const ResultsTable = () => {
     }
   }
   const resultsTable = (
-    <div style={{ display: "block", maxHeight: "60vh", overflowY: "auto" }}>
-      <Table size="sm" bordered hover responsive="sm">
+    <div
+      style={{
+        display: "block",
+        maxHeight: "60vh",
+        overflowY: "auto",
+        marginBottom: "8px"
+      }}
+    >
+      <Table size="sm" hover responsive="sm">
         <thead style={{ backgroundColor: "#F7F7F7", fontSize: "0.9rem" }}>
           <tr>
             <th>Name</th>
