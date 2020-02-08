@@ -9,6 +9,7 @@ export const DecklistContext = createContext()
 
 const DecklistContextProvider = props => {
   const [mainDeck, setMainDeck] = useState([])
+  const [resultsInfo, setResultsInfo] = useState({})
   const [sideboard, setSideboard] = useState([])
   const [sideObj, setSideObj] = useState({})
   const [deckObj, setDeckObj] = useState({})
@@ -26,18 +27,22 @@ const DecklistContextProvider = props => {
   const [type, setType] = useState("")
   const [indexList, setIndexList] = useState([])
   const [deckInfo, setDeckInfo] = useState({})
+  const [activePage, setActivePage] = useState(1)
+  const [tableLength, setTableLength] = useState(35)
+  const [currentServerPage, setCurrentServerPage] = useState(1)
 
   const URL = "https://api.scryfall.com/cards"
 
   // card search scryfall api get request
-  async function cardSearch(input) {
+  async function cardSearch(input, url) {
     let foundCards = []
     try {
       setIsLoading(true)
       const response = await axios.get(
-        input && input.length ? `${URL}/search?q=${input}` : URL
+        url ? url : input && input.length ? `${URL}/search?q=${input}` : URL
       )
       foundCards = response.data.data
+      setResultsInfo(response.data)
       console.log(response)
     } catch (error) {
       if (axios.isCancel(error)) {
@@ -199,7 +204,7 @@ const DecklistContextProvider = props => {
           className="mb-1"
           key={i}
         >
-          <Col xs={8}>
+          <Col xs={8} data-origin={`${deck === mainDeck ? "main" : "side"}`}>
             {/* n. of copies controller */}
             <CardCopiesController
               i={i}
@@ -318,7 +323,14 @@ const DecklistContextProvider = props => {
         onDragOver,
         onDrop,
         handleDeleteButton,
-        handleSideToMainButton
+        handleSideToMainButton,
+        resultsInfo,
+        setResultsInfo,
+        activePage,
+        setActivePage,
+        tableLength,
+        currentServerPage,
+        setCurrentServerPage
       }}
     >
       {props.children}

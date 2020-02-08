@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from "react"
+import React, { Fragment, useContext, useEffect } from "react"
 
 import { DecklistContext } from "../../contexts/DecklistContext"
 import { Table } from "react-bootstrap"
+import TablePagination from "./ResultsTable/TablePagination"
 
 const ResultsTable = () => {
   const {
@@ -10,13 +11,15 @@ const ResultsTable = () => {
     setDisplayList,
     resultsTableDragStart,
     setMainDeck,
-    setSideboard
+    setSideboard,
+    activePage,
+    tableLength
   } = useContext(DecklistContext)
 
   //create new tables on cards status change
   useEffect(() => {
-    createTable(25)
-  }, [cards])
+    createTable(tableLength, activePage - 1)
+  }, [cards, activePage])
 
   //add cards to deck after double click on found cards
   const handleResultsTableDblClick = (e, index) => {
@@ -26,11 +29,12 @@ const ResultsTable = () => {
   }
 
   //display found cards in a table, num = items shown
-  function createTable(num) {
+  function createTable(num, page) {
     let tableData = []
+    console.log("createTable ran")
     // if we have search results
-    if (cards[0]) {
-      for (let index = 0; index < num; index++) {
+    if (cards[page * num]) {
+      for (let index = page * num; index < page * num + num; index++) {
         if (cards[index]) {
           tableData.push(
             //table setup
@@ -63,19 +67,26 @@ const ResultsTable = () => {
       setDisplayList(tableData)
     }
   }
-
+  const resultsTable = (
+    <div style={{ display: "block", maxHeight: "60vh", overflowY: "auto" }}>
+      <Table size="sm" bordered hover responsive="sm">
+        <thead style={{ backgroundColor: "#F7F7F7", fontSize: "0.9rem" }}>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>CMC</th>
+            <th>Rarity</th>
+          </tr>
+        </thead>
+        {displayList}
+      </Table>
+    </div>
+  )
   return (
-    <Table size="sm" bordered hover responsive="sm">
-      <thead style={{ backgroundColor: "#F7F7F7", fontSize: "0.9rem" }}>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>CMC</th>
-          <th>Rarity</th>
-        </tr>
-      </thead>
-      {displayList}
-    </Table>
+    <Fragment>
+      {resultsTable}
+      <TablePagination />
+    </Fragment>
   )
 }
 

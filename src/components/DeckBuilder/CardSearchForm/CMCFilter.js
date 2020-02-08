@@ -12,7 +12,7 @@ const CMCFilter = () => {
         CMC
       </Form.Label>
       <Form.Control
-        column
+        column="true"
         md={6}
         lg={8}
         size="sm"
