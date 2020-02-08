@@ -8,7 +8,6 @@ const TypeFilter = () => {
   return (
     <Form.Control
       size="sm"
-      className="m-1"
       as="select"
       value={type}
       onChange={e => setType(e.target.value)}

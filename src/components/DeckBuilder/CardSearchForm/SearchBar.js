@@ -11,7 +11,7 @@ const SearchBar = () => {
       <Form.Control
         as={DebounceInput}
         size="sm"
-        className="m-1"
+        className="mx-0 my-1"
         type="text"
         debounceTimeout={400}
         placeholder="Type to search..."

@@ -38,6 +38,7 @@ const DecklistContextProvider = props => {
         input && input.length ? `${URL}/search?q=${input}` : URL
       )
       foundCards = response.data.data
+      console.log(response)
     } catch (error) {
       if (axios.isCancel(error)) {
         //request cancelled

@@ -6,7 +6,7 @@ const DeckSortingSelector = () => {
   const { sortingCriteria, setSortingCriteria } = useContext(DecklistContext)
 
   return (
-    <Form.Group as={Row} className="align-items-center mb-1 mb-sm-2">
+    <Form.Group as={Row} className="align-items-center mb-1">
       <Form.Label column md={6} lg={4}>
         Sort by
       </Form.Label>

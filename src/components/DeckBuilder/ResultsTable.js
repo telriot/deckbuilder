@@ -15,7 +15,7 @@ const ResultsTable = () => {
 
   //create new tables on cards status change
   useEffect(() => {
-    createTable(8)
+    createTable(25)
   }, [cards])
 
   //add cards to deck after double click on found cards
@@ -43,10 +43,18 @@ const ResultsTable = () => {
                 onDragStart={e => resultsTableDragStart(e)}
                 draggable
               >
-                <td key={`${index}name`}>{cards[index].name}</td>
-                <td key={`${index}color`}>{cards[index].type_line}</td>
-                <td key={`${index}cmc`}>{cards[index].cmc}</td>
-                <td key={`${index}rarity`}>{cards[index].rarity}</td>
+                <td className="py-0" key={`${index}name`}>
+                  {cards[index].name}
+                </td>
+                <td className="py-0" key={`${index}color`}>
+                  {cards[index].type_line}
+                </td>
+                <td className="py-0" key={`${index}cmc`}>
+                  {cards[index].cmc}
+                </td>
+                <td className="py-0" key={`${index}rarity`}>
+                  {cards[index].rarity}
+                </td>
               </tr>
             </tbody>
           )

@@ -19,9 +19,9 @@ const SearchForm = () => {
   } = useContext(DecklistContext)
 
   // Make a suitable search string for server
-  const searchString = `${userInput}${rarity ? "+r%3A" : ""}${rarity}${
-    type ? "+t%3A" : ""
-  }${type}${cmc ? "+cmc%3A" : ""}${cmc}`
+  const searchString = `${userInput.length > 2 ? userInput : ""}${
+    rarity ? "+r%3A" : ""
+  }${rarity}${type ? "+t%3A" : ""}${type}${cmc ? "+cmc%3A" : ""}${cmc}`
 
   // If searchString, prompt request to server
   useEffect(() => {
@@ -46,11 +46,10 @@ const SearchForm = () => {
 
   return (
     <Fragment>
+      <h3 className="m-0">{isLoading ? "Loading..." : "Search"}</h3>
       <CardSearchForm />
-      <div>
-        <h3>{isLoading ? "Loading..." : "Search results"}</h3>
-        <ResultsTable />
-      </div>
+
+      <ResultsTable />
     </Fragment>
   )
 }

@@ -6,7 +6,7 @@ const FormatSelector = () => {
   const { deckFormat, setDeckFormat } = useContext(DecklistContext)
 
   return (
-    <Form.Group as={Form.Row} className="align-items-center mb-1 mb-sm-2">
+    <Form.Group as={Form.Row} className="align-items-center mb-1">
       <Form.Label column md={5} lg={4}>
         Format
       </Form.Label>

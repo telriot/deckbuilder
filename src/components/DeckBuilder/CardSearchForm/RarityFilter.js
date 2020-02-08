@@ -8,7 +8,6 @@ const RarityFilter = () => {
   return (
     <Form.Control
       size="sm"
-      className="m-1"
       as="select"
       value={rarity}
       onChange={e => setRarity(e.target.value)}

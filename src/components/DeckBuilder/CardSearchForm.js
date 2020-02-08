@@ -13,14 +13,14 @@ const CardSearchForm = () => {
           <SearchBar />
         </Col>
       </Form.Row>
-      <Form.Row>
+      <Form.Row className="align-items-center mb-1">
         <Col sm={4}>
           <RarityFilter />
         </Col>
         <Col sm={4}>
           <TypeFilter />
         </Col>
-        <Col sm={4} className="form-inline">
+        <Col sm={4}>
           <CMCFilter />
         </Col>
       </Form.Row>

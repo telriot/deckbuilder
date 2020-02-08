@@ -7,11 +7,12 @@ const DeckNameBar = () => {
 
   return (
     <Form.Group as={Form.Row} className="align-items-center mb-0">
-      <Form.Label column md={4} lg={3}>
+      <Form.Label className="px-1 py-0 my-1" column md={4} lg={3}>
         Deck Name
       </Form.Label>
       <Col md={8} lg={9}>
         <Form.Control
+          className=" mb-1"
           size="sm"
           id="deck-name"
           type="text"
