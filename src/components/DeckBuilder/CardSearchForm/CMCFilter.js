@@ -7,14 +7,20 @@ const CMCFilter = () => {
   const { cmc, setCmc } = useContext(DecklistContext)
 
   return (
-    <Form.Group as={Row} className="align-items-center mb-0">
-      <Form.Label column md={6} lg={4}>
+    <Form.Group as={Row} className="mb-0 pr-2">
+      <Form.Label
+        column
+        xs={4}
+        lg={3}
+        className="px-1 ml-2"
+        style={{ fontSize: "0.7rem" }}
+      >
         CMC
       </Form.Label>
       <Form.Control
         column="true"
-        md={6}
-        lg={8}
+        xs={8}
+        lg={9}
         size="sm"
         as={DebounceInput}
         className="form-control"

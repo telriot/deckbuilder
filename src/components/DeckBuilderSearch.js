@@ -2,12 +2,16 @@ import React, { useEffect, useContext, Fragment } from "react"
 import { DecklistContext } from "../contexts/DecklistContext"
 import CardSearchForm from "./DeckBuilder/CardSearchForm"
 import ResultsTable from "./DeckBuilder/ResultsTable"
+import TableColumnsPopover from "./DeckBuilder/CardSearchForm/TableColumnsPopover"
+import SearchFiltersPopover from "./DeckBuilder/CardSearchForm/SearchFiltersPopover"
+import { Col, Row } from "react-bootstrap"
 
 const SearchForm = () => {
   const {
     userInput,
     cardSearch,
     rarity,
+    color,
     cmc,
     type,
     isLoading,
@@ -15,19 +19,24 @@ const SearchForm = () => {
     groupByName,
     setDeckObj,
     sideboard,
-    setSideObj
+    setSideObj,
+    resultsOrder
   } = useContext(DecklistContext)
 
   // Make a suitable search string for server
-  const searchString = `${userInput.length > 2 ? userInput : ""}${
-    rarity ? "+r%3A" : ""
-  }${rarity}${type ? "+t%3A" : ""}${type}${cmc ? "+cmc%3A" : ""}${cmc}`
+  const searchString = `${userInput || "*"}${rarity ? "+r%3A" : ""}${rarity}${
+    type ? "+t%3A" : ""
+  }${type}${color ? "+c%3A" : ""}${color}${cmc ? "+cmc%3A" : ""}${cmc}${
+    resultsOrder.orderCriteria ? "+order%3A" : ""
+  }${resultsOrder.orderCriteria}${
+    resultsOrder.direction ? "+direction%3A" : ""
+  }${resultsOrder.direction}`
 
   // If searchString, prompt request to server
   useEffect(() => {
-    searchString && cardSearch(searchString)
+    cardSearch(searchString)
     return
-  }, [userInput, rarity, type, cmc])
+  }, [userInput, rarity, type, color, cmc, resultsOrder])
 
   //keep the deck objects updated
   useEffect(() => {
@@ -46,7 +55,16 @@ const SearchForm = () => {
 
   return (
     <Fragment>
-      <h3 className="m-0">{isLoading ? "Loading..." : "Search"}</h3>
+      <Row>
+        <Col>
+          <h3 className="m-0">{isLoading ? "Loading..." : "Search"}</h3>
+        </Col>
+        <Col>
+          <TableColumnsPopover />
+          <SearchFiltersPopover />
+        </Col>
+      </Row>
+
       <CardSearchForm />
 
       <ResultsTable />

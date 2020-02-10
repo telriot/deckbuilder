@@ -20,7 +20,7 @@ const Decklist = () => {
 
   return (
     <Fragment>
-      <Card className="mb-1 mb-sm-2">
+      <Card>
         <Card.Header
           data-origin={activeTab === "#main" ? "main" : "side"}
           onDragOver={e => onDragOver(e)}

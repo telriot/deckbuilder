@@ -25,31 +25,73 @@ const DecklistContextProvider = props => {
   const [rarity, setRarity] = useState("")
   const [cmc, setCmc] = useState("")
   const [type, setType] = useState("")
+  const [color, setColor] = useState("")
+  const [resultsOrder, setResultsOrder] = useState({
+    orderCriteria: "name",
+    direction: ""
+  })
   const [indexList, setIndexList] = useState([])
   const [deckInfo, setDeckInfo] = useState({})
   const [activePage, setActivePage] = useState(1)
   const [tableLength, setTableLength] = useState(35)
   const [currentServerPage, setCurrentServerPage] = useState(1)
+  const [adjacentPages, setAdjacentPages] = useState({
+    prev_page: "",
+    next_page: ""
+  })
   const [activeTab, setActiveTab] = useState("#main")
+  const [visibleColumns, setVisibleColumns] = useState({
+    cost: true,
+    type: true,
+    cmc: false,
+    rarity: false
+  })
+  const [searchFilters, setSearchFilters] = useState({
+    type: true,
+    cmc: true,
+    color: true,
+    rarity: true
+  })
 
   const URL = "https://api.scryfall.com/cards"
 
   // card search scryfall api get request
   async function cardSearch(input, url) {
     let foundCards = []
+
     try {
       setIsLoading(true)
       const response = await axios.get(
         url ? url : input && input.length ? `${URL}/search?q=${input}` : URL
       )
       foundCards = response.data.data
-      setResultsInfo(response.data)
-      console.log(response)
+      const { next_page } = response.data
+
+      let prevPageHack = next_page
+        .split("&")
+        .map(arr => {
+          if (arr.includes("page")) {
+            return arr.replace(
+              parseInt(arr.slice(5)),
+              parseInt(arr.slice(5)) - 2
+            )
+          }
+          return arr
+        })
+        .join("&")
+      setResultsInfo(response)
+      setDisplayList([])
+      setAdjacentPages(prevState => {
+        return {
+          ...prevState,
+          next_page,
+          prev_page: prevPageHack
+        }
+      })
     } catch (error) {
       if (axios.isCancel(error)) {
         //request cancelled
       } else {
-        setDisplayList([])
         console.error(error.response)
       }
     }
@@ -73,7 +115,7 @@ const DecklistContextProvider = props => {
       })
     )
     setActivePage(1)
-    setCurrentServerPage(1)
+    !url && setCurrentServerPage(1)
     setIsLoading(false)
   }
 
@@ -314,6 +356,8 @@ const DecklistContextProvider = props => {
         setCmc,
         type,
         setType,
+        color,
+        setColor,
         indexList,
         setIndexList,
         deckInfo,
@@ -334,7 +378,15 @@ const DecklistContextProvider = props => {
         currentServerPage,
         setCurrentServerPage,
         activeTab,
-        setActiveTab
+        setActiveTab,
+        visibleColumns,
+        setVisibleColumns,
+        searchFilters,
+        setSearchFilters,
+        resultsOrder,
+        setResultsOrder,
+        adjacentPages,
+        setAdjacentPages
       }}
     >
       {props.children}

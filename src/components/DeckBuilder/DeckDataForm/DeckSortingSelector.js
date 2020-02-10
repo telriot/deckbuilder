@@ -7,10 +7,10 @@ const DeckSortingSelector = () => {
 
   return (
     <Form.Group as={Row} className="align-items-center mb-1">
-      <Form.Label column md={6} lg={4}>
+      <Form.Label column md={5} lg={4} className="pr-2">
         Sort by
       </Form.Label>
-      <Col md={6} lg={8}>
+      <Col md={7} lg={8}>
         <Form.Control
           size="sm"
           as="select"

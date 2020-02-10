@@ -7,7 +7,7 @@ const FormatSelector = () => {
 
   return (
     <Form.Group as={Form.Row} className="align-items-center mb-1">
-      <Form.Label column md={5} lg={4}>
+      <Form.Label column md={5} lg={4} className="pr-2">
         Format
       </Form.Label>
       <Col md={7} lg={8}>
