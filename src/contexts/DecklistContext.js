@@ -8,8 +8,8 @@ import axios from "axios"
 export const DecklistContext = createContext()
 
 const DecklistContextProvider = props => {
-  const [mainDeck, setMainDeck] = useState([])
   const [resultsInfo, setResultsInfo] = useState({})
+  const [mainDeck, setMainDeck] = useState([])
   const [sideboard, setSideboard] = useState([])
   const [sideObj, setSideObj] = useState({})
   const [deckObj, setDeckObj] = useState({})
@@ -91,12 +91,28 @@ const DecklistContextProvider = props => {
       })
     } catch (error) {
       if (axios.isCancel(error)) {
-        //request cancelled
+        setResultsInfo({})
+        setDisplayList([])
       } else {
+        setResultsInfo({})
+        setDisplayList([])
         console.error(error.response)
       }
     }
-
+    //normalize type lines
+    const normalizeType = string => {
+      return string
+        .replace(/Legendary |Tribal |Snow /g, "")
+        .replace(/Basic Land|Artifact Land|^Land\w*/, "Land")
+        .replace(
+          /Artifact Creature|Host Creature|Instant Creature|Enchantment Creature|^Creature\w*/,
+          "Creature"
+        )
+        .replace(/Enchantment Artifact|Hero Artifact|^Artifact\w*/, "Artifact")
+        .replace(/^Sorcery\w*/, "Sorcery")
+        .replace(/Elemental Instant|^Instant\w*/, "Instant")
+        .replace(/World Enchantment|^Enchantment\w*/, "Enchantment")
+    }
     //set found cards
     setCards(
       foundCards.map(card => {
@@ -107,6 +123,7 @@ const DecklistContextProvider = props => {
           mana_cost: card.mana_cost ? card.mana_cost : "",
           cmc: card.cmc ? card.cmc : "",
           type_line: card.type_line ? card.type_line : "",
+          normalized_type: card.type_line ? normalizeType(card.type_line) : "",
           oracle_text: card.oracle_text ? card.oracle_text : "",
           power: card.power ? card.power : "",
           toughness: card.toughness ? card.toughness : "",

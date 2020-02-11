@@ -78,9 +78,6 @@ const DeckForm = () => {
         <Col xs={8} lg>
           <SaveButtonToggler />
         </Col>
-        {validation.name && <h5>{validation.name}</h5>}
-        {validation.format && <h5>{validation.format}</h5>}
-        {validation.deck && <h5>{validation.deck}</h5>}
       </Form.Row>
       <DeckDataForm />
       <Decklist />

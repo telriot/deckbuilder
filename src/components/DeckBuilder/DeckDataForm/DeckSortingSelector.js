@@ -19,7 +19,7 @@ const DeckSortingSelector = () => {
           onChange={e => setSortingCriteria(e.target.value)}
         >
           <option value={"name"}>Name</option>
-          <option value={"type_line"}>Type</option>
+          <option value={"normalized_type"}>Type</option>
           <option value={"cmc"}>CMC</option>
           <option value={"rarity"}>Rarity</option>
         </Form.Control>

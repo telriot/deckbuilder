@@ -28,9 +28,9 @@ const ResultsTable = () => {
 
   //add cards to deck after double click on found cards
   const handleResultsTableDblClick = (index, tab) => {
-    if (tab === "#main") {
-      setMainDeck(previousDeck => [...previousDeck, cards[index]])
-    } else setSideboard(previousDeck => [...previousDeck, cards[index]])
+    if (tab === "#side") {
+      setSideboard(previousDeck => [...previousDeck, cards[index]])
+    } else setMainDeck(previousDeck => [...previousDeck, cards[index]])
   }
   // Switch statements for content rendering
   const raritySwitch = rarity => {
