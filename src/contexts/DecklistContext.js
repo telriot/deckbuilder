@@ -101,17 +101,20 @@ const DecklistContextProvider = props => {
     }
     //normalize type lines
     const normalizeType = string => {
-      return string
+      let splitWord = string
         .replace(/Legendary |Tribal |Snow /g, "")
         .replace(/Basic Land|Artifact Land|^Land\w*/, "Land")
         .replace(
           /Artifact Creature|Host Creature|Instant Creature|Enchantment Creature|^Creature\w*/,
           "Creature"
         )
+        .replace(/Creature\?.*/, "Creature")
         .replace(/Enchantment Artifact|Hero Artifact|^Artifact\w*/, "Artifact")
         .replace(/^Sorcery\w*/, "Sorcery")
         .replace(/Elemental Instant|^Instant\w*/, "Instant")
         .replace(/World Enchantment|^Enchantment\w*/, "Enchantment")
+        .split(" ")
+      return splitWord[0]
     }
     //set found cards
     setCards(
