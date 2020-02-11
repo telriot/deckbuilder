@@ -6,24 +6,28 @@ import { Button } from "react-bootstrap"
 import axios from "axios"
 
 const SaveButton = () => {
-  const { mainDeck, sideboard, deckName, deckFormat } = useContext(
-    DecklistContext
-  )
+  const {
+    validation,
+    setValidation,
+    mainDeck,
+    sideboard,
+    deckName,
+    deckFormat
+  } = useContext(DecklistContext)
   const { auth } = useContext(AuthContext)
   const history = useHistory()
-  const [setValidation] = useState({})
 
   // Validate deck input
   const validateInput = () => {
     setValidation({})
     if (deckName.trim().length < 1) {
-      setValidation({ name: "Please enter a name" })
+      setValidation({ error: "Please enter a name" })
       return
     } else if (deckFormat.length < 1) {
-      setValidation({ format: "Please choose a format" })
+      setValidation({ error: "Please choose a format" })
       return
     } else if (mainDeck.length < 1) {
-      setValidation({ deck: "Your deck is still empty" })
+      setValidation({ error: "Your deck is still empty" })
       return
     }
   }

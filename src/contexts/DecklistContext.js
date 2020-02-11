@@ -28,7 +28,7 @@ const DecklistContextProvider = props => {
   const [color, setColor] = useState("")
   const [resultsOrder, setResultsOrder] = useState({
     orderCriteria: "name",
-    direction: ""
+    direction: "asc"
   })
   const [indexList, setIndexList] = useState([])
   const [deckInfo, setDeckInfo] = useState({})
@@ -52,6 +52,7 @@ const DecklistContextProvider = props => {
     color: true,
     rarity: true
   })
+  const [validation, setValidation] = useState({})
 
   const URL = "https://api.scryfall.com/cards"
 
@@ -102,6 +103,7 @@ const DecklistContextProvider = props => {
         return {
           name: card.name,
           image_small: card.image_uris ? card.image_uris.small : "",
+          image_border_crop: card.image_uris ? card.image_uris.border_crop : "",
           mana_cost: card.mana_cost ? card.mana_cost : "",
           cmc: card.cmc ? card.cmc : "",
           type_line: card.type_line ? card.type_line : "",
@@ -257,6 +259,7 @@ const DecklistContextProvider = props => {
               setDeck={setDeck}
             />
             {/* card data */}
+
             <CardDataSpan i={i} obj={obj} deck={deck} setDeck={setDeck} />
           </Col>
           <Col
@@ -386,7 +389,9 @@ const DecklistContextProvider = props => {
         resultsOrder,
         setResultsOrder,
         adjacentPages,
-        setAdjacentPages
+        setAdjacentPages,
+        validation,
+        setValidation
       }}
     >
       {props.children}

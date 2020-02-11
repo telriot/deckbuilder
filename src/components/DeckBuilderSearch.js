@@ -55,16 +55,6 @@ const SearchForm = () => {
 
   return (
     <Fragment>
-      <Row>
-        <Col>
-          <h3 className="m-0">{isLoading ? "Loading..." : "Search"}</h3>
-        </Col>
-        <Col>
-          <TableColumnsPopover />
-          <SearchFiltersPopover />
-        </Col>
-      </Row>
-
       <CardSearchForm />
 
       <ResultsTable />

@@ -6,6 +6,8 @@ import TypeFilter from "./CardSearchForm/TypeFilter"
 import { Form, Col } from "react-bootstrap"
 import ColorFilter from "./CardSearchForm/ColorFilter"
 import { DecklistContext } from "../../contexts/DecklistContext"
+import TableColumnsPopover from "../DeckBuilder/CardSearchForm/TableColumnsPopover"
+import SearchFiltersPopover from "../DeckBuilder/CardSearchForm/SearchFiltersPopover"
 
 const CardSearchForm = () => {
   const { searchFilters } = useContext(DecklistContext)
@@ -44,8 +46,12 @@ const CardSearchForm = () => {
   return (
     <Form>
       <Form.Row>
-        <Col>
+        <Col xl={8} lg={7} md={6} sm={8}>
           <SearchBar />
+        </Col>
+        <Col xl={4} lg={5} md={6} sm={4}>
+          <TableColumnsPopover />
+          <SearchFiltersPopover />
         </Col>
       </Form.Row>
       <Form.Row className="mb-1">
