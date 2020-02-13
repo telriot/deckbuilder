@@ -53,6 +53,7 @@ const DecklistContextProvider = props => {
     rarity: true
   })
   const [validation, setValidation] = useState({})
+  const [buttonGroupValue, setButtonGroupValue] = useState(1)
 
   const URL = "https://api.scryfall.com/cards"
 
@@ -132,7 +133,8 @@ const DecklistContextProvider = props => {
           toughness: card.toughness ? card.toughness : "",
           colors: card.colors ? card.colors : "",
           rarity: card.rarity ? card.rarity : "",
-          flavor_text: card.flavor_text ? card.flavor_text : ""
+          flavor_text: card.flavor_text ? card.flavor_text : "",
+          color_identity: card.color_identity ? card.color_identity : ""
         }
       })
     )
@@ -411,7 +413,9 @@ const DecklistContextProvider = props => {
         adjacentPages,
         setAdjacentPages,
         validation,
-        setValidation
+        setValidation,
+        buttonGroupValue,
+        setButtonGroupValue
       }}
     >
       {props.children}
