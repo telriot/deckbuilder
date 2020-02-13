@@ -68,8 +68,10 @@ const TwoLevelPieChart = props => {
             display: "flex",
             justifyContent: "center",
             alignContent: "center",
+            textAlign: "center",
             padding: "5px 5px 0px 5px",
-            backgroundColor: "#fff"
+            backgroundColor: "#fff",
+            border: "1px solid #E5E5E5"
           }}
           content={<CustomTooltip />}
         />

@@ -10,7 +10,7 @@ const CardDataSpan = props => {
 
   return (
     <OverlayTrigger
-      placement="right"
+      placement="auto"
       overlay={
         <Popover id="card-popover">
           <Popover.Content>

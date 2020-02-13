@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from "react"
 import { DecklistContext } from "../contexts/DecklistContext"
-import { Form, Col } from "react-bootstrap"
+import { Form, Col, Container } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 import SaveButtonToggler from "./DeckBuilder/SaveButtonToggler"
@@ -71,16 +71,11 @@ const DeckForm = () => {
 
   return (
     <Fragment>
-      <Form.Row className="align-items-center mb-1">
-        <Col xs={4} lg>
-          <h3 className="m-0">Decklist</h3>
-        </Col>
-        <Col xs={8} lg>
-          <SaveButtonToggler />
-        </Col>
-      </Form.Row>
       <DeckDataForm />
       <Decklist />
+      <Container fluid className="px-0 my-2 justify-content-right">
+        <SaveButtonToggler />
+      </Container>
     </Fragment>
   )
 }

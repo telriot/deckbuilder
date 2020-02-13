@@ -156,8 +156,33 @@ const DecklistContextProvider = props => {
   // drag and drop handlers
   const resultsTableDragStart = e => {
     e.persist()
+    console.log(e)
     let draggedCardName = e.target.dataset.name
     e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
+    const image = new Image()
+    console.log(e.target.dataset.dragimg)
+    image.src = e.target.dataset.dragimg
+
+    let canvas = (
+      <canvas
+        id="canvas"
+        width="150"
+        height="50"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          textAlign: "center",
+          padding: "5px 5px 0px 5px",
+          backgroundColor: "#fff",
+          border: "1px solid #E5E5E5"
+        }}
+      >
+        <p>{e.target.dataset.name}</p>
+      </canvas>
+    )
+
+    e.dataTransfer.setDragImage(image, 0, 0)
   }
 
   const onDragStart = e => {

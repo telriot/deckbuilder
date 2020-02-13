@@ -27,10 +27,24 @@ const ResultsTable = () => {
   }, [cards, activePage, activeTab, visibleColumns])
 
   //add cards to deck after double click on found cards
-  const handleResultsTableDblClick = (index, tab) => {
+  const handleResultsTableDblClick = (index, tab, e) => {
+    e.persist()
+    console.log(e)
     if (tab === "#side") {
-      setSideboard(previousDeck => [...previousDeck, cards[index]])
-    } else setMainDeck(previousDeck => [...previousDeck, cards[index]])
+      if (e.shiftKey === true) {
+        for (let i = 0; i < 4; i++) {
+          setSideboard(previousDeck => [...previousDeck, cards[index]])
+        }
+      } else {
+        setSideboard(previousDeck => [...previousDeck, cards[index]])
+      }
+    } else if (e.shiftKey === true) {
+      for (let i = 0; i < 4; i++) {
+        setMainDeck(previousDeck => [...previousDeck, cards[index]])
+      }
+    } else {
+      setMainDeck(previousDeck => [...previousDeck, cards[index]])
+    }
   }
   // Switch statements for content rendering
   const raritySwitch = rarity => {
@@ -57,19 +71,25 @@ const ResultsTable = () => {
     return (
       <tbody style={{ fontSize: "0.75rem" }} key={`${index}tbody`}>
         <tr
-          onDoubleClick={() => handleResultsTableDblClick(index, activeTab)}
+          onDoubleClick={e => handleResultsTableDblClick(index, activeTab, e)}
           data-origin="search"
           data-name={name}
+          data-dragimg={image_small}
           key={`${index}tr`}
           onDragStart={e => resultsTableDragStart(e)}
           draggable
         >
           <OverlayTrigger
-            placement="right"
+            placement="auto"
             overlay={
               <Popover id="card-popover">
                 <Popover.Content>
                   <Image src={image_small}></Image>
+                  <div style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                    <span style={{ display: "inline-block" }}>
+                      Shift + dblclick to add 4
+                    </span>
+                  </div>
                 </Popover.Content>
               </Popover>
             }

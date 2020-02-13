@@ -1,9 +1,9 @@
-import React, { Fragment, useContext } from "react"
+import React, { useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import BasicBarChart from "./StatsTab/BasicBarChart"
 import TwoLevelPieChart from "./StatsTab/TwoLevelPieChart"
 import ButtonGroup from "./StatsTab/ButtonGroup"
-import { Card, Container, Row, Col } from "react-bootstrap"
+import { Card, Container } from "react-bootstrap"
 
 const StatsTab = () => {
   const { mainDeck, buttonGroupValue } = useContext(DecklistContext)
@@ -177,7 +177,7 @@ const StatsTab = () => {
         black++
         red++
         green++
-        break
+        continue
       }
       if (land.oracle_text.includes("a basic land card")) {
         white++
@@ -186,7 +186,7 @@ const StatsTab = () => {
         red++
         green++
         colorless++
-        break
+        continue
       }
       if (
         land.oracle_text.includes("{W}") ||
