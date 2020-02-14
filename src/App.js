@@ -10,6 +10,7 @@ import DeckEdit from "./components/DeckEdit"
 import UserProfile from "./components/UserProfile"
 import UserEdit from "./components/UserEdit"
 import { AuthContext } from "./contexts/AuthContext"
+import DecklistContextProvider from "./contexts/DecklistContext"
 import axios from "axios"
 
 const App = () => {
@@ -47,13 +48,19 @@ const App = () => {
           <Index />
         </Route>
         <Route exact path="/build">
-          <DeckBuilder />
+          <DecklistContextProvider>
+            <DeckBuilder />
+          </DecklistContextProvider>
         </Route>
         <Route exact path="/decks/:id">
-          <DeckShow />
+          <DecklistContextProvider>
+            <DeckShow />
+          </DecklistContextProvider>
         </Route>
         <Route exact path="/decks/:id/edit">
-          <DeckEdit />
+          <DecklistContextProvider>
+            <DeckEdit />{" "}
+          </DecklistContextProvider>
         </Route>
         <Route exact path="/users/:id">
           <UserProfile />

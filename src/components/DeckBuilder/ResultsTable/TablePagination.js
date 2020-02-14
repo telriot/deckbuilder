@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { Pagination } from "react-bootstrap"
 
@@ -18,6 +18,8 @@ const TablePagination = () => {
   let active = activePage
   let items = []
   let paginationLength = Math.ceil(cards.length / tableLength)
+
+  //create pagination items
   const createPagination = () => {
     if (resultsInfo)
       for (let number = 1; number <= paginationLength; number++) {
@@ -36,6 +38,7 @@ const TablePagination = () => {
 
   createPagination()
 
+  //click handlers
   const handlePaginationClick = e => {
     e.persist()
     setActivePage(parseInt(e.target.dataset.index))
@@ -58,37 +61,33 @@ const TablePagination = () => {
     setActivePage(1)
   }
 
-  const paginationBasic = (
-    <div>
-      <Pagination size="sm">
-        {currentServerPage > 1 && (
-          <Pagination.First
-            onClick={e => handleServerPaginationClick(e, "prev")}
-          />
-        )}
-        {active > 1 && (
-          <Pagination.Prev
-            onClick={e => handlePaginationDirectionClick(e, "prev")}
-          />
-        )}
+  return (
+    <Pagination size="sm">
+      {currentServerPage > 1 && (
+        <Pagination.First
+          onClick={e => handleServerPaginationClick(e, "prev")}
+        />
+      )}
+      {active > 1 && (
+        <Pagination.Prev
+          onClick={e => handlePaginationDirectionClick(e, "prev")}
+        />
+      )}
 
-        {cards.length / tableLength > 1 && items}
-        {active < paginationLength && (
-          <Pagination.Next
-            onClick={e => handlePaginationDirectionClick(e, "next")}
-          />
-        )}
+      {cards.length / tableLength > 1 && items}
+      {active < paginationLength && (
+        <Pagination.Next
+          onClick={e => handlePaginationDirectionClick(e, "next")}
+        />
+      )}
 
-        {resultsInfo.data && resultsInfo.data.has_more && (
-          <Pagination.Last
-            onClick={e => handleServerPaginationClick(e, "next")}
-          />
-        )}
-      </Pagination>
-    </div>
+      {resultsInfo.data && resultsInfo.data.has_more && (
+        <Pagination.Last
+          onClick={e => handleServerPaginationClick(e, "next")}
+        />
+      )}
+    </Pagination>
   )
-
-  return paginationBasic
 }
 
 export default TablePagination

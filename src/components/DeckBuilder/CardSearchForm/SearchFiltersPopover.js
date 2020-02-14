@@ -48,12 +48,12 @@ const SearchFiltersPopover = () => {
     </Popover>
   )
 
-  const Example = () => (
+  const SearchFiltersOverlay = () => (
     <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
       <Button className="btn-sm float-right my-1 ml-1">Filters</Button>
     </OverlayTrigger>
   )
-  return <Example />
+  return <SearchFiltersOverlay />
 }
 
 export default SearchFiltersPopover

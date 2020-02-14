@@ -125,7 +125,7 @@ const DecklistContextProvider = props => {
           image_small: card.image_uris ? card.image_uris.small : "",
           image_border_crop: card.image_uris ? card.image_uris.border_crop : "",
           mana_cost: card.mana_cost ? card.mana_cost : "",
-          cmc: card.cmc ? card.cmc : "",
+          cmc: card.cmc ? card.cmc : "0",
           type_line: card.type_line ? card.type_line : "",
           normalized_type: card.type_line ? normalizeType(card.type_line) : "",
           oracle_text: card.oracle_text ? card.oracle_text : "",
@@ -156,38 +156,16 @@ const DecklistContextProvider = props => {
   // drag and drop handlers
   const resultsTableDragStart = e => {
     e.persist()
-    console.log(e)
+
     let draggedCardName = e.target.dataset.name
     e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
     const image = new Image()
-    console.log(e.target.dataset.dragimg)
     image.src = e.target.dataset.dragimg
-
-    let canvas = (
-      <canvas
-        id="canvas"
-        width="150"
-        height="50"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignContent: "center",
-          textAlign: "center",
-          padding: "5px 5px 0px 5px",
-          backgroundColor: "#fff",
-          border: "1px solid #E5E5E5"
-        }}
-      >
-        <p>{e.target.dataset.name}</p>
-      </canvas>
-    )
-
     e.dataTransfer.setDragImage(image, 0, 0)
   }
 
   const onDragStart = e => {
     e.persist()
-    console.log("dragstart", e)
     e.dataTransfer.setData("id", [
       e.target.dataset.name,
       e.target.dataset.origin

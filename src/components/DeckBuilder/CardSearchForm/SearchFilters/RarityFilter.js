@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { DecklistContext } from "../../../contexts/DecklistContext"
+import { DecklistContext } from "../../../../contexts/DecklistContext"
 import { Form } from "react-bootstrap"
 
 const RarityFilter = () => {

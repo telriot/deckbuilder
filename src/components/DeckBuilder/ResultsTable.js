@@ -1,8 +1,9 @@
 import React, { Fragment, useContext, useEffect } from "react"
-
 import { DecklistContext } from "../../contexts/DecklistContext"
-import { Table, Popover, OverlayTrigger, Image } from "react-bootstrap"
+import { Table } from "react-bootstrap"
 import TablePagination from "./ResultsTable/TablePagination"
+import LoadingOverlay from "./ResultsTable/LoadingOverlay"
+import CardImagePopover from "./ResultsTable/CardImagePopover"
 
 const ResultsTable = () => {
   const {
@@ -21,31 +22,6 @@ const ResultsTable = () => {
     isLoading
   } = useContext(DecklistContext)
 
-  //create new tables on cards status change
-  useEffect(() => {
-    createTable(tableLength, activePage - 1)
-  }, [cards, activePage, activeTab, visibleColumns])
-
-  //add cards to deck after double click on found cards
-  const handleResultsTableDblClick = (index, tab, e) => {
-    e.persist()
-    console.log(e)
-    if (tab === "#side") {
-      if (e.shiftKey === true) {
-        for (let i = 0; i < 4; i++) {
-          setSideboard(previousDeck => [...previousDeck, cards[index]])
-        }
-      } else {
-        setSideboard(previousDeck => [...previousDeck, cards[index]])
-      }
-    } else if (e.shiftKey === true) {
-      for (let i = 0; i < 4; i++) {
-        setMainDeck(previousDeck => [...previousDeck, cards[index]])
-      }
-    } else {
-      setMainDeck(previousDeck => [...previousDeck, cards[index]])
-    }
-  }
   // Switch statements for content rendering
   const raritySwitch = rarity => {
     switch (rarity) {
@@ -62,8 +38,32 @@ const ResultsTable = () => {
     }
   }
 
-  // Actual contents of the table
+  //create new tables on cards status change
+  useEffect(() => {
+    createTable(tableLength, activePage - 1)
+  }, [cards, activePage, activeTab, visibleColumns])
 
+  //add cards to deck after double click on found cards
+  const handleResultsTableDblClick = (index, tab, e) => {
+    e.persist()
+    if (tab === "#side") {
+      if (e.shiftKey === true) {
+        for (let i = 0; i < 4; i++) {
+          setSideboard(previousDeck => [...previousDeck, cards[index]])
+        }
+      } else {
+        setSideboard(previousDeck => [...previousDeck, cards[index]])
+      }
+    } else if (e.shiftKey === true) {
+      for (let i = 0; i < 4; i++) {
+        setMainDeck(previousDeck => [...previousDeck, cards[index]])
+      }
+    } else {
+      setMainDeck(previousDeck => [...previousDeck, cards[index]])
+    }
+  }
+
+  // Actual content lines for the table
   const tableContents = index => {
     const { name, mana_cost, type_line, cmc, rarity, image_small } = cards[
       index
@@ -79,25 +79,8 @@ const ResultsTable = () => {
           onDragStart={e => resultsTableDragStart(e)}
           draggable
         >
-          <OverlayTrigger
-            placement="auto"
-            overlay={
-              <Popover id="card-popover">
-                <Popover.Content>
-                  <Image src={image_small}></Image>
-                  <div style={{ fontSize: "0.7rem", textAlign: "center" }}>
-                    <span style={{ display: "inline-block" }}>
-                      Shift + dblclick to add 4
-                    </span>
-                  </div>
-                </Popover.Content>
-              </Popover>
-            }
-          >
-            <td className="py-0" key={`${index}name`}>
-              {name}
-            </td>
-          </OverlayTrigger>
+          <CardImagePopover index={index} image={image_small} name={name} />
+
           {visibleColumns.cost && (
             <td className="py-0" key={`${index}mana_cost`}>
               {mana_cost ? mana_cost : ""}
@@ -122,7 +105,8 @@ const ResultsTable = () => {
       </tbody>
     )
   }
-  //display found cards in a table, num = items shown
+
+  //display found cards in table, num = items shown
   function createTable(num, page) {
     let tableData = []
     // if we have search results
@@ -135,6 +119,8 @@ const ResultsTable = () => {
       setDisplayList(tableData)
     }
   }
+
+  // handle the table line rendering order
   const handleTableOrder = e => {
     e.persist()
     const name = e.target.dataset.name
@@ -153,6 +139,7 @@ const ResultsTable = () => {
     })
   }
 
+  //create results table structure
   const resultsTable = (
     <div
       style={{
@@ -162,26 +149,7 @@ const ResultsTable = () => {
         marginBottom: "8px"
       }}
     >
-      {isLoading && (
-        <div
-          style={{
-            display: "block",
-            backgroundColor: "rgba(168, 168, 168, 0.5)",
-            position: "absolute",
-            textAlign: "center",
-            top: "200px",
-            left: "30%",
-            width: "200px",
-            height: "50px",
-            marginTop: "-25px",
-            marginBottom: "-100px",
-            padding: "12px",
-            border: "none"
-          }}
-        >
-          <p>Loading</p>
-        </div>
-      )}
+      {isLoading && <LoadingOverlay />}
 
       <Table size="sm" hover responsive="sm">
         <thead style={{ backgroundColor: "#F7F7F7", fontSize: "0.85rem" }}>
@@ -234,7 +202,6 @@ const ResultsTable = () => {
   return (
     <Fragment>
       {resultsTable}
-
       <TablePagination />
     </Fragment>
   )

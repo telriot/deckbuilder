@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { DecklistContext } from "../../../contexts/DecklistContext"
+import { DecklistContext } from "../../../../contexts/DecklistContext"
 import { Form, Row } from "react-bootstrap"
 
 const ColorFilter = () => {

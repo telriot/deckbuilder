@@ -1,19 +1,20 @@
 import React, { useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
+import { Card, Container } from "react-bootstrap"
 import BasicBarChart from "./StatsTab/BasicBarChart"
 import TwoLevelPieChart from "./StatsTab/TwoLevelPieChart"
 import ButtonGroup from "./StatsTab/ButtonGroup"
-import { Card, Container } from "react-bootstrap"
 
 const StatsTab = () => {
   const { mainDeck, buttonGroupValue } = useContext(DecklistContext)
 
+  //Filter cards in deck by normalized type
   const filterByType = (deck, type) => {
     return deck.filter(obj => {
       return obj.normalized_type === type
     })
   }
-
+  //Create deck data array for card types
   const typesData = deck => {
     let lands = 0
     let creatures = 0
@@ -25,7 +26,7 @@ const StatsTab = () => {
     let others = 0
     let dataArray = []
     let total = 0
-    console.log(total)
+
     for (let card of deck) {
       if (card.normalized_type === "Land") {
         lands++
@@ -46,6 +47,7 @@ const StatsTab = () => {
         others++
       }
     }
+
     total =
       lands +
       creatures +
@@ -107,7 +109,7 @@ const StatsTab = () => {
     planeswalkers !== 0 &&
       dataArray.push({
         label: "Planeswalkers",
-        type: "Planeswalkers",
+        type: "Planeswalker",
         copies: planeswalkers,
         fill: "#B144F6",
         percent: Math.floor((planeswalkers * 100) / total)
@@ -120,46 +122,11 @@ const StatsTab = () => {
         fill: "#BAA8F0",
         percent: Math.floor((others * 100) / total)
       })
+
     return dataArray
   }
 
-  const globalCMCData = deck => {
-    let noLandsDeck = deck.filter(obj => obj.normalized_type !== "Land")
-    let cmcValues = []
-    let allCMC = []
-    let CMCData = []
-    for (let card of noLandsDeck) {
-      !cmcValues.includes(card.cmc ? card.cmc : 0) &&
-        cmcValues.push(card.cmc ? card.cmc : 0)
-      allCMC.push(card.cmc ? card.cmc : 0)
-    }
-    for (let value of cmcValues) {
-      CMCData.push({
-        cmc: `CMC${value.toString()}`,
-        cards: allCMC.filter(cmc => cmc === value).length
-      })
-    }
-    const sortedCMCData = CMCData.sort((a, b) => {
-      let cmcA = parseInt(a.cmc.slice(3))
-      let cmcB = parseInt(b.cmc.slice(3))
-      return cmcA - cmcB
-    })
-    return sortedCMCData
-  }
-
-  const avgCMC = deck => {
-    let noLandsDeck = deck.filter(obj => obj.normalized_type !== "Land")
-    let totalCMC = noLandsDeck.reduce((acc, obj) => {
-      return acc + obj.cmc
-    }, 0)
-    return noLandsDeck.length ? (totalCMC / noLandsDeck.length).toFixed(2) : 0
-  }
-
-  const nPerType = (deck, type) => {
-    let typeFilteredDeck = filterByType(deck, type)
-    return typeFilteredDeck ? typeFilteredDeck.length : 0
-  }
-
+  //Create deck data array for mana sources
   const manaSources = deck => {
     let white = 0
     let blue = 0
@@ -282,6 +249,7 @@ const StatsTab = () => {
     return dataArray
   }
 
+  //Create deck data array for mana symbols
   const manaSymbols = deck => {
     let white = 0
     let blue = 0
@@ -356,16 +324,45 @@ const StatsTab = () => {
     return dataArray
   }
 
-  const manaList = data => {
-    let symbolsList = []
-    for (let obj of data) {
-      symbolsList.push(
-        <p>
-          {obj["color"]}: {obj["symbols"]}
-        </p>
-      )
+  // create deck global cmc data object, sorted
+  const globalCMCData = deck => {
+    let noLandsDeck = deck.filter(obj => obj.normalized_type !== "Land")
+    let cmcValues = []
+    let allCMC = []
+    let CMCData = []
+    for (let card of noLandsDeck) {
+      !cmcValues.includes(card.cmc ? card.cmc : 0) &&
+        cmcValues.push(card.cmc ? card.cmc : 0)
+      allCMC.push(card.cmc ? card.cmc : 0)
     }
-    return symbolsList
+    for (let value of cmcValues) {
+      CMCData.push({
+        cmc: `CMC${value.toString()}`,
+        cards: allCMC.filter(cmc => cmc === value).length
+      })
+    }
+    const sortedCMCData = CMCData.sort((a, b) => {
+      let cmcA = parseInt(a.cmc.slice(3))
+      let cmcB = parseInt(b.cmc.slice(3))
+      return cmcA - cmcB
+    })
+    return sortedCMCData
+  }
+  // create avgCMC string
+  const avgCMC = deck => {
+    let noLandsDeck = deck.filter(obj => obj.normalized_type !== "Land")
+    console.log(noLandsDeck)
+    let totalCMC = arr => {
+      let total = 0
+      for (let card of arr) {
+        total = total + (parseInt(card.cmc) ? parseInt(card.cmc) : 0)
+      }
+      return total
+    }
+
+    return noLandsDeck.length
+      ? (totalCMC(noLandsDeck) / noLandsDeck.length).toFixed(2)
+      : 0
   }
 
   return (

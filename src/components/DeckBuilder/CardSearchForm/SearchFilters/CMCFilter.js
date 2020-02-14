@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { DecklistContext } from "../../../contexts/DecklistContext"
+import { DecklistContext } from "../../../../contexts/DecklistContext"
 import { DebounceInput } from "react-debounce-input"
 import { Form, Row } from "react-bootstrap"
 

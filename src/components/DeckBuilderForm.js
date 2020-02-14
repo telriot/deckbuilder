@@ -24,7 +24,6 @@ const DeckForm = () => {
     setDeckFormat
   } = useContext(DecklistContext)
   const params = useParams()
-  const [validation] = useState({})
 
   //keep decklists updated
   useEffect(() => {
