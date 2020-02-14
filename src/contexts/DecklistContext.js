@@ -213,7 +213,7 @@ const DecklistContextProvider = props => {
   }
 
   // handler for copies n. change
-  const handleCopiesChange = (e, obj, i, deck, setDeck) => {
+  /*const handleCopiesChange = (e, obj, i, deck, setDeck) => {
     let updatedDeck = deck.slice()
     let diff = Math.abs(parseInt(e.target.value) - obj[i].length)
     if (e.target.value < obj[i].length) {
@@ -227,6 +227,20 @@ const DecklistContextProvider = props => {
         updatedDeck.push(obj[i][0])
         setDeck(updatedDeck)
       }
+    }
+  }*/
+
+  // handler for copies n. change via arrows
+  const handleArrowCopiesChange = (e, obj, i, deck, setDeck, direction) => {
+    let updatedDeck = deck.slice()
+    let diff = Math.abs(parseInt(e.target.value) - obj[i].length)
+    if (direction !== "up") {
+      let index = updatedDeck.findIndex(el => el === obj[i][0])
+      updatedDeck.splice(index, 1)
+      setDeck(updatedDeck)
+    } else {
+      updatedDeck.push(obj[i][0])
+      setDeck(updatedDeck)
     }
   }
 
@@ -284,7 +298,6 @@ const DecklistContextProvider = props => {
               setDeck={setDeck}
             />
             {/* card data */}
-
             <CardDataSpan i={i} obj={obj} deck={deck} setDeck={setDeck} />
           </Col>
           <Col
@@ -390,7 +403,7 @@ const DecklistContextProvider = props => {
         setIndexList,
         deckInfo,
         setDeckInfo,
-        handleCopiesChange,
+        handleArrowCopiesChange,
         handleCardDoubleClick,
         onDragStart,
         resultsTableDragStart,

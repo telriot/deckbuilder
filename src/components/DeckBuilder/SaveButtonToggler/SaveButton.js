@@ -1,4 +1,6 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
+import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
+
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { AuthContext } from "../../../contexts/AuthContext"
 import { useHistory } from "react-router-dom"
@@ -16,18 +18,18 @@ const SaveButton = () => {
   } = useContext(DecklistContext)
   const { auth } = useContext(AuthContext)
   const history = useHistory()
-
+  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
   // Validate deck input
   const validateInput = () => {
     setValidation({})
     if (deckName.trim().length < 1) {
-      setValidation({ error: "Please enter a name" })
+      setValidation({ name: "Please enter a name" })
       return
     } else if (deckFormat.length < 1) {
-      setValidation({ error: "Please choose a format" })
+      setValidation({ format: "Please choose a format" })
       return
     } else if (mainDeck.length < 1) {
-      setValidation({ error: "Your deck is still empty" })
+      setValidation({ deck: "Your deck is still empty" })
       return
     }
   }
@@ -60,9 +62,14 @@ const SaveButton = () => {
         console.log(error)
       })
   }
-
+  const btnResponsive = () => {
+    if (isXS) {
+      return "btn-sm btn-block"
+    }
+    return "btn-sm"
+  }
   return (
-    <Button className="btn-sm" onClick={e => handleSave(e)}>
+    <Button className={btnResponsive()} onClick={e => handleSave(e)}>
       Save
     </Button>
   )

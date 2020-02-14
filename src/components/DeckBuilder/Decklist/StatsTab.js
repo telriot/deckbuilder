@@ -35,7 +35,6 @@ const StatsTab = () => {
       } else if (card.normalized_type === "Instant") {
         instants++
       } else if (card.normalized_type === "Sorcery") {
-        console.log("sorcery!")
         sorceries++
       } else if (card.normalized_type === "Enchantment") {
         enchantments++
@@ -351,7 +350,6 @@ const StatsTab = () => {
   // create avgCMC string
   const avgCMC = deck => {
     let noLandsDeck = deck.filter(obj => obj.normalized_type !== "Land")
-    console.log(noLandsDeck)
     let totalCMC = arr => {
       let total = 0
       for (let card of arr) {

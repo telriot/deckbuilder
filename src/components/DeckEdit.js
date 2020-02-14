@@ -3,12 +3,14 @@ import { DecklistContext } from "../contexts/DecklistContext"
 import DeckBuilderSearch from "./DeckBuilderSearch"
 import DeckBuilderForm from "./DeckBuilderForm"
 import { useParams } from "react-router-dom"
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Alert } from "react-bootstrap"
 import axios from "axios"
 
 const DeckEdit = () => {
   let params = useParams()
-  const { setIsLoading, setDeckInfo } = useContext(DecklistContext)
+  const { setIsLoading, setDeckInfo, validation, setValidation } = useContext(
+    DecklistContext
+  )
 
   useEffect(() => {
     showDeck()
@@ -29,11 +31,16 @@ const DeckEdit = () => {
 
   return (
     <Container className="my-3">
+      {validation.error && (
+        <Alert variant="danger" onClose={() => setValidation("")} dismissible>
+          {validation.error}
+        </Alert>
+      )}
       <Row>
-        <Col>
+        <Col md>
           <DeckBuilderSearch />
         </Col>
-        <Col>
+        <Col md>
           <DeckBuilderForm />
         </Col>
       </Row>

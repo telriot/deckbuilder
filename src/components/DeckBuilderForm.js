@@ -1,6 +1,8 @@
 import React, { Fragment, useContext, useEffect, useState } from "react"
 import { DecklistContext } from "../contexts/DecklistContext"
-import { Form, Col, Container } from "react-bootstrap"
+import { WindowSizeContext } from "../contexts/WindowSizeContext"
+
+import { Container } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 import SaveButtonToggler from "./DeckBuilder/SaveButtonToggler"
@@ -23,6 +25,7 @@ const DeckForm = () => {
     setDeckName,
     setDeckFormat
   } = useContext(DecklistContext)
+  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
   const params = useParams()
 
   //keep decklists updated
@@ -70,8 +73,9 @@ const DeckForm = () => {
 
   return (
     <Fragment>
-      <DeckDataForm />
+      {isMD && <DeckDataForm />}
       <Decklist />
+      {((!isXS && !isMD) || isXS) && <DeckDataForm />}
       <Container fluid className="px-0 my-2 justify-content-right">
         <SaveButtonToggler />
       </Container>

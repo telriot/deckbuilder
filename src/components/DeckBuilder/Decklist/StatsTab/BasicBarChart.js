@@ -20,7 +20,7 @@ const BasicBarChart = props => {
         margin={{
           top: 20,
           right: 40,
-          left: 20,
+          left: -10,
           bottom: 10
         }}
       >

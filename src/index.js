@@ -5,14 +5,14 @@ import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 import { BrowserRouter as Router } from "react-router-dom"
 import AuthContextProvider from "./contexts/AuthContext"
-import StyleContextProvider from "./contexts/StyleContext"
+import WindowSizeContextProvider from "./contexts/WindowSizeContext"
 
 ReactDOM.render(
   <Router>
     <AuthContextProvider>
-      <StyleContextProvider>
+      <WindowSizeContextProvider>
         <App />
-      </StyleContextProvider>
+      </WindowSizeContextProvider>
     </AuthContextProvider>
   </Router>,
   document.getElementById("root")

@@ -15,6 +15,7 @@ const TableColumnsPopover = () => {
       }
     })
   }
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Content>

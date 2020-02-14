@@ -12,7 +12,7 @@ const CardImagePopover = props => {
             <Image src={image}></Image>
             <div style={{ fontSize: "0.7rem", textAlign: "center" }}>
               <span style={{ display: "inline-block" }}>
-                Shift + dblclick to add 4
+                Hold Shift to add 4
               </span>
             </div>
           </Popover.Content>

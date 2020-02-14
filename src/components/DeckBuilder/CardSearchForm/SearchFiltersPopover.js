@@ -15,6 +15,7 @@ const SearchFiltersPopover = () => {
       }
     })
   }
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Content>

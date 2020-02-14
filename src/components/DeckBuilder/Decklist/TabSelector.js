@@ -1,11 +1,13 @@
 import React, { useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { Nav } from "react-bootstrap"
+import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
 
 const TabSelector = () => {
   const { activeTab, setActiveTab, mainDeck, sideboard } = useContext(
     DecklistContext
   )
+  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
 
   const handleTabClick = e => {
     e.persist()
@@ -20,7 +22,7 @@ const TabSelector = () => {
           href="#main"
           onClick={e => handleTabClick(e)}
         >
-          Mainboard{" "}
+          {isXS || (isMD && !isLG && !isXL) ? "Main " : "Mainboard "}
           <span style={{ fontSize: "0.6rem" }}>
             ({mainDeck && mainDeck.length})
           </span>
@@ -32,7 +34,7 @@ const TabSelector = () => {
           href="#side"
           onClick={e => handleTabClick(e)}
         >
-          Sideboard{" "}
+          {isXS ? "Side " : "Sideboard "}
           <span style={{ fontSize: "0.6rem" }}>
             ({sideboard && sideboard.length})
           </span>
@@ -40,7 +42,7 @@ const TabSelector = () => {
       </Nav.Item>
       <Nav.Item>
         <Nav.Link href="#stats" onClick={e => handleTabClick(e)}>
-          Deck Stats{" "}
+          Stats
         </Nav.Link>
       </Nav.Item>
     </Nav>

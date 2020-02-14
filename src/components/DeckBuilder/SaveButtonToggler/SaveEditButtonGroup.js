@@ -1,28 +1,34 @@
 import React, { Fragment, useContext, useState } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
+import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
+
 import { useHistory, useParams } from "react-router-dom"
 import { Button } from "react-bootstrap"
 import axios from "axios"
 
 const SaveEditButtonGroup = () => {
-  const { mainDeck, sideboard, deckName, deckFormat } = useContext(
-    DecklistContext
-  )
+  const {
+    mainDeck,
+    sideboard,
+    deckName,
+    deckFormat,
+    setValidation
+  } = useContext(DecklistContext)
+  const { isXS } = useContext(WindowSizeContext)
   const params = useParams()
   const history = useHistory()
-  const [setValidation] = useState({})
 
   // Validate deck input
   const validateInput = () => {
     setValidation({})
     if (deckName.trim().length < 1) {
-      setValidation({ name: "Please enter a name" })
+      setValidation({ error: "Please enter a name" })
       return
     } else if (deckFormat.length < 1) {
-      setValidation({ format: "Please choose a format" })
+      setValidation({ error: "Please choose a format" })
       return
     } else if (mainDeck.length < 1) {
-      setValidation({ deck: "Your deck is still empty" })
+      setValidation({ error: "Your deck is still empty" })
       return
     }
   }
@@ -58,12 +64,24 @@ const SaveEditButtonGroup = () => {
         console.log(error)
       })
   }
+  const btnGroupResponsive = () => {
+    if (isXS) {
+      return "btn-sm btn-block"
+    }
+    return "btn-sm m-1"
+  }
   return (
     <Fragment>
-      <Button className="btn-sm m-1" onClick={e => handleSaveChanges(e)}>
+      <Button
+        className={btnGroupResponsive()}
+        onClick={e => handleSaveChanges(e)}
+      >
         Save Changes
       </Button>
-      <Button className="btn-sm m-1" onClick={e => handleSaveChanges(e)}>
+      <Button
+        className={btnGroupResponsive()}
+        onClick={e => handleSaveChanges(e)}
+      >
         Save and Continue
       </Button>
     </Fragment>

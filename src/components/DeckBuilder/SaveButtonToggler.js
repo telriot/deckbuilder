@@ -1,22 +1,26 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useContext } from "react"
 import { useParams } from "react-router-dom"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
+
 import SaveButton from "./SaveButtonToggler/SaveButton"
 import SaveEditButtonGroup from "./SaveButtonToggler/SaveEditButtonGroup"
 
 const SaveButtonToggler = () => {
   const params = useParams()
+  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
+
+  const divResponsive = () => {
+    if (isXS) {
+      return ""
+    }
+    return "d-flex float-right"
+  }
 
   return (
     <Fragment>
-      {params.id === undefined ? (
-        <div className="float-right">
-          <SaveButton />
-        </div>
-      ) : (
-        <div className="d-flex float-right">
-          <SaveEditButtonGroup />
-        </div>
-      )}
+      <div className={divResponsive()}>
+        {params.id === undefined ? <SaveButton /> : <SaveEditButtonGroup />}
+      </div>
     </Fragment>
   )
 }

@@ -45,7 +45,9 @@ const App = () => {
           <AuthLogin />
         </Route>
         <Route exact path="/">
-          <Index />
+          <DecklistContextProvider>
+            <Index />
+          </DecklistContextProvider>
         </Route>
         <Route exact path="/build">
           <DecklistContextProvider>
