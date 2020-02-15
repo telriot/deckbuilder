@@ -94,6 +94,32 @@ const ResultsTable = () => {
     }
   }
 */
+
+  const manaCostFonts = string => {
+    const newString = string
+      .replace(/[{]/g, "ms-")
+      .replace(/[}]/g, " ")
+      .replace(/\/(?=[A-Z])/g, "")
+      .toLowerCase()
+      .split(" ")
+      .map((string, index) => {
+        return (
+          string &&
+          (string === "//" ? (
+            " // "
+          ) : (
+            <i
+              key={`manaCost${index}`}
+              className={`ms ${string} ms-cost ms-shadow`}
+              style={{ textAlign: "center", fontSize: "0.65rem" }}
+            ></i>
+          ))
+        )
+      })
+
+    return newString
+    console.log(newString)
+  }
   // Actual content lines for the table
   const tableContents = index => {
     const { name, mana_cost, type_line, cmc, rarity, image_small } = cards[
@@ -113,7 +139,7 @@ const ResultsTable = () => {
 
           {visibleColumns.cost && (
             <td className="py-0" key={`${index}mana_cost`}>
-              {mana_cost ? mana_cost : ""}
+              {mana_cost ? manaCostFonts(mana_cost) : ""}
             </td>
           )}
           {visibleColumns.type && (

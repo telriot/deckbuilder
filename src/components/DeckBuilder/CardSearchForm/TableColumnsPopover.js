@@ -7,7 +7,6 @@ const TableColumnsPopover = () => {
 
   const onCheckboxChange = e => {
     e.persist()
-    console.log("change")
     setVisibleColumns(prevState => {
       return {
         ...prevState,

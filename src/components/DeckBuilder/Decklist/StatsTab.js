@@ -261,12 +261,12 @@ const StatsTab = () => {
     let dataArray = []
 
     for (let card of deck) {
-      white = white + Array.from(card.mana_cost.matchAll("{W}")).length
-      blue = blue + Array.from(card.mana_cost.matchAll("{U}")).length
-      black = black + Array.from(card.mana_cost.matchAll("{B}")).length
-      red = red + Array.from(card.mana_cost.matchAll("{R}")).length
-      green = green + Array.from(card.mana_cost.matchAll("{G}")).length
-      colorless = colorless + Array.from(card.mana_cost.matchAll("{C}")).length
+      white = white + Array.from(card.mana_cost.matchAll("W}")).length
+      blue = blue + Array.from(card.mana_cost.matchAll("U}")).length
+      black = black + Array.from(card.mana_cost.matchAll("B}")).length
+      red = red + Array.from(card.mana_cost.matchAll("R}")).length
+      green = green + Array.from(card.mana_cost.matchAll("G}")).length
+      colorless = colorless + Array.from(card.mana_cost.matchAll("C}")).length
     }
 
     total = white + blue + black + red + green + colorless

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react"
+import React, { createContext, useState, useEffect } from "react"
 import { Form, Col } from "react-bootstrap"
 import CardCopiesController from "../components/DeckBuilder/DeckDataForm/CardCopiesController"
 import CardDataSpan from "../components/DeckBuilder/DeckDataForm/CardDataSpan"
@@ -142,6 +142,21 @@ const DecklistContextProvider = props => {
     !url && setCurrentServerPage(1)
     setIsLoading(false)
   }
+
+  //keep the deck objects updated
+  useEffect(() => {
+    let mainDeckCopy = mainDeck.slice()
+    let copyToObj = groupByName(mainDeckCopy)
+    setDeckObj(copyToObj)
+    return
+  }, [mainDeck])
+
+  useEffect(() => {
+    let sideboardCopy = sideboard.slice()
+    let sideCopyToObj = groupByName(sideboardCopy)
+    setSideObj(sideCopyToObj)
+    return
+  }, [sideboard])
 
   //generic object grouping by key values
   const groupBy = key => array =>
