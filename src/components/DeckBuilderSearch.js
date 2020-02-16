@@ -32,7 +32,6 @@ const SearchForm = () => {
   return (
     <Fragment>
       <CardSearchForm />
-
       <ResultsTable />
     </Fragment>
   )

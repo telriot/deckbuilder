@@ -1,16 +1,14 @@
 import React, { useContext, useEffect } from "react"
-import SearchBar from "./CardSearchForm/SearchBar"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
+import { DecklistContext } from "../../contexts/DecklistContext"
 import { Form, Col } from "react-bootstrap"
+import SearchBar from "./CardSearchForm/SearchBar"
 import TableColumnsPopover from "../DeckBuilder/CardSearchForm/TableColumnsPopover"
 import SearchFiltersPopover from "../DeckBuilder/CardSearchForm/SearchFiltersPopover"
 import SearchFilters from "./CardSearchForm/SearchFilters"
-import { WindowSizeContext } from "../../contexts/WindowSizeContext"
-import { DecklistContext } from "../../contexts/DecklistContext"
 
 const CardSearchForm = () => {
-  const { isXL, isLG, isMD, isSM, isXS, dimensions } = useContext(
-    WindowSizeContext
-  )
+  const { isSM, isXS, dimensions } = useContext(WindowSizeContext)
   const { setVisibleColumns, setSearchFilters } = useContext(DecklistContext)
 
   useEffect(() => {

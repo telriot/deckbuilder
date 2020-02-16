@@ -7,7 +7,7 @@ const LoadingOverlay = props => {
     {
       return {
         display: "block",
-        backgroundColor: "rgba(168, 168, 168, 0.5)",
+        backgroundColor: "rgba(168, 168, 168, 0.8)",
         position: "absolute",
         textAlign: "center",
         top: "75px",
@@ -17,31 +17,32 @@ const LoadingOverlay = props => {
         marginTop: "-25px",
         marginBottom: "-100px",
         padding: "4px",
-        border: "none"
+        border: "none",
+        zIndex: 9
+      }
+    }
+  }
+  const styleSM = () => {
+    {
+      return {
+        display: "block",
+        backgroundColor: "rgba(168, 168, 168, 0.8)",
+        position: "absolute",
+        textAlign: "center",
+        top: "170px",
+        left: "30%",
+        width: "200px",
+        height: "50px",
+        marginTop: "-25px",
+        marginBottom: "-100px",
+        padding: "12px",
+        border: "none",
+        zIndex: 9
       }
     }
   }
   return (
-    <div
-      style={
-        size === "small"
-          ? styleXS()
-          : {
-              display: "block",
-              backgroundColor: "rgba(168, 168, 168, 0.5)",
-              position: "absolute",
-              textAlign: "center",
-              top: "200px",
-              left: "30%",
-              width: "200px",
-              height: "50px",
-              marginTop: "-25px",
-              marginBottom: "-100px",
-              padding: "12px",
-              border: "none"
-            }
-      }
-    >
+    <div style={size === "small" ? styleXS() : styleSM()}>
       <p>Loading</p>
     </div>
   )

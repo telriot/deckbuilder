@@ -7,19 +7,20 @@ const TabSelector = () => {
   const { activeTab, setActiveTab, mainDeck, sideboard } = useContext(
     DecklistContext
   )
-  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
+  const { isXL, isLG, isMD, isXS } = useContext(WindowSizeContext)
 
   const handleTabClick = e => {
     e.persist()
-    setActiveTab(e.target.hash)
+    setActiveTab(e.target.dataset.rbEventKey)
   }
 
   return (
-    <Nav variant="tabs" defaultActiveKey={activeTab}>
+    <Nav variant="tabs" activeKey={activeTab}>
       <Nav.Item>
         <Nav.Link
           data-origin="main"
-          href="#main"
+          eventKey="#main"
+          href=""
           onClick={e => handleTabClick(e)}
         >
           {isXS || (isMD && !isLG && !isXL) ? "Main " : "Mainboard "}
@@ -31,7 +32,8 @@ const TabSelector = () => {
       <Nav.Item>
         <Nav.Link
           data-origin="side"
-          href="#side"
+          eventKey="#side"
+          href=""
           onClick={e => handleTabClick(e)}
         >
           {isXS ? "Side " : "Sideboard "}
@@ -41,7 +43,12 @@ const TabSelector = () => {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link href="#stats" onClick={e => handleTabClick(e)}>
+        <Nav.Link
+          href=""
+          data-origin="stats"
+          eventKey="#stats"
+          onClick={e => handleTabClick(e)}
+        >
           Stats
         </Nav.Link>
       </Nav.Item>

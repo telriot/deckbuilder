@@ -6,6 +6,7 @@ import { Container, Row, Col, Alert } from "react-bootstrap"
 
 function DeckBuilder() {
   const { validation, setValidation } = useContext(DecklistContext)
+
   return (
     <Container className="my-3">
       {validation.error && (

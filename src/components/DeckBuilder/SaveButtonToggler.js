@@ -1,13 +1,12 @@
 import React, { Fragment, useContext } from "react"
 import { useParams } from "react-router-dom"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
-
 import SaveButton from "./SaveButtonToggler/SaveButton"
 import SaveEditButtonGroup from "./SaveButtonToggler/SaveEditButtonGroup"
 
 const SaveButtonToggler = () => {
   const params = useParams()
-  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
+  const { isXS } = useContext(WindowSizeContext)
 
   const divResponsive = () => {
     if (isXS) {

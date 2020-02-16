@@ -25,7 +25,7 @@ const ResultsTable = () => {
     isLoading
   } = useContext(DecklistContext)
 
-  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
+  const { isMD, isSM, isXS } = useContext(WindowSizeContext)
 
   const plusIcon = (
     <FontAwesomeIcon
@@ -49,13 +49,41 @@ const ResultsTable = () => {
         return ""
     }
   }
+  // create manafont images
+  const manaCostFonts = string => {
+    const newString = string
+      .replace(/[{]/g, "ms-")
+      .replace(/[}]/g, " ")
+      .replace(/\/(?=[A-Z])/g, "")
+      .toLowerCase()
+      .split(" ")
+      .map((string, index) => {
+        return (
+          string &&
+          (string === "//" ? (
+            " // "
+          ) : (
+            <i
+              key={`manaCost${index}`}
+              className={`ms ${string} ms-cost ms-shadow`}
+              style={{
+                textAlign: "center",
+                fontSize: "0.62rem",
+                marginBottom: "0.125rem"
+              }}
+            ></i>
+          ))
+        )
+      })
+    return newString
+  }
 
   //create new tables on cards status change
   useEffect(() => {
     createTable(tableLength, activePage - 1)
   }, [cards, activePage, activeTab, visibleColumns])
 
-  //add cards to deck after double click on found cards
+  //add cards to deck after click on add button
   const handleResultsTableIconClick = (index, tab, e) => {
     if (tab === "#side") {
       if (e.shiftKey === true) {
@@ -74,52 +102,6 @@ const ResultsTable = () => {
     }
   }
 
-  /*const handleResultsTableDblClick = (index, tab, e) => {
-    e.persist()
-    console.log(e)
-    if (tab === "#side") {
-      if (e.shiftKey === true) {
-        for (let i = 0; i < 4; i++) {
-          setSideboard(previousDeck => [...previousDeck, cards[index]])
-        }
-      } else {
-        setSideboard(previousDeck => [...previousDeck, cards[index]])
-      }
-    } else if (e.shiftKey === true) {
-      for (let i = 0; i < 4; i++) {
-        setMainDeck(previousDeck => [...previousDeck, cards[index]])
-      }
-    } else {
-      setMainDeck(previousDeck => [...previousDeck, cards[index]])
-    }
-  }
-*/
-
-  const manaCostFonts = string => {
-    const newString = string
-      .replace(/[{]/g, "ms-")
-      .replace(/[}]/g, " ")
-      .replace(/\/(?=[A-Z])/g, "")
-      .toLowerCase()
-      .split(" ")
-      .map((string, index) => {
-        return (
-          string &&
-          (string === "//" ? (
-            " // "
-          ) : (
-            <i
-              key={`manaCost${index}`}
-              className={`ms ${string} ms-cost ms-shadow`}
-              style={{ textAlign: "center", fontSize: "0.65rem" }}
-            ></i>
-          ))
-        )
-      })
-
-    return newString
-    console.log(newString)
-  }
   // Actual content lines for the table
   const tableContents = index => {
     const { name, mana_cost, type_line, cmc, rarity, image_small } = cards[

@@ -1,13 +1,12 @@
-import React, { Fragment, useContext, useEffect, useState } from "react"
+import React, { Fragment, useContext, useEffect } from "react"
 import { DecklistContext } from "../contexts/DecklistContext"
 import { WindowSizeContext } from "../contexts/WindowSizeContext"
-
-import { Container } from "react-bootstrap"
 import { useParams } from "react-router-dom"
-import axios from "axios"
+import { Container } from "react-bootstrap"
 import SaveButtonToggler from "./DeckBuilder/SaveButtonToggler"
 import DeckDataForm from "./DeckBuilder/DeckDataForm"
 import Decklist from "./DeckBuilder/Decklist"
+import axios from "axios"
 
 const DeckForm = () => {
   const {
@@ -23,9 +22,10 @@ const DeckForm = () => {
     sideObj,
     setSideObj,
     setDeckName,
-    setDeckFormat
+    setDeckFormat,
+    setActiveTab
   } = useContext(DecklistContext)
-  const { isXL, isLG, isMD, isSM, isXS } = useContext(WindowSizeContext)
+  const { isMD, isXS } = useContext(WindowSizeContext)
   const params = useParams()
 
   //keep decklists updated
@@ -37,18 +37,6 @@ const DeckForm = () => {
     createList(sideboard, setSideboard, sideObj)
   }, [setSideObj])
 
-  // if params.id find deck to edit
-  async function showDeck() {
-    try {
-      const response = await axios.get(`/api/decks/${params.id}`)
-      await setDeckInfo(response.data)
-    } catch (error) {
-      if (axios.isCancel(error)) {
-      } else {
-        console.error(error.response)
-      }
-    }
-  }
   // if params.id update editable decklist
   useEffect(() => {
     if (params.id !== undefined) {
@@ -62,6 +50,19 @@ const DeckForm = () => {
     return setDeckInfo({})
   }, [])
 
+  // fetch a deck to edit ad update DeckInfo state
+  async function showDeck() {
+    try {
+      const response = await axios.get(`/api/decks/${params.id}`)
+      await setDeckInfo(response.data)
+    } catch (error) {
+      if (axios.isCancel(error)) {
+      } else {
+        console.error(error.response)
+      }
+    }
+  }
+
   useEffect(() => {
     if (params.id !== undefined && deckInfo.mainboard) {
       setDeckName(deckInfo.name)
@@ -69,7 +70,8 @@ const DeckForm = () => {
       setMainDeck(deckInfo.mainboard)
       setSideboard(deckInfo.sideboard)
     }
-  }, [deckInfo.mainboard && deckInfo.mainboard.length])
+    setActiveTab("#main")
+  }, [params])
 
   return (
     <Fragment>

@@ -3,14 +3,14 @@ import { DecklistContext } from "../../../contexts/DecklistContext"
 import { Card } from "react-bootstrap"
 
 const DeckTab = props => {
-  const { mainDeck, sideboard, createList, onDragOver, onDrop } = useContext(
-    DecklistContext
-  )
+  const { createList, onDragOver, onDrop } = useContext(DecklistContext)
   const { origin, deck, setDeck, obj } = props
 
   useEffect(() => {
+    console.log("effran")
     createList(deck, setDeck, obj)
-  }, [mainDeck, sideboard])
+  }, [deck])
+
   return (
     <Card.Body
       style={{ fontSize: "0.85rem" }}
