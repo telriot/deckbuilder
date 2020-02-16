@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, Fragment } from "react"
-import { Switch, Route, Link } from "react-router-dom"
+import React, { Fragment } from "react"
+import { Switch, Route } from "react-router-dom"
 import NavbarTop from "./components/NavbarTop"
 import AuthLogin from "./components/AuthLogin"
 import AuthSignup from "./components/AuthSignup"
@@ -9,31 +9,10 @@ import DeckShow from "./components/DeckShow"
 import DeckEdit from "./components/DeckEdit"
 import UserProfile from "./components/UserProfile"
 import UserEdit from "./components/UserEdit"
-import { AuthContext } from "./contexts/AuthContext"
 import DecklistContextProvider from "./contexts/DecklistContext"
-import axios from "axios"
+import SearchContextProvider from "./contexts/SearchContext"
 
 const App = () => {
-  const { auth, setAuth } = useContext(AuthContext)
-
-  useEffect(() => {
-    axios.get("/api/auth/").then(response => {
-      if (response.data.user) {
-        setAuth({
-          isAuthenticated: true,
-          authUser: response.data.username,
-          authUserId: response.data.id
-        })
-      } else {
-        setAuth({
-          isAuthenticated: false,
-          authUser: null,
-          authUserId: null
-        })
-      }
-    })
-  }, [])
-
   return (
     <Fragment>
       <NavbarTop />
@@ -51,7 +30,9 @@ const App = () => {
         </Route>
         <Route exact path="/build">
           <DecklistContextProvider>
-            <DeckBuilder />
+            <SearchContextProvider>
+              <DeckBuilder />
+            </SearchContextProvider>
           </DecklistContextProvider>
         </Route>
         <Route exact path="/decks/:id">
@@ -61,7 +42,9 @@ const App = () => {
         </Route>
         <Route exact path="/decks/:id/edit">
           <DecklistContextProvider>
-            <DeckEdit />{" "}
+            <SearchContextProvider>
+              <DeckEdit />
+            </SearchContextProvider>
           </DecklistContextProvider>
         </Route>
         <Route exact path="/users/:id">

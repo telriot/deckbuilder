@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react"
+import React, { Fragment, useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
 

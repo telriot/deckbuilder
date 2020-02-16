@@ -81,7 +81,7 @@ const ResultsTable = () => {
   //create new tables on cards status change
   useEffect(() => {
     createTable(tableLength, activePage - 1)
-  }, [cards, activePage, activeTab, visibleColumns])
+  }, [cards, activePage, activeTab, visibleColumns, tableLength])
 
   //add cards to deck after click on add button
   const handleResultsTableIconClick = (index, tab, e) => {

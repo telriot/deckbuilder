@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import { Form, Col } from "react-bootstrap"
 import CardCopiesController from "../components/DeckBuilder/DeckDataForm/CardCopiesController"
 import CardDataSpan from "../components/DeckBuilder/DeckDataForm/CardDataSpan"
@@ -33,7 +34,7 @@ const DecklistContextProvider = props => {
   const [indexList, setIndexList] = useState([])
   const [deckInfo, setDeckInfo] = useState({})
   const [activePage, setActivePage] = useState(1)
-  const [tableLength, setTableLength] = useState(35)
+  const [tableLength] = useState(35)
   const [currentServerPage, setCurrentServerPage] = useState(1)
   const [adjacentPages, setAdjacentPages] = useState({
     prev_page: "",
@@ -55,7 +56,66 @@ const DecklistContextProvider = props => {
   const [validation, setValidation] = useState({})
   const [buttonGroupValue, setButtonGroupValue] = useState(1)
 
+  let params = useParams()
+
   const URL = "https://api.scryfall.com/cards"
+
+  useEffect(() => {
+    async function showDeck() {
+      try {
+        setIsLoading(true)
+        const response = await axios.get(`/api/decks/${params.id}`)
+        const { mainboard, sideboard, name, format } = response.data
+        setDeckInfo(response.data)
+        if (mainboard) {
+          setDeckName(name)
+          setDeckFormat(format)
+          setMainDeck(mainboard)
+          setSideboard(sideboard)
+        }
+      } catch (error) {
+        if (axios.isCancel(error)) {
+        } else {
+          console.error(error.response)
+        }
+      }
+      setIsLoading(false)
+    }
+    if (params.id !== undefined) {
+      showDeck()
+    } else if (params.id === undefined) {
+      setMainDeck([])
+      setSideboard([])
+      setDeckName("")
+      setDeckFormat("")
+    }
+    setActiveTab("#main")
+    return setDeckInfo({})
+  }, [params.id])
+
+  useEffect(() => {
+    createList(mainDeck, setMainDeck, deckObj)
+  }, [mainDeck])
+
+  useEffect(() => {
+    createList(sideboard, setSideboard, sideObj)
+  }, [sideboard])
+
+  // Make a suitable search string for server
+  const searchString = `${userInput || "*"}${rarity ? "+r%3A" : ""}${rarity}${
+    type ? "+t%3A" : ""
+  }${type}${color ? "+c%3A" : ""}${color}${cmc ? "+cmc%3A" : ""}${cmc}${
+    resultsOrder.orderCriteria ? "+order%3A" : ""
+  }${resultsOrder.orderCriteria}${
+    resultsOrder.direction ? "+direction%3A" : ""
+  }${resultsOrder.direction}`
+
+  // If searchString, prompt request to server
+  useEffect(() => {
+    console.log("runCardSearch")
+    cardSearch(searchString)
+    return
+  }, [searchString])
 
   // card search scryfall api get request
   async function cardSearch(input, url) {
@@ -142,22 +202,6 @@ const DecklistContextProvider = props => {
     !url && setCurrentServerPage(1)
     setIsLoading(false)
   }
-
-  //keep the deck objects updated
-  useEffect(() => {
-    let mainDeckCopy = mainDeck.slice()
-    let copyToObj = groupByName(mainDeckCopy)
-    setDeckObj(copyToObj)
-    return
-  }, [mainDeck])
-
-  useEffect(() => {
-    let sideboardCopy = sideboard.slice()
-    let sideCopyToObj = groupByName(sideboardCopy)
-    setSideObj(sideCopyToObj)
-    return
-  }, [sideboard])
-
   //generic object grouping by key values
   const groupBy = key => array =>
     array.reduce((objectsByKeyValue, obj) => {
@@ -167,6 +211,23 @@ const DecklistContextProvider = props => {
     }, {})
   //group objects by name, returning a new object
   const groupByName = groupBy("name")
+
+  //keep the deck objects updated
+  useEffect(() => {
+    console.log("group")
+    let mainDeckCopy = mainDeck.slice()
+    let copyToObj = groupByName(mainDeckCopy)
+    setDeckObj(copyToObj)
+    return
+  }, [mainDeck])
+
+  useEffect(() => {
+    console.log("groupSide")
+    let sideboardCopy = sideboard.slice()
+    let sideCopyToObj = groupByName(sideboardCopy)
+    setSideObj(sideCopyToObj)
+    return
+  }, [sideboard])
 
   // drag and drop handlers
   const resultsTableDragStart = e => {
@@ -227,28 +288,9 @@ const DecklistContextProvider = props => {
     }
   }
 
-  // handler for copies n. change
-  /*const handleCopiesChange = (e, obj, i, deck, setDeck) => {
-    let updatedDeck = deck.slice()
-    let diff = Math.abs(parseInt(e.target.value) - obj[i].length)
-    if (e.target.value < obj[i].length) {
-      for (let j = 0; j < diff; j++) {
-        let index = updatedDeck.findIndex(el => el === obj[i][0])
-        updatedDeck.splice(index, 1)
-        setDeck(updatedDeck)
-      }
-    } else {
-      for (let j = 0; j < diff; j++) {
-        updatedDeck.push(obj[i][0])
-        setDeck(updatedDeck)
-      }
-    }
-  }*/
-
   // handler for copies n. change via arrows
   const handleArrowCopiesChange = (e, obj, i, deck, setDeck, direction) => {
     let updatedDeck = deck.slice()
-    let diff = Math.abs(parseInt(e.target.value) - obj[i].length)
     if (direction !== "up") {
       let index = updatedDeck.findIndex(el => el === obj[i][0])
       updatedDeck.splice(index, 1)

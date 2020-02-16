@@ -28,7 +28,7 @@ const Index = () => {
               <Card.Body>
                 <LinkContainer to={`/decks/${deck._id}`}>
                   <Card.Title>
-                    <a href="#">{deck.name}</a>
+                    <a href="">{deck.name}</a>
                   </Card.Title>
                 </LinkContainer>
 

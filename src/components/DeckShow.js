@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import React, { useContext } from "react"
 import { DecklistContext } from "../contexts/DecklistContext"
 import { AuthContext } from "../contexts/AuthContext"
 import { Container, Row, Col, Card } from "react-bootstrap"
@@ -7,30 +6,10 @@ import DeckContainer from "./DeckShow/DeckContainer"
 import CommentSection from "./DeckShow/CommentSection"
 import DeckHeader from "./DeckShow/DeckHeader"
 import DeckEditButtonGroup from "./DeckShow/DeckEditButtonGroup"
-import axios from "axios"
 
 const DeckShow = () => {
-  const { setIsLoading, deckInfo, setDeckInfo } = useContext(DecklistContext)
+  const { deckInfo } = useContext(DecklistContext)
   const { auth } = useContext(AuthContext)
-  let params = useParams()
-
-  useEffect(() => {
-    showDeck()
-  }, [])
-
-  async function showDeck() {
-    try {
-      setIsLoading(true)
-      const response = await axios.get(`/api/decks/${params.id}`)
-      setDeckInfo(response.data)
-    } catch (error) {
-      if (axios.isCancel(error)) {
-      } else {
-        console.error(error.response)
-      }
-    }
-    setIsLoading(false)
-  }
 
   return (
     <Container>

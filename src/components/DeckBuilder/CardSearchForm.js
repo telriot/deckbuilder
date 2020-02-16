@@ -8,7 +8,7 @@ import SearchFiltersPopover from "../DeckBuilder/CardSearchForm/SearchFiltersPop
 import SearchFilters from "./CardSearchForm/SearchFilters"
 
 const CardSearchForm = () => {
-  const { isSM, isXS, dimensions } = useContext(WindowSizeContext)
+  const { isSM, isXS } = useContext(WindowSizeContext)
   const { setVisibleColumns, setSearchFilters } = useContext(DecklistContext)
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const CardSearchForm = () => {
         cmc: true,
         rarity: true
       })
-  }, [dimensions])
+  }, [isSM, isXS])
 
   return (
     <Form>

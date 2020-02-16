@@ -1,6 +1,6 @@
-import React, { Fragment, useContext } from "react"
+import React, { useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
-import { Table, Popover, OverlayTrigger, Image } from "react-bootstrap"
+import { Popover, OverlayTrigger, Image } from "react-bootstrap"
 
 const CardDataSpan = props => {
   const { handleCardDoubleClick, mainDeck, onDragStart } = useContext(

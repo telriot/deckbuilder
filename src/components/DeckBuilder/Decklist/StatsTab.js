@@ -17,7 +17,6 @@ const StatsTab = () => {
 
   const noLandsDeck = deck => deck.filter(obj => obj.normalized_type !== "Land")
 
-  let cmcValues = []
   const calculateTotal = arr => {
     let result = 0
     for (let obj of arr) {

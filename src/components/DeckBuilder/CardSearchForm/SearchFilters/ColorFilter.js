@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { DecklistContext } from "../../../../contexts/DecklistContext"
-import { Form, Row } from "react-bootstrap"
+import { Form } from "react-bootstrap"
 
 const ColorFilter = () => {
   const { color, setColor } = useContext(DecklistContext)

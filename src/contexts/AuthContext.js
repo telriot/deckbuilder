@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react"
+import React, { createContext, useState, useEffect } from "react"
+import axios from "axios"
 
 export const AuthContext = createContext()
 
@@ -10,6 +11,24 @@ const AuthContextProvider = props => {
     email: "",
     password: ""
   })
+
+  useEffect(() => {
+    axios.get("/api/auth/").then(response => {
+      if (response.data.user) {
+        setAuth({
+          isAuthenticated: true,
+          authUser: response.data.username,
+          authUserId: response.data.id
+        })
+      } else {
+        setAuth({
+          isAuthenticated: false,
+          authUser: null,
+          authUserId: null
+        })
+      }
+    })
+  }, [])
 
   return (
     <AuthContext.Provider
