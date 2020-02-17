@@ -1,42 +1,31 @@
-import React, { useContext } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { Container, Col, Row } from "react-bootstrap"
 import { DecklistContext } from "../../contexts/DecklistContext"
+import { manaCostFonts } from "../../helpers/"
+import StatsTab from "../DeckBuilder/Decklist/StatsTab"
 
 const DeckContainer = () => {
   const { deckInfo, groupByName } = useContext(DecklistContext)
-
-  //Create type arrays
-  let creaturesShow = []
-  let spellsShow = []
-  let landsShow = []
-  let sideboardShow = []
+  const [showList, setShowList] = useState([])
 
   //Filter by type
   const filterByType = (array, type) => {
     let filteredArray = []
-
-    if (type) {
-      for (let card of array) {
-        if (
-          card.type_line
-            .toString()
-            .toLowerCase()
-            .includes(type)
-        ) {
+    if (!type) {
+      for (let card of array["sideboard"]) {
+        filteredArray.push(card)
+      }
+    } else if (type !== "Spell") {
+      for (let card of array["mainboard"]) {
+        if (card.normalized_type === type) {
           filteredArray.push(card)
         }
       }
     } else {
-      for (let card of array) {
+      for (let card of array["mainboard"]) {
         if (
-          card.type_line
-            .toString()
-            .toLowerCase()
-            .includes("creature") === false &&
-          card.type_line
-            .toString()
-            .toLowerCase()
-            .includes("land") === false
+          card.normalized_type === "Instant" ||
+          card.normalized_type === "Sorcery"
         ) {
           filteredArray.push(card)
         }
@@ -44,6 +33,7 @@ const DeckContainer = () => {
     }
     return filteredArray
   }
+
   //Translate deck obects to arrays
   const objToArray = obj => {
     return Object.entries(obj).map(array => {
@@ -53,10 +43,11 @@ const DeckContainer = () => {
         img: array[1][0].image_small,
         mana_cost: array[1][0].mana_cost,
         cmc: array[1][0].cmc,
-        type: array[1][0].type_line
+        type: array[1][0].normalized_type
       }
     })
   }
+
   //Sort cards in deck arrays
   const sort = array => {
     let nameSortedArray = array.sort((a, b) => {
@@ -79,59 +70,131 @@ const DeckContainer = () => {
     })
     return CMCSortedArray
   }
+
   //Create sorted card lists
   const createList = sortedList => {
-    let showList = []
+    let list = []
     for (let card of sortedList) {
-      showList.push(
-        <div key={`maindiv${card.cardname}`}>
-          <span>{card.copies} </span>
-          <a href="#">{card.cardname}</a>
-        </div>
-      )
+      list.push(card)
     }
-    return showList
-  }
-  //Execute if deck
-  if (deckInfo.mainboard) {
-    let filteredCreatures = filterByType(deckInfo.mainboard, "creature")
-    let creaturesObj = groupByName(filteredCreatures)
-    let creaturesArray = objToArray(creaturesObj)
-    let creaturesSorted = sort(creaturesArray)
-    creaturesShow = createList(creaturesSorted)
-    let filteredSpells = filterByType(deckInfo.mainboard, "")
-    let spellsObj = groupByName(filteredSpells)
-    let spellsArray = objToArray(spellsObj)
-    let spellsSorted = sort(spellsArray)
-    spellsShow = createList(spellsSorted)
-    let filteredLands = filterByType(deckInfo.mainboard, "land")
-    let landsObj = groupByName(filteredLands)
-    let landsArray = objToArray(landsObj)
-    let landsSorted = sort(landsArray)
-    landsShow = createList(landsSorted)
-    let sideObj = groupByName(deckInfo.sideboard)
-    let sideArray = objToArray(sideObj)
-    let sideSorted = sort(sideArray)
-    sideboardShow = createList(sideSorted)
+    return list
   }
 
-  return (
-    <Container fluid>
-      <Row>
-        <Col md>
-          <h5>Creatures</h5>
-          {creaturesShow}
-          <h5>Spells</h5>
-          {spellsShow}
+  //Execute if deck
+  let buildFinalList = () => {
+    let creaturesShow = { label: "Creatures", type: "Creature", list: [] }
+    let spellsShow = { label: "Spells", type: "Spell", list: [] }
+    let artifactsShow = { label: "Artifacts", type: "Artifact", list: [] }
+    let enchantmentsShow = {
+      label: "Enchantments",
+      type: "Enchantment",
+      list: []
+    }
+    let planeswalkersShow = {
+      label: "Planeswalkers",
+      type: "Planeswalker",
+      list: []
+    }
+    let landsShow = { label: "Lands", type: "Land", list: [] }
+    let sideboardShow = { label: "Sideboard", type: "", list: [] }
+
+    let typesArr = [
+      creaturesShow,
+      spellsShow,
+      artifactsShow,
+      enchantmentsShow,
+      planeswalkersShow,
+      landsShow,
+      sideboardShow
+    ]
+
+    if (deckInfo.mainboard) {
+      for (let arr of typesArr) {
+        arr.list = createList(
+          sort(objToArray(groupByName(filterByType(deckInfo, arr.type))))
+        )
+      }
+    }
+    return typesArr
+  }
+
+  const finalList = buildFinalList()
+
+  const deckRow = (card, arr) => {
+    return (
+      <Row
+        className="mr-2"
+        style={{ minWidth: "49%" }}
+        key={`row${arr ? arr.label : "side"}${card.cardname}`}
+      >
+        <Col
+          xs={1}
+          className="pr-0"
+          key={`copies${arr ? arr.label : "side"}${card.cardname}`}
+        >
+          {card.copies}
         </Col>
-        <Col md>
-          <h5>Lands</h5>
-          {landsShow}
-          <h5>Sideboard</h5>
-          {sideboardShow}
+
+        <Col
+          xs={9}
+          className="px-0"
+          key={`name${arr ? arr.label : "side"}${card.cardname}`}
+        >
+          <a href={card.img}>{card.cardname}</a>
+        </Col>
+
+        <Col
+          xs={2}
+          className="pl-0"
+          key={`cost${arr ? arr.label : "side"}${card.cardname}`}
+        >
+          {card.mana_cost ? manaCostFonts(card.mana_cost) : ""}
         </Col>
       </Row>
-    </Container>
+    )
+  }
+
+  const typeList = () => {
+    let display = []
+    for (let arr of finalList) {
+      if (arr.list && arr.list.length) {
+        display.push(
+          <Row key={`row${arr.label}`}>
+            <h6 className="my-1" key={`h6${arr.label}`}>{`${arr.label}`}</h6>
+          </Row>
+        )
+        for (let obj of arr.list) {
+          display.push(deckRow(obj, arr))
+        }
+      }
+    }
+    return display
+  }
+
+  useEffect(() => {
+    setShowList(typeList())
+  }, [deckInfo.mainboard])
+
+  return (
+    <Row>
+      <Col md={8}>
+        {" "}
+        <Container
+          style={{
+            maxHeight: `${showList.length * 0.57 + 6}rem`,
+            overflow: "auto",
+            fontSize: "0.8rem"
+          }}
+          fluid
+          className="d-flex flex-wrap flex-column"
+        >
+          {showList}
+        </Container>
+      </Col>
+      <Col md={4}>
+        <StatsTab />
+      </Col>
+    </Row>
   )
 }
 

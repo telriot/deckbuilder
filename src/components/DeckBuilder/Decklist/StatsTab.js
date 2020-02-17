@@ -100,10 +100,7 @@ const StatsTab = () => {
         othersData.count++
       }
     }
-
     let total = calculateTotal(typesDataArray)
-    console.log(total)
-
     return createDataArray(typesDataArray, total)
   }
 

@@ -10,7 +10,6 @@ import DeckEdit from "./components/DeckEdit"
 import UserProfile from "./components/UserProfile"
 import UserEdit from "./components/UserEdit"
 import DecklistContextProvider from "./contexts/DecklistContext"
-import SearchContextProvider from "./contexts/SearchContext"
 
 const App = () => {
   return (
@@ -30,9 +29,7 @@ const App = () => {
         </Route>
         <Route exact path="/build">
           <DecklistContextProvider>
-            <SearchContextProvider>
-              <DeckBuilder />
-            </SearchContextProvider>
+            <DeckBuilder />
           </DecklistContextProvider>
         </Route>
         <Route exact path="/decks/:id">
@@ -42,9 +39,7 @@ const App = () => {
         </Route>
         <Route exact path="/decks/:id/edit">
           <DecklistContextProvider>
-            <SearchContextProvider>
-              <DeckEdit />
-            </SearchContextProvider>
+            <DeckEdit />{" "}
           </DecklistContextProvider>
         </Route>
         <Route exact path="/users/:id">

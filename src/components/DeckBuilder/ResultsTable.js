@@ -7,6 +7,7 @@ import { Table } from "react-bootstrap"
 import TablePagination from "./ResultsTable/TablePagination"
 import LoadingOverlay from "./ResultsTable/LoadingOverlay"
 import CardImagePopover from "./ResultsTable/CardImagePopover"
+import { manaCostFonts } from "../../helpers/"
 
 const ResultsTable = () => {
   const {
@@ -48,34 +49,6 @@ const ResultsTable = () => {
       default:
         return ""
     }
-  }
-  // create manafont images
-  const manaCostFonts = string => {
-    const newString = string
-      .replace(/[{]/g, "ms-")
-      .replace(/[}]/g, " ")
-      .replace(/\/(?=[A-Z])/g, "")
-      .toLowerCase()
-      .split(" ")
-      .map((string, index) => {
-        return (
-          string &&
-          (string === "//" ? (
-            " // "
-          ) : (
-            <i
-              key={`manaCost${index}`}
-              className={`ms ${string} ms-cost ms-shadow`}
-              style={{
-                textAlign: "center",
-                fontSize: "0.62rem",
-                marginBottom: "0.125rem"
-              }}
-            ></i>
-          ))
-        )
-      })
-    return newString
   }
 
   //create new tables on cards status change

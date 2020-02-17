@@ -4,12 +4,15 @@ import { Form, Col } from "react-bootstrap"
 import CardCopiesController from "../components/DeckBuilder/DeckDataForm/CardCopiesController"
 import CardDataSpan from "../components/DeckBuilder/DeckDataForm/CardDataSpan"
 import ControllerButton from "../components/DeckBuilder/DeckDataForm/ControllerButton"
+import DecklistRow from "../components/DeckBuilder/Decklist/DecklistRow"
+
 import axios from "axios"
 
 export const DecklistContext = createContext()
 
 const DecklistContextProvider = props => {
   const [resultsInfo, setResultsInfo] = useState({})
+  const [deckInfo, setDeckInfo] = useState({})
   const [mainDeck, setMainDeck] = useState([])
   const [sideboard, setSideboard] = useState([])
   const [sideObj, setSideObj] = useState({})
@@ -32,7 +35,7 @@ const DecklistContextProvider = props => {
     direction: "asc"
   })
   const [indexList, setIndexList] = useState([])
-  const [deckInfo, setDeckInfo] = useState({})
+
   const [activePage, setActivePage] = useState(1)
   const [tableLength] = useState(35)
   const [currentServerPage, setCurrentServerPage] = useState(1)
@@ -214,7 +217,6 @@ const DecklistContextProvider = props => {
 
   //keep the deck objects updated
   useEffect(() => {
-    console.log("group")
     let mainDeckCopy = mainDeck.slice()
     let copyToObj = groupByName(mainDeckCopy)
     setDeckObj(copyToObj)
@@ -222,7 +224,6 @@ const DecklistContextProvider = props => {
   }, [mainDeck])
 
   useEffect(() => {
-    console.log("groupSide")
     let sideboardCopy = sideboard.slice()
     let sideCopyToObj = groupByName(sideboardCopy)
     setSideObj(sideCopyToObj)
