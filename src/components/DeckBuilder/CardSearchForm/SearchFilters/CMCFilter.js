@@ -9,7 +9,7 @@ const CMCFilter = () => {
   return (
     <Form.Group as={Row} className="mb-0 pr-2">
       <Form.Label
-        column
+        column={true}
         xs={4}
         lg={3}
         className="px-1 ml-2"

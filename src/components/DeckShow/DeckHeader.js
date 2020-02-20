@@ -6,8 +6,8 @@ const DeckHeader = () => {
   const { deckInfo } = useContext(DecklistContext)
 
   return (
-    <h3>
-      {deckInfo.name} - A {deckInfo.format} deck by{" "}
+    <h3 className="m-0">
+      {deckInfo.name} - by{" "}
       <Link to={`/users/${deckInfo.author}`}>{deckInfo.authorUsername}</Link>
     </h3>
   )

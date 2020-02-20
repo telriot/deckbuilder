@@ -1,11 +1,10 @@
 import React, { createContext, useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Form, Col } from "react-bootstrap"
+import { groupByName } from "../helpers"
 import CardCopiesController from "../components/DeckBuilder/DeckDataForm/CardCopiesController"
 import CardDataSpan from "../components/DeckBuilder/DeckDataForm/CardDataSpan"
 import ControllerButton from "../components/DeckBuilder/DeckDataForm/ControllerButton"
-import DecklistRow from "../components/DeckBuilder/Decklist/DecklistRow"
-
 import axios from "axios"
 
 export const DecklistContext = createContext()
@@ -58,7 +57,8 @@ const DecklistContextProvider = props => {
   })
   const [validation, setValidation] = useState({})
   const [buttonGroupValue, setButtonGroupValue] = useState(1)
-
+  const [radarButtonGroupValue, setRadarButtonGroupValue] = useState(1)
+  const [deckContainerTab, setDeckContainerTab] = useState("list")
   let params = useParams()
 
   const URL = "https://api.scryfall.com/cards"
@@ -94,7 +94,7 @@ const DecklistContextProvider = props => {
     }
     setActiveTab("#main")
     return setDeckInfo({})
-  }, [params.id])
+  }, [params])
 
   useEffect(() => {
     createList(mainDeck, setMainDeck, deckObj)
@@ -115,7 +115,6 @@ const DecklistContextProvider = props => {
 
   // If searchString, prompt request to server
   useEffect(() => {
-    console.log("runCardSearch")
     cardSearch(searchString)
     return
   }, [searchString])
@@ -197,7 +196,8 @@ const DecklistContextProvider = props => {
           colors: card.colors ? card.colors : "",
           rarity: card.rarity ? card.rarity : "",
           flavor_text: card.flavor_text ? card.flavor_text : "",
-          color_identity: card.color_identity ? card.color_identity : ""
+          color_identity: card.color_identity ? card.color_identity : "",
+          prices: card.prices ? card.prices : ""
         }
       })
     )
@@ -205,15 +205,6 @@ const DecklistContextProvider = props => {
     !url && setCurrentServerPage(1)
     setIsLoading(false)
   }
-  //generic object grouping by key values
-  const groupBy = key => array =>
-    array.reduce((objectsByKeyValue, obj) => {
-      const value = obj[key]
-      objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj)
-      return objectsByKeyValue
-    }, {})
-  //group objects by name, returning a new object
-  const groupByName = groupBy("name")
 
   //keep the deck objects updated
   useEffect(() => {
@@ -489,7 +480,11 @@ const DecklistContextProvider = props => {
         validation,
         setValidation,
         buttonGroupValue,
-        setButtonGroupValue
+        setButtonGroupValue,
+        radarButtonGroupValue,
+        setRadarButtonGroupValue,
+        deckContainerTab,
+        setDeckContainerTab
       }}
     >
       {props.children}

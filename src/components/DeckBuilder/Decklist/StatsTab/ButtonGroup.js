@@ -5,16 +5,16 @@ import { ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 const ButtonGroup = props => {
   const { buttonGroupValue, setButtonGroupValue } = useContext(DecklistContext)
   const { avgCMC } = props
-  const handleChange = value => {
-    setButtonGroupValue(value)
-  }
+
   return (
     <ToggleButtonGroup
       size="sm"
       type="radio"
       name="options"
       value={buttonGroupValue}
-      onChange={handleChange}
+      onChange={value => {
+        setButtonGroupValue(value)
+      }}
     >
       <ToggleButton value={1}>CMC (avg: {avgCMC})</ToggleButton>
       <ToggleButton value={2}>Mana</ToggleButton>

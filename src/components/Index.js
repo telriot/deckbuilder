@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react"
-import { Container, Card, Row, Col } from "react-bootstrap"
+import { Container, Card, Row, Col, Button } from "react-bootstrap"
 import axios from "axios"
 import { LinkContainer } from "react-router-bootstrap"
 import { DecklistContext } from "../contexts/DecklistContext"
@@ -28,7 +28,7 @@ const Index = () => {
               <Card.Body>
                 <LinkContainer to={`/decks/${deck._id}`}>
                   <Card.Title>
-                    <a href="">{deck.name}</a>
+                    <Button>{deck.name}</Button>
                   </Card.Title>
                 </LinkContainer>
 

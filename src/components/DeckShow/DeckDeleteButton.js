@@ -8,11 +8,6 @@ const DeckEditButtonGroup = () => {
   let history = useHistory()
   let params = useParams()
 
-  const editHandleClick = e => {
-    e.preventDefault()
-    history.push(`/decks/${params.id}/edit`)
-  }
-
   const deleteHandleClick = e => {
     e.preventDefault()
     axios
@@ -29,17 +24,9 @@ const DeckEditButtonGroup = () => {
   }
 
   return (
-    <div className="float-md-right">
-      <Button className="btn-sm" onClick={e => editHandleClick(e)}>
-        Edit
-      </Button>
-      <Button
-        className="btn-sm btn-danger "
-        onClick={e => deleteHandleClick(e)}
-      >
-        Delete
-      </Button>
-    </div>
+    <Button className="btn-sm btn-danger " onClick={e => deleteHandleClick(e)}>
+      Delete
+    </Button>
   )
 }
 
