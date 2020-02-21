@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { Table } from "react-bootstrap"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import Moment from "react-moment"
 
 const MatchupTable = () => {
@@ -10,6 +12,14 @@ const MatchupTable = () => {
     direction: true
   })
 
+  const deleteIcon = (
+    <FontAwesomeIcon
+      style={{ fontSize: "1rem" }}
+      className="align-self-center mr-1"
+      icon={faTrashAlt}
+    />
+  )
+
   const resultStyle = result => {
     const { g1, g2, g3 } = result
     if (
@@ -18,7 +28,7 @@ const MatchupTable = () => {
       (g1 === "W" && g2 === "D") ||
       (g1 === "D" && g2 === "W")
     ) {
-      return { backgroundColor: "green" }
+      return { backgroundColor: "rgba(56, 252, 131, 0.6)" }
     }
 
     if (
@@ -27,11 +37,11 @@ const MatchupTable = () => {
       (g1 === "L" && g2 === "D") ||
       (g1 === "D" && g2 === "L")
     ) {
-      return { backgroundColor: "red" }
+      return { backgroundColor: "rgba(252, 66, 56, 0.6)" }
     }
 
     if (g3 === "D") {
-      return { backgroundColor: "yellow" }
+      return { backgroundColor: "rgba(252, 252, 56, 0.6)" }
     }
   }
 
@@ -47,7 +57,9 @@ const MatchupTable = () => {
 
   const tableBody = sortOrder => {
     let tableArr = []
+    let index = 0
     for (let match of deckInfo.matches) {
+      index++
       const { archetype, matchupDeck, comment, result, date } = match
       const { g1, g2, g3 } = result
 
@@ -57,6 +69,7 @@ const MatchupTable = () => {
           archetype={archetype}
           matchup={matchupDeck}
           date={date}
+          index={index}
         >
           <td>
             <Moment format="YYYY-MM-DD">{date}</Moment>
@@ -68,22 +81,45 @@ const MatchupTable = () => {
             {g2 && g2}
             {g3 && g3}
           </td>
-          <td key={`comment${match._id}`}>{comment}</td>
+          <td
+            className="d-flex justify-content-between"
+            key={`comment${match._id}`}
+          >
+            {comment}
+
+            {index === 1 && deleteIcon}
+          </td>
         </tr>
       )
     }
     return tableArr.sort((a, b) => {
       if (a.props[sortOrder.criteria] < b.props[sortOrder.criteria]) {
         if (sortOrder.direction) {
-          return -1
+          if (sortOrder.criteria !== "date") {
+            return -1
+          } else {
+            return +1
+          }
         } else {
-          return +1
+          if (sortOrder.criteria === "date") {
+            return -1
+          } else {
+            return +1
+          }
         }
       } else if (a.props[sortOrder.criteria] > b.props[sortOrder.criteria]) {
         if (sortOrder.direction) {
-          return +1
+          if (sortOrder.criteria === "date") {
+            return +1
+          } else {
+            return -1
+          }
         } else {
-          return -1
+          if (sortOrder.criteria !== "date") {
+            return +1
+          } else {
+            return -1
+          }
         }
       } else {
         return 0

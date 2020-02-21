@@ -90,7 +90,7 @@ const DeckContainer = () => {
         {" "}
         <Container
           style={{
-            maxHeight: `${showList.length * 0.57 + 6}rem`,
+            maxHeight: `${showList.length * 0.6 + 6}rem`,
             overflow: "auto",
             fontSize: "0.8rem"
           }}
