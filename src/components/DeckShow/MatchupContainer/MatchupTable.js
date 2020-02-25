@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
+import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
 import { useParams } from "react-router-dom"
 import { Table } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -13,6 +14,8 @@ const MatchupTable = () => {
     criteria: "date",
     direction: true
   })
+  const { isLG } = useContext(WindowSizeContext)
+
   let params = useParams()
 
   const deleteIcon = id => (
@@ -176,17 +179,27 @@ const MatchupTable = () => {
             index={index}
           >
             <td>
-              <Moment format="YYYY-MM-DD">{date}</Moment>
+              {!isLG ? (
+                <Moment format="MM.DD">{date}</Moment>
+              ) : (
+                <Moment format="YYYY.MM.DD">{date}</Moment>
+              )}
             </td>
-            <td key={archetype}>{archetype}</td>
+            <td className="text-capitalize" key={archetype}>
+              {archetype}
+            </td>
             <td key={matchupDeck}>{matchupDeck}</td>
-            <td style={resultStyle(result)} key={result}>
+            <td
+              className="text-center"
+              style={resultStyle(result)}
+              key={result}
+            >
               {g1 && g1}
               {g2 && g2}
               {g3 && g3}
             </td>
             <td
-              className="d-flex justify-content-between"
+              className="d-flex justify-content-between border-0"
               key={`comment${match._id}`}
             >
               {comment}

@@ -11,7 +11,7 @@ const DeckHeader = () => {
     borderColor: "#005cbf",
     padding: ".25rem .5rem",
     display: "inline-block",
-    fontSize: ".875rem",
+    fontSize: ".75rem",
     lineHeight: "1.5",
     borderRadius: "0.2rem",
     color: "white",

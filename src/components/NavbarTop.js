@@ -23,11 +23,14 @@ const NavbarTop = () => {
   }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" className="py-0 mb-2">
       <LinkContainer to="/">
         <Navbar.Brand>Decks</Navbar.Brand>
       </LinkContainer>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Toggle
+        aria-controls="basic-navbar-nav"
+        className="border-0 p-0"
+      />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           {auth.isAuthenticated && (
@@ -53,7 +56,9 @@ const NavbarTop = () => {
         </Nav>
         {auth.isAuthenticated && (
           <LinkContainer exact to="/" onClick={e => handleLogout(e)}>
-            <Button variant="dark">Logout</Button>
+            <Button size="sm" variant="dark">
+              Logout
+            </Button>
           </LinkContainer>
         )}
       </Navbar.Collapse>

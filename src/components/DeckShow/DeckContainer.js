@@ -1,6 +1,7 @@
-import React, { useContext, useState, useEffect } from "react"
-import { Container, Col, Row } from "react-bootstrap"
+import React, { useContext, useState, useEffect, Fragment } from "react"
+import { Container, Row } from "react-bootstrap"
 import { DecklistContext } from "../../contexts/DecklistContext"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import {
   groupByName,
   objToArray,
@@ -8,13 +9,12 @@ import {
   sort,
   createList
 } from "../../helpers/"
-import StatsTab from "../DeckBuilder/Decklist/StatsTab"
 import DeckRow from "./DeckContainer/DeckRow"
 import PriceInfo from "./PriceInfo"
-import RadarChartTab from "./DeckContainer/RadarChartTab"
 
 const DeckContainer = () => {
   const { deckInfo } = useContext(DecklistContext)
+  const { isXS, isLG } = useContext(WindowSizeContext)
   const [showList, setShowList] = useState([])
 
   //Execute if deck
@@ -84,32 +84,36 @@ const DeckContainer = () => {
     setShowList(typeList())
   }, [deckInfo.mainboard])
 
+  const containerStyle = () => {
+    if (isLG) {
+      return {
+        maxHeight: `${showList.length * 0.6 + 6}rem`,
+        overflow: "auto",
+        fontSize: "0.8rem"
+      }
+    } else if (!isLG) {
+      return { overflow: "auto", fontSize: "0.8rem" }
+    } else if (isXS) {
+      return {}
+    }
+  }
+
   return (
-    <Row>
-      <Col md={8}>
-        {" "}
-        <Container
-          style={{
-            maxHeight: `${showList.length * 0.6 + 6}rem`,
-            overflow: "auto",
-            fontSize: "0.8rem"
-          }}
-          fluid
-          className="d-flex flex-wrap flex-column"
-        >
-          {showList}
-          <Row className="mt-2">
-            {deckInfo.mainboard &&
-              deckInfo.mainboard.length + deckInfo.sideboard.length}{" "}
-            cards total
-          </Row>
-        </Container>
-        <PriceInfo />
-      </Col>
-      <Col md={4}>
-        <StatsTab />
-      </Col>
-    </Row>
+    <Fragment>
+      <Container
+        style={containerStyle()}
+        fluid
+        className="d-flex flex-wrap flex-column"
+      >
+        {showList}
+        <Row className="mt-2">
+          {deckInfo.mainboard &&
+            deckInfo.mainboard.length + deckInfo.sideboard.length}{" "}
+          cards total
+        </Row>
+      </Container>
+      {isLG && <PriceInfo />}
+    </Fragment>
   )
 }
 

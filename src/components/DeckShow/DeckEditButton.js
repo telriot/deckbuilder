@@ -2,7 +2,7 @@ import React from "react"
 import { useParams, useHistory } from "react-router-dom"
 import { Button } from "react-bootstrap"
 
-const DeckEditButtonGroup = () => {
+const DeckEditButtonGroup = props => {
   let history = useHistory()
   let params = useParams()
 
@@ -11,8 +11,15 @@ const DeckEditButtonGroup = () => {
     history.push(`/decks/${params.id}/edit`)
   }
 
+  const classNameDisplay = () => {
+    if (props.display && props.display === "block") {
+      return "btn-sm btn-block"
+    } else {
+      return "btn-sm mx-1"
+    }
+  }
   return (
-    <Button className="btn-sm mx-1" onClick={e => editHandleClick(e)}>
+    <Button className={classNameDisplay()} onClick={e => editHandleClick(e)}>
       Edit
     </Button>
   )

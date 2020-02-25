@@ -17,15 +17,20 @@ const matchupIcon = (
   <FontAwesomeIcon
     icon={faPercentage}
     data-targettype="icon"
-    style={{ color: "#327BFF" }}
+    style={{ color: "#327BFF", marginLeft: "2px" }}
   />
 )
 
-const DeckContainerTab = () => {
-  const { deckContainerTab, setDeckContainerTab } = useContext(DecklistContext)
+const DeckContainerTab = props => {
+  const { setDeckContainerTab } = useContext(DecklistContext)
 
   return (
-    <Nav className="d-flex flex-column" defaultActiveKey="/home">
+    <Nav
+      className={
+        props.direction && props.direction === "row" ? "" : "d-flex flex-column"
+      }
+      defaultActiveKey="/home"
+    >
       <Nav.Item>
         <Nav.Link
           className="pr-0"
@@ -38,7 +43,7 @@ const DeckContainerTab = () => {
       </Nav.Item>
       <Nav.Item>
         <Nav.Link
-          className="pr-0"
+          className=" pr-0"
           eventKey="link-1"
           href="#"
           name="matchups"

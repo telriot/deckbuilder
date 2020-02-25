@@ -47,28 +47,24 @@ const CommentForm = () => {
 
   return (
     <div>
-      <h3>Leave a comment!</h3>
-      <Container>
+      <Container className="px-0">
         <Form onSubmit={e => commentHandleSubmit(e)}>
-          <InputGroup>
-            <FormControl
-              className="p-0 mt-0 ml-1 mb-3 mr-0"
-              style={{ minHeight: "30px" }}
+          <div>
+            <textarea
+              placeholder="Type your comment here..."
+              className=" form-control p-0 my-2 d-block"
+              style={{ minHeight: "120px", width: "100%" }}
               as="textarea"
               value={comment}
               onChange={e => setComment(e.target.value)}
               aria-label="With textarea"
             />
-            <InputGroup.Append>
-              <Button
-                className="py-0 mt-0 mb-3 mr-1"
-                type="submit"
-                variant="outline-secondary"
-              >
-                Button
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
+          </div>
+          <div>
+            <Button size="sm" type="submit" variant="primary">
+              Comment
+            </Button>
+          </div>
         </Form>
       </Container>
     </div>

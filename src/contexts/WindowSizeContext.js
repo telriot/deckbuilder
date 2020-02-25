@@ -11,7 +11,7 @@ const WindowSizeContextProvider = props => {
 
   const isXL = dimensions.width > 1200
   const isLG = dimensions.width > 992
-  const isMD = dimensions.width > 768
+  const isMD = dimensions.width >= 768
   const isSM = dimensions.width >= 576
   const isXS = dimensions.width < 576
 

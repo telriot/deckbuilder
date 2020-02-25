@@ -311,34 +311,39 @@ const StatsTab = () => {
   }
 
   return (
-    <Card.Body style={{ fontSize: "0.75rem" }} className="p-2">
-      <Container className="d-flex flex-column">
+    <Card.Body
+      style={{ fontSize: "0.75rem" }}
+      className="px-2 pr-md-0 pr-md-2 py-3 py-md-2"
+    >
+      <Container className="d-flex flex-column px-0">
         <ButtonGroup avgCMC={avgCMC(mainDeck)} />
       </Container>
-      {buttonGroupValue === 1 && (
-        <BasicBarChart
-          data={globalCMCData(mainDeck)}
-          xAxis="cmc"
-          barA="cards"
-        />
-      )}
+      <Container className="px-0">
+        {buttonGroupValue === 1 && (
+          <BasicBarChart
+            data={globalCMCData(mainDeck)}
+            xAxis="cmc"
+            barA="cards"
+          />
+        )}
 
-      {buttonGroupValue === 2 && (
-        <TwoLevelPieChart
-          data={manaSymbols(mainDeck)}
-          data2={manaSources(mainDeck)}
-          name="color"
-          value="count"
-        />
-      )}
-      {buttonGroupValue === 3 && (
-        <TwoLevelPieChart
-          data={typesData(mainDeck)}
-          name="label"
-          value="count"
-          legend={true}
-        />
-      )}
+        {buttonGroupValue === 2 && (
+          <TwoLevelPieChart
+            data={manaSymbols(mainDeck)}
+            data2={manaSources(mainDeck)}
+            name="color"
+            value="count"
+          />
+        )}
+        {buttonGroupValue === 3 && (
+          <TwoLevelPieChart
+            data={typesData(mainDeck)}
+            name="label"
+            value="count"
+            legend={true}
+          />
+        )}
+      </Container>
     </Card.Body>
   )
 }

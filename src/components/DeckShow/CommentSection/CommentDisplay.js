@@ -1,8 +1,16 @@
-import React, { useContext, useEffect } from "react"
-import { Button, Row, Col, Card, Container } from "react-bootstrap"
+import React, { useState, useContext, useEffect } from "react"
+import {
+  Button,
+  Row,
+  Col,
+  Card,
+  Container,
+  ButtonToolbar
+} from "react-bootstrap"
 import { useParams, Link } from "react-router-dom"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { AuthContext } from "../../../contexts/AuthContext"
+import CommentModalButton from "../CommentSection/CommentModalButton"
 import Moment from "react-moment"
 import axios from "axios"
 
@@ -11,6 +19,7 @@ const CommentDisplay = () => {
     DecklistContext
   )
   const { auth } = useContext(AuthContext)
+
   let params = useParams()
 
   let commentsShow = []
@@ -24,7 +33,7 @@ const CommentDisplay = () => {
     if (deckInfo.comments && deckInfo.comments.length) {
       for (let comment of deckInfo.comments) {
         commentsShow.push(
-          <Card className="m-1" key={`commentDiv${comment._id}`}>
+          <Card className="mx-0 mb-2" key={`commentDiv${comment._id}`}>
             <Card.Header
               className="container-fluid p-1"
               key={`commentH5${comment._id}`}
@@ -35,21 +44,27 @@ const CommentDisplay = () => {
                     <Link to={`/users/${comment.author._id}`}>
                       {comment.author.username}
                     </Link>{" "}
-                    commented <Moment fromNow>{comment.date}</Moment>
+                    <small>
+                      commented <Moment fromNow>{comment.date}</Moment>
+                    </small>
                   </p>
                 </Col>
                 <Col xs={4}>
                   {comment.author._id === auth.authUserId && (
-                    <div>
+                    <div className="d-flex justify-content-end ">
+                      <CommentModalButton
+                        text={comment.text}
+                        id={comment._id}
+                      />
                       <Button
-                        className="float-right"
+                        variant="outline-primary"
                         size="sm"
                         data-commentid={comment._id}
                         onClick={e => {
                           destroyComment(e)
                         }}
                       >
-                        Delete me!
+                        Delete
                       </Button>
                     </div>
                   )}
@@ -57,7 +72,10 @@ const CommentDisplay = () => {
               </Row>
             </Card.Header>
             <Card.Body>
-              <Card.Text key={`commentP${comment._id}`}>
+              <Card.Text
+                style={{ fontSize: "0.9rem" }}
+                key={`commentP${comment._id}`}
+              >
                 {comment.text}
               </Card.Text>
             </Card.Body>
@@ -99,7 +117,7 @@ const CommentDisplay = () => {
 
   return (
     <div>
-      <Container>{commentsArr}</Container>
+      <Container className="px-0 mt-2">{commentsArr}</Container>
     </div>
   )
 }

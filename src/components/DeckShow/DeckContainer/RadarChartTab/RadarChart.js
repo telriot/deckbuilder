@@ -5,7 +5,7 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   Radar,
-  Legend,
+  ResponsiveContainer,
   Label,
   Tooltip
 } from "recharts"
@@ -37,29 +37,31 @@ const radarChart = props => {
   const data = matchupsDataToGraph(props.archetypes)
 
   return (
-    <RadarChart
-      cx={150}
-      cy={150}
-      outerRadius={80}
-      width={300}
-      height={300}
-      data={data}
-      style={{ fontSize: "0.6rem" }}
-    >
-      <PolarGrid />
-      <PolarAngleAxis dataKey="archetype">
-        <Label />
-      </PolarAngleAxis>
-      <PolarRadiusAxis angle={30} domain={[0, 100]} />
-      <Radar
-        name={game}
-        dataKey={dataKey}
-        stroke={color}
-        fill={color}
-        fillOpacity={0.6}
-      />
-      <Tooltip />
-    </RadarChart>
+    <ResponsiveContainer width="100%" height="100%" minHeight="250px">
+      <RadarChart
+        cx="50%"
+        cy="50%"
+        outerRadius={80}
+        width={350}
+        height={300}
+        data={data}
+        style={{ fontSize: "0.6rem" }}
+      >
+        <PolarGrid />
+        <PolarAngleAxis dataKey="archetype">
+          <Label />
+        </PolarAngleAxis>
+        <PolarRadiusAxis angle={30} domain={[0, 100]} />
+        <Radar
+          name={game}
+          dataKey={dataKey}
+          stroke={color}
+          fill={color}
+          fillOpacity={0.6}
+        />
+        <Tooltip />
+      </RadarChart>
+    </ResponsiveContainer>
   )
 }
 

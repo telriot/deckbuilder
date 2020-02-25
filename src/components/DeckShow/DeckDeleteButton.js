@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap"
 
 import axios from "axios"
 
-const DeckEditButtonGroup = () => {
+const DeckEditButtonGroup = props => {
   let history = useHistory()
   let params = useParams()
 
@@ -23,8 +23,16 @@ const DeckEditButtonGroup = () => {
       })
   }
 
+  const classNameDisplay = () => {
+    if (props.display && props.display === "block") {
+      return "btn-sm btn-danger btn-block"
+    } else {
+      return "btn-sm btn-danger"
+    }
+  }
+
   return (
-    <Button className="btn-sm btn-danger " onClick={e => deleteHandleClick(e)}>
+    <Button className={classNameDisplay()} onClick={e => deleteHandleClick(e)}>
       Delete
     </Button>
   )

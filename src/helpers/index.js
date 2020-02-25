@@ -159,3 +159,42 @@ export const getPrice = (...args) => {
     tix: tixPrice.toFixed(2)
   }
 }
+
+export const normalizeType = string => {
+  let splitWord = string
+    .replace(/Legendary |Tribal |Snow /g, "")
+    .replace(/Basic Land|Artifact Land|^Land\w*/, "Land")
+    .replace(
+      /Artifact Creature|Host Creature|Instant Creature|Enchantment Creature|^Creature\w*/,
+      "Creature"
+    )
+    .replace(/Creature\?.*/, "Creature")
+    .replace(/Enchantment Artifact|Hero Artifact|^Artifact\w*/, "Artifact")
+    .replace(/^Sorcery\w*/, "Sorcery")
+    .replace(/Elemental Instant|^Instant\w*/, "Instant")
+    .replace(/World Enchantment|^Enchantment\w*/, "Enchantment")
+    .split(" ")
+  return splitWord[0]
+}
+
+export const mapResults = cards => {
+  return cards.map(card => {
+    return {
+      name: card.name,
+      image_small: card.image_uris ? card.image_uris.small : "",
+      image_border_crop: card.image_uris ? card.image_uris.border_crop : "",
+      mana_cost: card.mana_cost ? card.mana_cost : "",
+      cmc: card.cmc ? card.cmc : "0",
+      type_line: card.type_line ? card.type_line : "",
+      normalized_type: card.type_line ? normalizeType(card.type_line) : "",
+      oracle_text: card.oracle_text ? card.oracle_text : "",
+      power: card.power ? card.power : "",
+      toughness: card.toughness ? card.toughness : "",
+      colors: card.colors ? card.colors : "",
+      rarity: card.rarity ? card.rarity : "",
+      flavor_text: card.flavor_text ? card.flavor_text : "",
+      color_identity: card.color_identity ? card.color_identity : "",
+      prices: card.prices ? card.prices : ""
+    }
+  })
+}
