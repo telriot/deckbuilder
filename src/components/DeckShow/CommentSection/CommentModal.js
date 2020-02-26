@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
+import { CommentContext } from "../../../contexts/CommentContext"
 import { Modal, Button } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 
 const CommentModal = props => {
   const [editedComment, setEditedComment] = useState("")
-  const { setDeckInfo } = useContext(DecklistContext)
+  const { createComments } = useContext(CommentContext)
   const { id, text } = props
   let params = useParams()
+
   useEffect(() => {
     setEditedComment(text)
   }, [])
@@ -16,7 +18,7 @@ const CommentModal = props => {
   const handleEditedCommentSubmit = async () => {
     console.log(id)
     try {
-      let comment = await axios.put(
+      await axios.put(
         `/api/decks/${params.id}/comments/${id}`,
         {
           text: editedComment,
@@ -27,22 +29,10 @@ const CommentModal = props => {
         }
       )
       console.log("comment updated")
-      comment.json()
     } catch (error) {
       console.log(error)
     }
-    axios
-      .get(`/api/decks/${params.id}`)
-      .then(response => {
-        if (response.status === 200) {
-          setDeckInfo(prevState => {
-            return { ...prevState, comments: response.data.comments }
-          })
-        }
-      })
-      .catch(error => {
-        console.log("Server error", error)
-      })
+    createComments(params)
     props.onHide()
   }
 

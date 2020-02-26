@@ -11,6 +11,7 @@ import UserProfile from "./components/UserProfile"
 import UserEdit from "./components/UserEdit"
 import DecklistContextProvider from "./contexts/DecklistContext"
 import CommentContextProvider from "./contexts/CommentContext"
+import MatchupContextProvider from "./contexts/MatchupContext"
 
 const App = () => {
   return (
@@ -36,7 +37,9 @@ const App = () => {
         <Route exact path="/decks/:id">
           <DecklistContextProvider>
             <CommentContextProvider>
-              <DeckShow />
+              <MatchupContextProvider>
+                <DeckShow />
+              </MatchupContextProvider>
             </CommentContextProvider>
           </DecklistContextProvider>
         </Route>

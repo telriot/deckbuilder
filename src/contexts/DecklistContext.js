@@ -19,8 +19,6 @@ const DecklistContextProvider = props => {
   const [sortingCriteria, setSortingCriteria] = useState("name")
   const [deckName, setDeckName] = useState("")
   const [deckFormat, setDeckFormat] = useState("")
-  const [comment, setComment] = useState("")
-  const [commentsArr, setCommentsArr] = useState([])
   const [userInput, setUserInput] = useState("")
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -391,10 +389,6 @@ const DecklistContextProvider = props => {
         setDeckName,
         deckFormat,
         setDeckFormat,
-        comment,
-        setComment,
-        commentsArr,
-        setCommentsArr,
         userInput,
         setUserInput,
         cards,
