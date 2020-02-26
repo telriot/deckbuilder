@@ -53,7 +53,7 @@ const CommentForm = () => {
             <textarea
               placeholder="Type your comment here..."
               className=" form-control p-0 my-2 d-block"
-              style={{ minHeight: "120px", width: "100%" }}
+              style={{ minHeight: "120px", width: "100%", fontSize: "0.9rem" }}
               as="textarea"
               value={comment}
               onChange={e => setComment(e.target.value)}

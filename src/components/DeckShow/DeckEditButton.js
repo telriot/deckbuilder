@@ -19,7 +19,11 @@ const DeckEditButtonGroup = props => {
     }
   }
   return (
-    <Button className={classNameDisplay()} onClick={e => editHandleClick(e)}>
+    <Button
+      variant="secondary"
+      className={classNameDisplay()}
+      onClick={e => editHandleClick(e)}
+    >
       Edit
     </Button>
   )

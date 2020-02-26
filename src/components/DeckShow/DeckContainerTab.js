@@ -43,7 +43,9 @@ const DeckContainerTab = props => {
       </Nav.Item>
       <Nav.Item>
         <Nav.Link
-          className=" pr-0"
+          className={
+            props.direction && props.direction === "row" ? "pr-1" : "pr-0"
+          }
           eventKey="link-1"
           href="#"
           name="matchups"
