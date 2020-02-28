@@ -1,5 +1,4 @@
 import React, { useContext } from "react"
-import { InputGroup, Button } from "react-bootstrap"
 import { mapResults } from "../../helpers"
 import { DecklistContext } from "../../contexts/DecklistContext"
 import axios from "axios"
@@ -70,8 +69,8 @@ const FileReaderButton = () => {
           onChange={e => handleFileChosen(e.target.files[0])}
         />
         <label
-          class="custom-file-label col-form-label-sm"
-          for="inputGroupFile01"
+          className="custom-file-label col-form-label-sm"
+          htmlFor="inputGroupFile01"
         >
           Import from .txt
         </label>

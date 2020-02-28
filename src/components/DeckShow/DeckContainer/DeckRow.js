@@ -18,7 +18,7 @@ const DeckRow = props => {
     >
       <Row
         className="mr-lg-2"
-        style={{ minWidth: "50%", maxHeight: "1.19rem" }}
+        style={{ minWidth: "50%" }}
         key={`row${arr ? arr.label : "side"}${card.cardname}`}
       >
         <Col

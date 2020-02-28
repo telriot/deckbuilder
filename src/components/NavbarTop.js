@@ -3,6 +3,7 @@ import { Navbar, Nav, Button } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
 import { AuthContext } from "../contexts/AuthContext"
 import axios from "axios"
+import AuthModalButton from "./Navbar/AuthModalButton"
 
 const NavbarTop = () => {
   const { auth, setAuth } = useContext(AuthContext)
@@ -23,9 +24,9 @@ const NavbarTop = () => {
   }
 
   return (
-    <Navbar bg="light" expand="lg" className="py-0 mb-2">
+    <Navbar bg="light" expand="lg" className="py-1 mb-2">
       <LinkContainer to="/">
-        <Navbar.Brand>Decks</Navbar.Brand>
+        <Navbar.Brand>DeckLog</Navbar.Brand>
       </LinkContainer>
       <Navbar.Toggle
         aria-controls="basic-navbar-nav"
@@ -45,12 +46,12 @@ const NavbarTop = () => {
           )}
           {!auth.isAuthenticated && (
             <Fragment>
-              <LinkContainer exact to="/signup">
-                <Nav.Link>Signup</Nav.Link>
-              </LinkContainer>
-              <LinkContainer exact to="/login">
-                <Nav.Link>Login</Nav.Link>
-              </LinkContainer>
+              <Nav.Link>
+                <AuthModalButton type="Signup" />
+              </Nav.Link>
+              <Nav.Link>
+                <AuthModalButton type="Login" />
+              </Nav.Link>
             </Fragment>
           )}
         </Nav>

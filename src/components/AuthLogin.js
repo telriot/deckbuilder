@@ -17,7 +17,7 @@ const AuthLogin = () => {
       .post(
         "api/auth/login",
         {
-          email: loginData.email,
+          username: loginData.username,
           password: loginData.password
         },
         {
@@ -37,7 +37,7 @@ const AuthLogin = () => {
       .catch(error => {
         console.log("login error", error)
       })
-    setLoginData({ email: "", password: "" })
+    setLoginData({ username: "", password: "" })
   }
 
   return (

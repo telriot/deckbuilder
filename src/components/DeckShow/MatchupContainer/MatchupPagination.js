@@ -7,25 +7,27 @@ const MatchupPagination = () => {
 
   let active = page
   let items = []
-  for (let number = 1; number <= pages; number++) {
-    items.push(
-      <Pagination.Item
-        key={number}
-        data-number={number}
-        active={number === active}
-        onClick={e => {
-          e.persist()
-          setPage(parseInt(e.target.dataset.number))
-        }}
-      >
-        {number}
-      </Pagination.Item>
-    )
+  if (pages > 1) {
+    for (let number = 1; number <= pages; number++) {
+      items.push(
+        <Pagination.Item
+          key={number}
+          data-number={number}
+          active={number === active}
+          onClick={e => {
+            e.persist()
+            setPage(parseInt(e.target.dataset.number))
+          }}
+        >
+          {number}
+        </Pagination.Item>
+      )
+    }
   }
 
   return (
     <div>
-      <Pagination>
+      <Pagination size="sm">
         {pages > 5 && (
           <Pagination.First
             disabled={page === 1 && true}

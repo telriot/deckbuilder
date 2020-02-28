@@ -2,8 +2,10 @@ import React, { useContext } from "react"
 import { WindowSizeContext } from "../../../../contexts/WindowSizeContext"
 import { MatchupContext } from "../../../../contexts/MatchupContext"
 import { useParams } from "react-router-dom"
+import { Popover, OverlayTrigger } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons"
+import Truncate from "react-truncate"
 import Moment from "react-moment"
 import axios from "axios"
 
@@ -11,7 +13,7 @@ const MatchupRows = props => {
   const { matchupResultStyle, deletionResultObj, createTableBody } = useContext(
     MatchupContext
   )
-  const { isLG } = useContext(WindowSizeContext)
+  const { isSM, isLG } = useContext(WindowSizeContext)
   const { archetype, matchupDeck, comment, result, date, index, match } = props
   const { g1, g2, g3 } = result
   let params = useParams()
@@ -32,7 +34,6 @@ const MatchupRows = props => {
       .get(`/api/decks/${params.id}/matchups/${id}`)
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data.archetype, response.data.result)
           const { archetype, result } = response.data
           axios
             .put(
@@ -63,13 +64,19 @@ const MatchupRows = props => {
       .then(response => {
         if (response.status === 200) {
           console.log("matchup upload complete")
+          createTableBody(params)
         }
       })
       .catch(error => {
         console.log("Server error", error)
       })
-    createTableBody(params)
   }
+
+  const commentPopover = (
+    <Popover id="popover-basic">
+      <Popover.Content>{comment ? comment : "..."}</Popover.Content>
+    </Popover>
+  )
 
   return (
     <tr
@@ -86,10 +93,13 @@ const MatchupRows = props => {
           <Moment format="YYYY.MM.DD">{date}</Moment>
         )}
       </td>
+
       <td className="text-capitalize" key={archetype}>
         {archetype}
       </td>
-      <td key={matchupDeck}>{matchupDeck}</td>
+      <OverlayTrigger placement="bottom" overlay={commentPopover}>
+        <td key={matchupDeck}>{matchupDeck}</td>
+      </OverlayTrigger>
       <td
         className="text-center"
         style={matchupResultStyle(result)}
@@ -99,13 +109,19 @@ const MatchupRows = props => {
         {g2 && g2}
         {g3 && g3}
       </td>
-      <td
-        className="d-flex justify-content-between border-0"
-        key={`comment${match._id}`}
-      >
-        {comment}
-        {index === 1 && deleteIcon(match._id)}
-      </td>
+      <OverlayTrigger placement="bottom" overlay={commentPopover}>
+        <td
+          className={
+            isSM ? "d-flex justify-content-between border-0" : "d-none"
+          }
+          key={`comment${match._id}`}
+        >
+          <Truncate width={150} ellipsis={<span>...</span>}>
+            {comment}
+          </Truncate>
+          {index === 1 && deleteIcon(match._id)}
+        </td>
+      </OverlayTrigger>
     </tr>
   )
 }

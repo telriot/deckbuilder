@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react"
-import { DecklistContext } from "../../../contexts/DecklistContext"
 import { CommentContext } from "../../../contexts/CommentContext"
 import { Modal, Button } from "react-bootstrap"
 import { useParams } from "react-router-dom"
@@ -13,7 +12,7 @@ const CommentModal = props => {
 
   useEffect(() => {
     setEditedComment(text)
-  }, [])
+  }, [text])
 
   const handleEditedCommentSubmit = async () => {
     console.log(id)
@@ -55,7 +54,14 @@ const CommentModal = props => {
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => handleEditedCommentSubmit()}>Submit</Button>
-          <Button onClick={props.onHide}>Close</Button>
+          <Button
+            onClick={() => {
+              props.onHide()
+              setEditedComment(text)
+            }}
+          >
+            Close
+          </Button>
         </Modal.Footer>
       </div>
     </Modal>

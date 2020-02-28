@@ -22,7 +22,7 @@ const CommentContextProvider = props => {
     } catch (error) {
       console.log(error)
     }
-    setPages(results.data.pages)
+    setPages(results.data.totalPages)
     const comments = results.data.docs
     let commentsShow = []
     for (let comment of comments) {

@@ -11,30 +11,7 @@ import {
 } from "recharts"
 
 const radarChart = props => {
-  const { game, dataKey, color } = props
-  const matchupsDataToGraph = matchups => {
-    let matchupData = []
-
-    for (let [key, value] of Object.entries(matchups)) {
-      const { preboard, postboard, total, archetype } = value
-      matchupData.push({
-        archetype: archetype,
-        A: !((preboard.w * 100) / (preboard.w + preboard.l + preboard.u))
-          ? 0
-          : (preboard.w * 100) / (preboard.w + preboard.l + preboard.u),
-        B: !((postboard.w * 100) / (postboard.w + postboard.l + postboard.u))
-          ? 0
-          : (postboard.w * 100) / (postboard.w + postboard.l + postboard.u),
-        C: !((total.w * 100) / (total.w + total.l + total.u))
-          ? 0
-          : (total.w * 100) / (total.w + total.l + total.u),
-        fullMark: 100
-      })
-    }
-    return matchupData
-  }
-
-  const data = matchupsDataToGraph(props.archetypes)
+  const { game, dataKey, color, data } = props
 
   return (
     <ResponsiveContainer width="100%" height="100%" minHeight="250px">

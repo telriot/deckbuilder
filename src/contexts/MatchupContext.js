@@ -8,6 +8,9 @@ const MatchupContextProvider = props => {
   const [page, setPage] = useState(1)
   const [pages, setPages] = useState(1)
   const [rowsArr, setRowsArr] = useState([])
+  const [MWP, setMWP] = useState({ preboard: 0, postboard: 0, total: 0 })
+  const [matchupFilter, setMatchupFilter] = useState("")
+  const [deckFilter, setDeckFilter] = useState("")
 
   const matchupResultStyle = result => {
     const { g1, g2, g3 } = result
@@ -72,26 +75,30 @@ const MatchupContextProvider = props => {
     }
   }
 
-  const createTableBody = async params => {
+  const createTableBody = async (params, archetypeFilter, deckFilter) => {
     let index = 0
     let response = []
     let rows = []
+    console.log("ran")
     try {
       response = await axios.get(`/api/decks/${params.id}/matchups`, {
         params: {
           page: page,
-          deckId: params.id
+          deckId: params.id,
+          archetype: archetypeFilter,
+          matchupDeck: deckFilter
         }
       })
     } catch (error) {
       console.log(error)
     }
-    setPages(response.data.pages)
+    setPages(response.data.totalPages)
     const matches = response.data.docs
 
     for (let match of matches) {
       index++
       const { archetype, matchupDeck, comment, result, date } = match
+
       rows.push(
         <MatchupRows
           key={`matchuprow${index}`}
@@ -105,7 +112,6 @@ const MatchupContextProvider = props => {
         />
       )
     }
-    console.log(rows)
     setRowsArr(rows)
   }
 
@@ -120,7 +126,13 @@ const MatchupContextProvider = props => {
         deletionResultObj,
         createTableBody,
         rowsArr,
-        setRowsArr
+        setRowsArr,
+        MWP,
+        setMWP,
+        matchupFilter,
+        setMatchupFilter,
+        deckFilter,
+        setDeckFilter
       }}
     >
       {props.children}

@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
-import { Form, Button } from "react-bootstrap"
+import { Form } from "react-bootstrap"
 
 const LoginForm = () => {
   const { loginData, setLoginData } = useContext(AuthContext)
@@ -18,13 +18,13 @@ const LoginForm = () => {
   return (
     <Fragment>
       <Form.Group controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
+        <Form.Label>Username</Form.Label>
         <Form.Control
-          value={loginData.email}
-          name="email"
+          value={loginData.username}
+          name="username"
           onChange={e => handleChange(e)}
-          type="email"
-          placeholder="Enter email"
+          type="text"
+          placeholder="Enter your username"
         />
       </Form.Group>
 
@@ -38,9 +38,6 @@ const LoginForm = () => {
           placeholder="Password"
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
     </Fragment>
   )
 }

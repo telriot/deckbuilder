@@ -1,9 +1,24 @@
-import React, { Fragment, useContext } from "react"
+import React, { Fragment, useContext, useState } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
-import { Form, Button } from "react-bootstrap"
+import { Form } from "react-bootstrap"
 
 const SignupForm = () => {
-  const { signupData, setSignupData } = useContext(AuthContext)
+  const {
+    signupData,
+    setSignupData,
+    validation,
+    handleValidation
+  } = useContext(AuthContext)
+  const [isVisible, setIsVisible] = useState(false)
+
+  function handleCheck(e) {
+    e.persist()
+    console.log(e)
+    setIsVisible(prevState => !prevState)
+  }
+
+  let password = ""
+  let username = ""
 
   const handleChange = e => {
     e.persist()
@@ -13,7 +28,27 @@ const SignupForm = () => {
         [e.target.name]: e.target.value
       }
     })
+    if (e.target.name === "username") {
+      console.log("setUsername")
+      username = e.target.value
+    } else if (e.target.name === "password") {
+      console.log("setPassword")
+      password = e.target.value
+    }
+    handleValidation(
+      username ? username : validation.username,
+      password ? password : validation.password
+    )
   }
+
+  const Checkbox = () => (
+    <Form.Check
+      type="checkbox"
+      label="Visible"
+      onChange={e => handleCheck(e)}
+      checked={isVisible}
+    />
+  )
 
   return (
     <Fragment>
@@ -27,18 +62,10 @@ const SignupForm = () => {
           placeholder="Enter username"
           required
         />
-      </Form.Group>
 
-      <Form.Group controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          value={signupData.email}
-          name="email"
-          onChange={e => handleChange(e)}
-          type="email"
-          placeholder="Enter email"
-          required
-        />
+        <Form.Text className="text-danger">
+          {validation.username.error}
+        </Form.Text>
       </Form.Group>
 
       <Form.Group controlId="formBasicPassword">
@@ -47,14 +74,29 @@ const SignupForm = () => {
           value={signupData.password}
           name="password"
           onChange={e => handleChange(e)}
+          type={!isVisible ? "password" : "text"}
+          placeholder="Password"
+          required
+        />
+
+        <Form.Text className="text-danger">
+          {validation.password.error}
+        </Form.Text>
+      </Form.Group>
+      <Form.Group controlId="formBasicPasswordConfirm">
+        <Form.Label>Confirm your password</Form.Label>
+        <Form.Control
+          value={signupData.passwordConfirmation}
+          name="passwordConfirmation"
+          onChange={e => handleChange(e)}
           type="password"
           placeholder="Password"
           required
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+      <Form.Group controlId="formPasswordCheck">
+        <Checkbox />
+      </Form.Group>
     </Fragment>
   )
 }

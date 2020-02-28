@@ -2,10 +2,12 @@ import React, { useState, useContext } from "react"
 import { Modal, Button, Form, Col } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import { DecklistContext } from "../../../../contexts/DecklistContext"
+import { MatchupContext } from "../../../../contexts/MatchupContext"
 import axios from "axios"
 
 const MatchupModal = props => {
   const { setDeckInfo } = useContext(DecklistContext)
+  const { createTableBody } = useContext(MatchupContext)
   const [archetype, setArchetype] = useState("")
   const [result, setResult] = useState({
     g1: undefined,
@@ -140,6 +142,7 @@ const MatchupModal = props => {
     try {
       const response = await axios.get(`/api/decks/${params.id}`)
       setDeckInfo(response.data)
+      createTableBody(params)
     } catch (error) {
       if (axios.isCancel(error)) {
       } else {
