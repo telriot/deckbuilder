@@ -198,3 +198,50 @@ export const mapResults = cards => {
     }
   })
 }
+
+//Determine colors
+export const setColors = (mainDeck, sideboard) => {
+  let white = false
+  let blue = false
+  let black = false
+  let red = false
+  let green = false
+  let colorless = false
+
+  const cardColors = card => {
+    if (card.mana_cost.match("W")) {
+      white = true
+    }
+    if (card.mana_cost.match("U")) {
+      blue = true
+    }
+    if (card.mana_cost.match("B")) {
+      black = true
+    }
+    if (card.mana_cost.match("R")) {
+      red = true
+    }
+    if (card.mana_cost.match("G")) {
+      green = true
+    }
+    if (card.mana_cost.match("C")) {
+      colorless = true
+    }
+  }
+
+  for (let card of mainDeck) {
+    cardColors(card)
+  }
+  for (let card of sideboard) {
+    cardColors(card)
+  }
+
+  return [
+    { W: white },
+    { U: blue },
+    { B: black },
+    { R: red },
+    { G: green },
+    { C: colorless }
+  ]
+}

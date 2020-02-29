@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { Container } from "react-bootstrap"
-import { useParams, Link } from "react-router-dom"
+import { Container, Row, Card, Col } from "react-bootstrap"
+import { useParams } from "react-router-dom"
+import DeckCard from "./DeckCard"
+
 import axios from "axios"
 
 const UserProfile = () => {
@@ -8,6 +10,7 @@ const UserProfile = () => {
   const [user, setUser] = useState({})
   const [decks, setDecks] = useState([])
   const [decksDisplay, setDecksDisplay] = useState([])
+
   let decksArr = []
 
   useEffect(() => {
@@ -21,6 +24,7 @@ const UserProfile = () => {
 
   async function getUser() {
     const userInfo = await axios.get(`/api/users/${params.id}`)
+    console.log(userInfo)
     setUser(userInfo.data)
   }
 
@@ -32,12 +36,17 @@ const UserProfile = () => {
   const renderDecks = decks => {
     if (decks) {
       for (let deck of decks) {
-        decksArr.push(
-          <div key={`div${deck._id}`}>
-            <p>
-              <Link to={`/decks/${deck._id}`}>{deck.name}</Link> - {deck.format}
-            </p>
-          </div>
+        decksArr.unshift(
+          <DeckCard
+            id={deck._id}
+            name={deck.name}
+            format={deck.format}
+            key={deck._id}
+            matches={deck.matches}
+            comments={deck.comments}
+            colors={deck.colors}
+            matchups={deck.matchups}
+          />
         )
       }
     }
@@ -46,13 +55,24 @@ const UserProfile = () => {
 
   return (
     <Container>
-      <div>
-        <h1>{user.username}</h1>
-        <h3>User Info</h3>
-        <p>{user.description}</p>
-        <h3>User Decks</h3>
-        {decksDisplay}
-      </div>
+      <Row>
+        <Col lg={3}>
+          <Card>
+            <Card.Header as="h5">{user.username}</Card.Header>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">'{user.description}'</li>
+              <li class="list-group-item">Arena: {user.arenaUsername}</li>
+              <li class="list-group-item">MTGO: {user.mtgoUsername}</li>
+              <li class="list-group-item">DCI #: {user.dciNumber}</li>
+              <li class="list-group-item">From {user.country}</li>
+              <li class="list-group-item">Lives in {user.city}</li>
+            </ul>
+          </Card>
+        </Col>
+        <Col lg={9}>
+          <Row>{decksDisplay}</Row>
+        </Col>
+      </Row>
     </Container>
   )
 }

@@ -4,6 +4,7 @@ import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
 
 import { useHistory, useParams } from "react-router-dom"
 import { Button } from "react-bootstrap"
+import { setColors } from "../../../helpers"
 import axios from "axios"
 
 const SaveEditButtonGroup = () => {
@@ -36,6 +37,7 @@ const SaveEditButtonGroup = () => {
   // Save changes
   const handleSaveChanges = async e => {
     e.persist()
+    const colors = setColors(mainDeck, sideboard)
     validateInput()
     await axios
       .put(
@@ -44,7 +46,8 @@ const SaveEditButtonGroup = () => {
           name: deckName,
           format: deckFormat,
           mainboard: mainDeck,
-          sideboard: sideboard
+          sideboard: sideboard,
+          colors: colors
         },
         {
           "Content-Type": "raw"

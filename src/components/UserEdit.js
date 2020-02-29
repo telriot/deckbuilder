@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
-import { Container, Form, Button } from "react-bootstrap"
+import { Container, Form, Button, Alert } from "react-bootstrap"
 import axios from "axios"
 
 const UserEdit = () => {
@@ -14,6 +14,8 @@ const UserEdit = () => {
     country: "",
     city: ""
   })
+  const [validation, setValidation] = useState([])
+  const [show, setShow] = useState(true)
   const params = useParams()
 
   useEffect(() => {
@@ -24,7 +26,6 @@ const UserEdit = () => {
     const userInfo = await axios.get(
       `http://localhost:3000/api/users/${params.id}`
     )
-    console.log(userInfo)
     const {
       description,
       mtgoUsername,
@@ -56,7 +57,8 @@ const UserEdit = () => {
     })
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault()
     const {
       description,
       mtgoUsername,
@@ -67,7 +69,7 @@ const UserEdit = () => {
       city
     } = userInfo
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:3000/api/users/${params.id}`,
         {
           description,
@@ -82,22 +84,44 @@ const UserEdit = () => {
           "Content-Type": "raw"
         }
       )
-      console.log("Profile updated")
+      console.log(response)
     } catch (error) {
-      console.log("Profile update error")
-      console.log(error)
+      let errArray = []
+      for (let err of error.response.data.errors) {
+        errArray.push(Object.values(err))
+      }
+      setValidation(errArray)
     }
+    getUser()
+  }
+
+  const errDisplay = () => {
+    let displayArray = []
+    for (let err of validation) {
+      displayArray.push(<p>{err}</p>)
+    }
+    return displayArray
   }
 
   return (
     <Container>
+      {!!validation.length && show && (
+        <Alert
+          className="pb-0"
+          variant="danger"
+          onClose={() => setShow(false)}
+          dismissible
+        >
+          {errDisplay()}
+        </Alert>
+      )}
       <h3>
         <Link to={`/users/${params.id}`}>
           {userInfo.user && userInfo.user.username}
         </Link>
         's profile settings
       </h3>
-      <Form onSubmit={() => handleSubmit()}>
+      <Form onSubmit={e => handleSubmit(e)}>
         <Form.Group controlId="formBasicDescription">
           <Form.Label>Email Address</Form.Label>
           <Form.Control

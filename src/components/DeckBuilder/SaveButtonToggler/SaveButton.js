@@ -1,10 +1,10 @@
 import React, { useContext } from "react"
 import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
-
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { AuthContext } from "../../../contexts/AuthContext"
 import { useHistory } from "react-router-dom"
 import { Button } from "react-bootstrap"
+import { setColors } from "../../../helpers"
 import axios from "axios"
 
 const SaveButton = () => {
@@ -18,6 +18,7 @@ const SaveButton = () => {
   const { auth } = useContext(AuthContext)
   const history = useHistory()
   const { isXS } = useContext(WindowSizeContext)
+
   // Validate deck input
   const validateInput = () => {
     setValidation({})
@@ -35,6 +36,7 @@ const SaveButton = () => {
 
   // Save decklist
   const handleSave = () => {
+    const colors = setColors(mainDeck, sideboard)
     validateInput()
     axios
       .post(
@@ -44,7 +46,8 @@ const SaveButton = () => {
           format: deckFormat,
           mainboard: mainDeck,
           sideboard: sideboard,
-          authorUsername: auth.authUser
+          authorUsername: auth.authUser,
+          colors: colors
         },
         {
           "Content-Type": "raw"

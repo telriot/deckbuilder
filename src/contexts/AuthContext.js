@@ -11,13 +11,31 @@ const AuthContextProvider = props => {
   const [signupData, setSignupData] = useState({
     username: "",
     password: "",
-    passwordConfirmation: ""
+    passwordConfirmation: "",
+    email: ""
   })
   const [validation, setValidation] = useState({
     password: { error: "" },
     username: { error: "" },
-    login: { error: "" }
+    login: { error: "" },
+    passwordConfirmation: { error: "" },
+    email: { error: "" }
   })
+
+  const loginDataInitialState = { username: "", password: "" }
+  const signupDataInitialState = {
+    username: "",
+    password: "",
+    passwordConfirmation: "",
+    email: ""
+  }
+  const validationInitialState = {
+    password: { error: "" },
+    username: { error: "" },
+    login: { error: "" },
+    passwordConfirmation: { error: "" },
+    email: { error: "" }
+  }
 
   useEffect(() => {
     axios.get("/api/auth/").then(response => {
@@ -37,16 +55,24 @@ const AuthContextProvider = props => {
     })
   }, [])
 
-  const handleValidation = (username, password) => {
-    let passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
-    let usr = /^[A-Za-z]\w{4,14}$/
+  const handleValidation = (
+    username,
+    password,
+    passwordConfirmation,
+    email
+  ) => {
+    //Regex validators
+    const passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
+    const usr = /^[A-Za-z]\w{4,14}$/
+    const emailregex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
     let result = true
+    console.log(password, username, email)
 
     if (
       (password.length && !password.match(passw)) ||
       (username.length && !username.match(usr)) ||
-      !username.length ||
-      !password.length
+      !username.length || !password.length || !email.length
     ) {
       result = false
     }
@@ -94,6 +120,48 @@ const AuthContextProvider = props => {
         }
       })
     }
+    if (password && passwordConfirmation && password !== passwordConfirmation) {
+      setValidation(prevState => {
+        return {
+          ...prevState,
+          passwordConfirmation: {
+            error: "Passwords do not match"
+          }
+        }
+      })
+    } else if (
+      (!password && !passwordConfirmation) ||
+      password === passwordConfirmation
+    ) {
+      setValidation(prevState => {
+        return {
+          ...prevState,
+          passwordConfirmation: {
+            error: ""
+          }
+        }
+      })
+    }
+    if (email.length && !email.match(emailregex)) {
+      console.log("email")
+      setValidation(prevState => {
+        return {
+          ...prevState,
+          email: {
+            error: "Email address is not valid"
+          }
+        }
+      })
+    } else if (email.length && email.match(emailregex)) {
+      setValidation(prevState => {
+        return {
+          ...prevState,
+          email: {
+            error: ""
+          }
+        }
+      })
+    }
     return result
   }
 
@@ -112,7 +180,10 @@ const AuthContextProvider = props => {
         setLoginModalShow,
         validation,
         setValidation,
-        handleValidation
+        handleValidation,
+        validationInitialState,
+        signupDataInitialState,
+        loginDataInitialState
       }}
     >
       {props.children}

@@ -13,12 +13,13 @@ const SignupForm = () => {
 
   function handleCheck(e) {
     e.persist()
-    console.log(e)
     setIsVisible(prevState => !prevState)
   }
 
   let password = ""
   let username = ""
+  let passwordConfirmation = ""
+  let email = ""
 
   const handleChange = e => {
     e.persist()
@@ -28,16 +29,24 @@ const SignupForm = () => {
         [e.target.name]: e.target.value
       }
     })
+
     if (e.target.name === "username") {
-      console.log("setUsername")
       username = e.target.value
     } else if (e.target.name === "password") {
-      console.log("setPassword")
       password = e.target.value
+    } else if (e.target.name === "passwordConfirmation") {
+      passwordConfirmation = e.target.value
+    } else if (e.target.name === "email") {
+      email = e.target.value
     }
+
     handleValidation(
-      username ? username : validation.username,
-      password ? password : validation.password
+      username ? username : signupData.username,
+      password ? password : signupData.password,
+      passwordConfirmation
+        ? passwordConfirmation
+        : signupData.passwordConfirmation,
+      email ? email : signupData.email
     )
   }
 
@@ -68,6 +77,20 @@ const SignupForm = () => {
         </Form.Text>
       </Form.Group>
 
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>Email Address</Form.Label>
+        <Form.Control
+          value={signupData.email}
+          name="email"
+          onChange={e => handleChange(e)}
+          type="email"
+          placeholder="Email address, i.e. bob@jund.it"
+          required
+        />
+
+        <Form.Text className="text-danger">{validation.email.error}</Form.Text>
+      </Form.Group>
+
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control
@@ -93,6 +116,9 @@ const SignupForm = () => {
           placeholder="Password"
           required
         />
+        <Form.Text className="text-danger">
+          {validation.passwordConfirmation.error}
+        </Form.Text>
       </Form.Group>
       <Form.Group controlId="formPasswordCheck">
         <Checkbox />

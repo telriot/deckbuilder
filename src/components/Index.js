@@ -38,12 +38,6 @@ const Index = () => {
               </Card.Body>
             </Card>
           </Col>
-
-          /*<li key={`li${deck._id}`}>
-            <LinkContainer to={`/decks/${deck._id}`}>
-              <a key={`key${deck._id}`}>{deck.name}</a>
-            </LinkContainer>
-          </li>*/
         )
       }
       setIndexList(list)

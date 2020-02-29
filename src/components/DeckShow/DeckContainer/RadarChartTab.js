@@ -11,7 +11,7 @@ const StatsTab = () => {
   const matchupsDataToGraph = matchups => {
     let matchupData = []
 
-    for (let [key, value] of Object.entries(matchups)) {
+    for (let value of Object.values(matchups)) {
       const { preboard, postboard, total, archetype } = value
       matchupData.push({
         archetype: archetype,
