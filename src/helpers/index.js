@@ -237,11 +237,11 @@ export const setColors = (mainDeck, sideboard) => {
   }
 
   return [
-    { W: white },
-    { U: blue },
-    { B: black },
-    { R: red },
-    { G: green },
-    { C: colorless }
+    { w: white },
+    { u: blue },
+    { b: black },
+    { r: red },
+    { g: green },
+    { c: colorless }
   ]
 }

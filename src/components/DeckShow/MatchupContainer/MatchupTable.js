@@ -32,15 +32,17 @@ const MatchupTable = () => {
     <Table striped bordered hover size="sm">
       <thead>
         <tr>
-          <th data-order="date">Date</th>
-          <th data-order="archetype">
+          <th className="border-0" data-order="date">
+            Date
+          </th>
+          <th className="border-0" data-order="archetype">
             <FilterDropdown
               toggle={CustomToggle}
               menu={CustomMenuArchetype}
               html="Archetype"
             />
           </th>
-          <th data-order="matchup">
+          <th className="border-0" data-order="matchup">
             {" "}
             <FilterDropdown
               toggle={CustomToggle}
@@ -48,8 +50,8 @@ const MatchupTable = () => {
               html="Matchup"
             />
           </th>
-          <th>Result</th>
-          <th className={!isSM ? "d-none" : undefined}>Comments</th>
+          <th className="border-0">Result</th>
+          <th className={!isSM ? "border-0 d-none" : "border-0"}>Comments</th>
         </tr>
       </thead>
       <tbody>{rowsArr}</tbody>

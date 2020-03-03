@@ -4,6 +4,7 @@ import { Nav } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faListAlt } from "@fortawesome/free-solid-svg-icons"
 import { faPercentage } from "@fortawesome/free-solid-svg-icons"
+import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons"
 
 const listIcon = (
   <FontAwesomeIcon
@@ -18,6 +19,13 @@ const matchupIcon = (
     icon={faPercentage}
     data-targettype="icon"
     style={{ color: "#327BFF", marginLeft: "2px" }}
+  />
+)
+const exchangeIcon = (
+  <FontAwesomeIcon
+    icon={faExchangeAlt}
+    data-targettype="icon"
+    style={{ color: "#327BFF" }}
   />
 )
 
@@ -52,6 +60,16 @@ const DeckContainerTab = props => {
           onClick={() => setDeckContainerTab("matchups")}
         >
           {matchupIcon}
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link
+          className="pr-0"
+          href="#"
+          name="sideguide"
+          onClick={() => setDeckContainerTab("sideguide")}
+        >
+          {exchangeIcon}
         </Nav.Link>
       </Nav.Item>
     </Nav>

@@ -14,6 +14,8 @@ import DeckDownloadButton from "./DeckShow/DeckDownloadButton"
 import DeckContainerTab from "./DeckShow/DeckContainerTab"
 import StatsTab from "./DeckBuilder/Decklist/StatsTab"
 import PriceInfo from "./DeckShow/PriceInfo"
+import SideGuideContainer from "./DeckShow/SideGuideContainer"
+import SideDataTab from "./DeckShow/SideDataTab/SideDataTab"
 
 const DeckShow = () => {
   const { deckInfo, deckContainerTab } = useContext(DecklistContext)
@@ -22,8 +24,8 @@ const DeckShow = () => {
 
   return (
     <Container>
-      <Card>
-        <Card.Header className="py-1 py-md-2">
+      <Card className="border-0 bg-light">
+        <Card.Header className=" border-0 py-1 py-md-2">
           <Row>
             <Col xs={5} sm={7} md={8} lg={9} className="px-0">
               <DeckHeader />
@@ -65,10 +67,13 @@ const DeckShow = () => {
               <Col className="pr-0 pl-2 " md={6} lg={7}>
                 {deckContainerTab === "list" && <DeckContainer />}
                 {deckContainerTab === "matchups" && <MatchupContainer />}
+                {deckContainerTab === "sideguide" && <SideGuideContainer />}
               </Col>
               <Col className="px-0 pr-md-3" md={5} lg={4}>
                 {deckContainerTab === "list" && <StatsTab />}
                 {deckContainerTab === "matchups" && <RadarChartTab />}
+                {deckContainerTab === "sideguide" && <SideDataTab />}
+
                 {!isLG && (
                   <Container className="d-flex align-items-baseline justify-content-center">
                     <div>

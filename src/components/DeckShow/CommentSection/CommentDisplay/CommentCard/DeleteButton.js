@@ -9,23 +9,25 @@ const CommentCard = props => {
   const { setCommentsArr, createComments } = useContext(CommentContext)
   const params = useParams()
 
-  const destroyComment = e => {
+  const destroyComment = async e => {
     e.persist()
-    axios
-      .post(`/api/decks/${params.id}/comments/${e.target.dataset.commentid}`, {
-        deckId: params.id,
-        commentId: e.target.dataset.commentid
-      })
-      .then(response => {
-        if (response.status === 200) {
-          setCommentsArr([])
-          createComments(params)
+
+    try {
+      await axios.post(
+        `/api/decks/${params.id}/comments/${e.target.dataset.commentid}`,
+        {
+          deckId: params.id,
+          commentId: e.target.dataset.commentid
         }
-      })
-      .catch(error => {
-        console.log("Server error", error)
-      })
+      )
+    } catch (error) {
+      console.log("Server error", error)
+    }
+
+    setCommentsArr([])
+    createComments(params)
   }
+
   return (
     <Button
       variant="outline-danger"

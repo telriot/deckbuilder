@@ -106,38 +106,28 @@ const MatchupModal = props => {
   }
 
   const handleSubmit = async () => {
-    await axios
-      .put(`/api/decks/${params.id}/matchups`, resultsObj(), {
+    try {
+      await axios.put(`/api/decks/${params.id}/matchups`, resultsObj(), {
         "Content-Type": "raw"
       })
-      .then(response => {
-        if (response.data.errmsg) {
-          console.log(response.data.errmsg)
-        }
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    } catch (error) {
+      console.error(error.response)
+    }
     setResult({ g1: undefined, g2: undefined, g3: undefined })
     setArchetype("")
     setMatchupDeck("")
     setComment("")
-    await axios
-      .post(
+    try {
+      await axios.post(
         `/api/decks/${params.id}/matchups`,
         { archetype, matchupDeck, comment, result, deckId: params.id },
         {
           "Content-Type": "raw"
         }
       )
-      .then(response => {
-        if (response.data.errmsg) {
-          console.log(response.data.errmsg)
-        }
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    } catch (error) {
+      console.error(error.response)
+    }
 
     try {
       const response = await axios.get(`/api/decks/${params.id}`)

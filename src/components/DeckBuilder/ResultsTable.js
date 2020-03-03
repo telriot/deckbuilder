@@ -191,9 +191,16 @@ const ResultsTable = () => {
 
       <Table size="sm" hover responsive="sm">
         {isSM && (
-          <thead style={{ backgroundColor: "#F7F7F7", fontSize: "0.85rem" }}>
+          <thead
+            className="border-0"
+            style={{ backgroundColor: "#F7F7F7", fontSize: "0.85rem" }}
+          >
             <tr>
-              <th data-name="name" onClick={e => handleTableOrder(e)}>
+              <th
+                className="border-0"
+                data-name="name"
+                onClick={e => handleTableOrder(e)}
+              >
                 Name
                 {!isLoading && resultsOrder.orderCriteria === "name"
                   ? resultsOrder.direction === "desc"
@@ -202,11 +209,18 @@ const ResultsTable = () => {
                   : ""}
               </th>
               {visibleColumns.cost && (
-                <th style={{ minWidth: "80px" }}>Cost</th>
+                <th className="border-0" style={{ minWidth: "80px" }}>
+                  Cost
+                </th>
               )}
-              {visibleColumns.type && <th style={{ width: "150px" }}>Type</th>}
+              {visibleColumns.type && (
+                <th className="border-0" style={{ width: "150px" }}>
+                  Type
+                </th>
+              )}
               {visibleColumns.rarity && (
                 <th
+                  className="border-0"
                   data-name="rarity"
                   style={{ width: "60px", minWidth: "55px" }}
                   onClick={e => handleTableOrder(e)}
@@ -221,6 +235,7 @@ const ResultsTable = () => {
               )}
               {visibleColumns.cmc && (
                 <th
+                  className="border-0"
                   data-name="cmc"
                   style={{ width: "55px", minWidth: "50px" }}
                   onClick={e => handleTableOrder(e)}
@@ -233,7 +248,9 @@ const ResultsTable = () => {
                     : ""}
                 </th>
               )}
-              <th data-name="plus">{""}</th>
+              <th className="border-0" data-name="plus">
+                {""}
+              </th>
             </tr>
           </thead>
         )}

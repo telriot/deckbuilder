@@ -1,13 +1,13 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect, useContext, useState } from "react"
 import { Container, Card, Row, Col, Button } from "react-bootstrap"
 import axios from "axios"
 import { LinkContainer } from "react-router-bootstrap"
 import { DecklistContext } from "../contexts/DecklistContext"
+import DeckCard from "./DeckCard"
 
 const Index = () => {
-  const { isLoading, setIsLoading, indexList, setIndexList } = useContext(
-    DecklistContext
-  )
+  const [indexList, setIndexList] = useState([])
+  const { isLoading, setIsLoading } = useContext(DecklistContext)
 
   useEffect(() => {
     deckSearch()
@@ -19,25 +19,18 @@ const Index = () => {
       let list = []
       for (let deck of response.data) {
         list.push(
-          <Col md={3} key={`key${deck._id}`}>
-            <Card
-              className="m-1"
-              key={`card${deck._id}`}
-              style={{ width: "15rem" }}
-            >
-              <Card.Body>
-                <LinkContainer to={`/decks/${deck._id}`}>
-                  <Card.Title>
-                    <Button>{deck.name}</Button>
-                  </Card.Title>
-                </LinkContainer>
-
-                <Card.Text>
-                  A {deck.format} deck by {deck.authorUsername}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
+          <DeckCard
+            id={deck._id}
+            name={deck.name}
+            format={deck.format}
+            key={`deckCard${deck._id}`}
+            matches={deck.matches}
+            comments={deck.comments}
+            colors={deck.colors}
+            matchups={deck.matchups}
+            author={deck.author}
+            authorUsername={deck.authorUsername}
+          />
         )
       }
       setIndexList(list)
@@ -52,13 +45,7 @@ const Index = () => {
   return (
     <Container>
       <h1 className="text-center">Latest Decks</h1>
-      {isLoading ? (
-        <h3>Loading...</h3>
-      ) : (
-        <Container>
-          <Row>{indexList}</Row>
-        </Container>
-      )}
+      {isLoading ? <h3>Loading...</h3> : <Row>{indexList}</Row>}
     </Container>
   )
 }

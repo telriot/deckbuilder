@@ -19,7 +19,6 @@ const FileReaderButton = () => {
         `https://api.scryfall.com/cards/search?q=!"${name}"`
       )
       const cardObj = mapResults(card.data.data)
-      console.log(cardObj)
       if (pile === "mainboard") {
         for (let i = 0; i < copies; i++) {
           setMainDeck(previousDeck => [...previousDeck, cardObj[0]])

@@ -37,7 +37,7 @@ const CommentForm = () => {
         <div>
           <textarea
             placeholder="Type your comment here..."
-            className=" form-control p-1 my-2 d-block"
+            className=" form-control p-1 my-2 d-block border-0 bg-light"
             style={{ minHeight: "120px", width: "100%", fontSize: "0.9rem" }}
             as="textarea"
             value={commentText}

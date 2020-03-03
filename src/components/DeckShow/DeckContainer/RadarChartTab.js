@@ -11,21 +11,23 @@ const StatsTab = () => {
   const matchupsDataToGraph = matchups => {
     let matchupData = []
 
-    for (let value of Object.values(matchups)) {
-      const { preboard, postboard, total, archetype } = value
-      matchupData.push({
-        archetype: archetype,
-        A: !((preboard.w * 100) / (preboard.w + preboard.l + preboard.u))
-          ? 0
-          : (preboard.w * 100) / (preboard.w + preboard.l + preboard.u),
-        B: !((postboard.w * 100) / (postboard.w + postboard.l + postboard.u))
-          ? 0
-          : (postboard.w * 100) / (postboard.w + postboard.l + postboard.u),
-        C: !((total.w * 100) / (total.w + total.l + total.u))
-          ? 0
-          : (total.w * 100) / (total.w + total.l + total.u),
-        fullMark: 100
-      })
+    if (matchups) {
+      for (let value of Object.values(matchups)) {
+        const { preboard, postboard, total, archetype } = value
+        matchupData.push({
+          archetype: archetype,
+          A: !((preboard.w * 100) / (preboard.w + preboard.l + preboard.u))
+            ? 0
+            : (preboard.w * 100) / (preboard.w + preboard.l + preboard.u),
+          B: !((postboard.w * 100) / (postboard.w + postboard.l + postboard.u))
+            ? 0
+            : (postboard.w * 100) / (postboard.w + postboard.l + postboard.u),
+          C: !((total.w * 100) / (total.w + total.l + total.u))
+            ? 0
+            : (total.w * 100) / (total.w + total.l + total.u),
+          fullMark: 100
+        })
+      }
     }
     return matchupData
   }

@@ -12,6 +12,7 @@ import UserEdit from "./components/UserEdit"
 import DecklistContextProvider from "./contexts/DecklistContext"
 import CommentContextProvider from "./contexts/CommentContext"
 import MatchupContextProvider from "./contexts/MatchupContext"
+import SideGuideContextProvider from "./contexts/SideGuideContext"
 
 const App = () => {
   return (
@@ -38,7 +39,9 @@ const App = () => {
           <DecklistContextProvider>
             <CommentContextProvider>
               <MatchupContextProvider>
-                <DeckShow />
+                <SideGuideContextProvider>
+                  <DeckShow />
+                </SideGuideContextProvider>
               </MatchupContextProvider>
             </CommentContextProvider>
           </DecklistContextProvider>

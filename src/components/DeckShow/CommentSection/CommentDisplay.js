@@ -15,7 +15,9 @@ const CommentDisplay = () => {
 
   return (
     <div>
-      <Container className="px-0 mt-2">{commentsArr}</Container>
+      <Container className="px-0 mt-2  border-0 bg-light">
+        {commentsArr}
+      </Container>
     </div>
   )
 }

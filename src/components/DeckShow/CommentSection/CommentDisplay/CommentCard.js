@@ -12,8 +12,8 @@ const CommentCard = props => {
 
   return (
     <div key={`div${comment._id}`}>
-      <Card className="mx-0 mb-2">
-        <Card.Header className="container-fluid p-1 align-items-center">
+      <Card className="mx-0 mb-2  border-0 bg-light">
+        <Card.Header className="container-fluid p-1 align-items-center border-0 ">
           <Row key={`row${comment._id}`}>
             <Col xs={8}>
               <p className="m-1">
