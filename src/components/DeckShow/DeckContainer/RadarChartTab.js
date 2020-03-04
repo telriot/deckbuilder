@@ -1,12 +1,20 @@
-import React, { useContext } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { Card, Container } from "react-bootstrap"
 import RadarButtonGroup from "./RadarChartTab/RadarButtonGroup"
 import RadarChart from "./RadarChartTab/RadarChart"
 import MatchupModalButton from "./RadarChartTab/MatchupModalButton"
+import { MatchupContext } from "../../../contexts/MatchupContext"
 
 const StatsTab = () => {
   const { radarButtonGroupValue, deckInfo } = useContext(DecklistContext)
+  const { rowsArr } = useContext(MatchupContext)
+  const [data, setData] = useState({})
+  const [avgMWP, setAvgMWP] = useState({})
+
+  useEffect(() => {
+    deckInfo.matchups && setData(matchupsDataToGraph(deckInfo.matchups))
+  }, [deckInfo])
 
   const matchupsDataToGraph = matchups => {
     let matchupData = []
@@ -31,37 +39,43 @@ const StatsTab = () => {
     }
     return matchupData
   }
-  const data = matchupsDataToGraph(deckInfo.matchups)
 
-  const avgMWP = data => {
-    let A = 0
-    let B = 0
-    let C = 0
-    for (let matchup of data) {
-      A += matchup.A
-      B += matchup.B
-      C += matchup.C
+  const calculateAvgMWP = data => {
+    if (data.length) {
+      console.log(data)
+      let A = 0
+      let B = 0
+      let C = 0
+      for (let matchup of data) {
+        console.log(matchup)
+        A += matchup.A
+        B += matchup.B
+        C += matchup.C
+      }
+      return {
+        A: A / deckInfo.matches.length || 0,
+        B: B / deckInfo.matches.length || 0,
+        C: C / deckInfo.matches.length || 0
+      }
     }
-    return {
-      A: A / data.length,
-      B: B / data.length,
-      C: C / data.length
-    }
+    return { A: 0, B: 0, C: 0 }
   }
 
   return (
     <Card.Body
       style={{ fontSize: "0.75rem" }}
-      className="px-2 pr-md-0 pr-md-2 py-3 py-md-2 text-center"
+      className="px-2 pr-md-0 pr-md-2 py-3 pt-md-0 text-center"
     >
       <Container className="d-flex flex-column px-0">
-        <RadarButtonGroup MWP={avgMWP(data)} />
+        <RadarButtonGroup
+          MWP={data.length ? calculateAvgMWP(data) : { A: 0, B: 0, C: 0 }}
+        />
       </Container>
       <Container>
         {radarButtonGroupValue === 1 && (
           <RadarChart
             archetypes={deckInfo.matchups}
-            data={matchupsDataToGraph(deckInfo.matchups)}
+            data={data}
             dataKey="C"
             game="Total"
             color="#fc033d"
@@ -70,7 +84,7 @@ const StatsTab = () => {
         {radarButtonGroupValue === 2 && (
           <RadarChart
             archetypes={deckInfo.matchups}
-            data={matchupsDataToGraph(deckInfo.matchups)}
+            data={data}
             dataKey="A"
             game="Pre-board"
             color="#82ca9d"
@@ -79,7 +93,7 @@ const StatsTab = () => {
         {radarButtonGroupValue === 3 && (
           <RadarChart
             archetypes={deckInfo.matchups}
-            data={matchupsDataToGraph(deckInfo.matchups)}
+            data={data}
             dataKey="B"
             game="Post-board"
             color="#cf34eb"

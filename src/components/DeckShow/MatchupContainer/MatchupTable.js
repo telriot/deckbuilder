@@ -17,12 +17,12 @@ const MatchupTable = () => {
     matchupFilter,
     deckFilter
   } = useContext(MatchupContext)
-  const { isSM } = useContext(WindowSizeContext)
+  const { isXS, isSM } = useContext(WindowSizeContext)
   let params = useParams()
 
   useEffect(() => {
     createTableBody(params, matchupFilter, deckFilter)
-  }, [page, params, matchupFilter, deckFilter])
+  }, [page, params, matchupFilter, deckFilter, isXS])
 
   useEffect(() => {
     setPage(1)

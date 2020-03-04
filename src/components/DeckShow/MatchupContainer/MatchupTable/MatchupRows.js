@@ -1,6 +1,8 @@
-import React, { useContext } from "react"
+import React, { useState, useContext } from "react"
 import { WindowSizeContext } from "../../../../contexts/WindowSizeContext"
 import { MatchupContext } from "../../../../contexts/MatchupContext"
+import { DecklistContext } from "../../../../contexts/DecklistContext"
+
 import { useParams } from "react-router-dom"
 import { Popover, OverlayTrigger } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -13,15 +15,36 @@ const MatchupRows = props => {
   const { matchupResultStyle, deletionResultObj, createTableBody } = useContext(
     MatchupContext
   )
-  const { isSM, isLG } = useContext(WindowSizeContext)
+  const { setDeckInfo } = useContext(DecklistContext)
+  const { isXS, isSM, isLG } = useContext(WindowSizeContext)
+  const [hover, setHover] = useState(false)
   const { archetype, matchupDeck, comment, result, date, index, match } = props
   const { g1, g2, g3 } = result
   let params = useParams()
 
   const deleteIcon = id => (
-    <div onClick={() => handleDelete(id)} data-matchid={id}>
+    <div
+      onClick={() => handleDelete(id)}
+      data-name="delete"
+      data-matchid={id}
+      onMouseEnter={e => setHover(e.target.dataset.name)}
+      onMouseLeave={() => setHover("")}
+      style={{ padding: "1px 3px" }}
+    >
       <FontAwesomeIcon
-        style={{ fontSize: "1rem" }}
+        style={
+          hover === "delete"
+            ? {
+                fontSize: "0.9rem",
+                backgroundColor: "#bcbfc4",
+                color: "#2663CC"
+              }
+            : {
+                fontSize: "0.9rem",
+                color: "#327BFF",
+                transition: "color 0.15s ease-in-out"
+              }
+        }
         className="align-self-center mr-1"
         icon={faTrashAlt}
         data-matchid={id}
@@ -30,46 +53,38 @@ const MatchupRows = props => {
   )
 
   const handleDelete = async id => {
-    await axios
-      .get(`/api/decks/${params.id}/matchups/${id}`)
-      .then(response => {
-        if (response.status === 200) {
-          const { archetype, result } = response.data
-          axios
-            .put(
-              `/api/decks/${params.id}/matchups`,
-              deletionResultObj(result, archetype, params),
-              {
-                "Content-Type": "raw"
-              }
-            )
-            .then(response => {
-              if (response.data.errmsg) {
-                console.log(response.data.errmsg)
-              }
-            })
-            .catch(error => {
-              console.log(error)
-            })
+    try {
+      const response = await axios.get(`/api/decks/${params.id}/matchups/${id}`)
+      const { archetype, result } = response.data
+      await axios.put(
+        `/api/decks/${params.id}/matchups`,
+        deletionResultObj(result, archetype, params),
+        {
+          "Content-Type": "raw"
         }
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    axios
-      .post(`/api/decks/${params.id}/matchups/${id}`, {
+      )
+    } catch (error) {
+      console.log("Server error", error)
+    }
+    try {
+      axios.post(`/api/decks/${params.id}/matchups/${id}`, {
         deckId: params.id,
         matchId: id
       })
-      .then(response => {
-        if (response.status === 200) {
-          console.log("matchup upload complete")
-          createTableBody(params)
-        }
-      })
-      .catch(error => {
-        console.log("Server error", error)
-      })
+      console.log("matchup upload complete")
+    } catch (error) {
+      console.log("Server error", error)
+    }
+    try {
+      const response = await axios.get(`/api/decks/${params.id}`)
+      setDeckInfo(response.data)
+      createTableBody(params)
+    } catch (error) {
+      if (axios.isCancel(error)) {
+      } else {
+        console.error(error.response)
+      }
+    }
   }
 
   const commentPopover = (
@@ -97,9 +112,13 @@ const MatchupRows = props => {
       <td className="text-capitalize" key={archetype}>
         {archetype}
       </td>
-      <OverlayTrigger placement="bottom" overlay={commentPopover}>
+      {isXS ? (
+        <OverlayTrigger placement="bottom" overlay={commentPopover}>
+          <td key={matchupDeck}>{matchupDeck}</td>
+        </OverlayTrigger>
+      ) : (
         <td key={matchupDeck}>{matchupDeck}</td>
-      </OverlayTrigger>
+      )}
       <td
         className="text-center"
         style={matchupResultStyle(result)}

@@ -33,7 +33,7 @@ const DeckRow = props => {
 
         <Col
           xs={8}
-          md={7}
+          lg={7}
           className="px-0"
           key={`name${arr ? arr.label : "side"}${card.cardname}`}
         >
@@ -42,7 +42,7 @@ const DeckRow = props => {
 
         <Col
           xs={3}
-          md={4}
+          lg={4}
           className="px-0 pr-md-2"
           key={`cost${arr ? arr.label : "side"}${card.cardname}`}
         >

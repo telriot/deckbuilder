@@ -32,7 +32,7 @@ const Decklist = () => {
           />
         )
       case "#stats":
-        return !display ? "stats" : <StatsTab />
+        return !display ? "stats" : <StatsTab origin="deckbuilder" />
 
       default:
         return !display ? (

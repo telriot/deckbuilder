@@ -27,21 +27,18 @@ const DeckShow = () => {
       <Card className="border-0 bg-light">
         <Card.Header className=" border-0 py-1 py-md-2">
           <Row>
-            <Col xs={7} sm={7} md={8} lg={9} className="px-0">
+            <Col xs={7} sm={7} md={8} lg={9} className="px-1">
               <DeckHeader />
             </Col>
             {!isMD && (
               <Col
                 xs={5}
-                sm={3}
-                className="pl-0 d-flex align-items-center justify-content-end"
+                className="px-0 d-flex align-items-center justify-content-end"
               >
                 <DeckContainerTab direction="row" />
               </Col>
             )}
             <Col
-              xs={0}
-              sm={2}
               md={4}
               lg={3}
               className="d-flex flex-row justify-content-end align-items-center px-0
@@ -64,7 +61,7 @@ const DeckShow = () => {
               <Col md={1}>
                 <DeckContainerTab />
               </Col>
-              <Col className="pr-0 pl-2 " md={6} lg={7}>
+              <Col className="pr-0 pl-3 " md={6} lg={7}>
                 {deckContainerTab === "list" && <DeckContainer />}
                 {deckContainerTab === "matchups" && <MatchupContainer />}
                 {deckContainerTab === "sideguide" && <SideGuideContainer />}
@@ -86,10 +83,13 @@ const DeckShow = () => {
           ) : (
             <Fragment>
               {deckContainerTab === "list" && (
-                <Container>
-                  <DeckContainer />
+                <Fragment>
+                  <Container>
+                    <DeckContainer />
+                  </Container>
+
                   <StatsTab />
-                </Container>
+                </Fragment>
               )}
               {deckContainerTab === "matchups" && (
                 <Fragment>
@@ -106,7 +106,7 @@ const DeckShow = () => {
             </Fragment>
           )}
           {!isMD && (
-            <Container className="px-4">
+            <Container className="px-2">
               <DeckDownloadButton display="block" />
               <DeckEditButton display="block" />
               <DeckDeleteButton display="block" />

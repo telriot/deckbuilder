@@ -27,29 +27,31 @@ const MatchupPagination = () => {
 
   return (
     <div>
-      <Pagination size="sm">
-        {pages > 5 && (
-          <Pagination.First
+      {pages > 1 && (
+        <Pagination size="sm">
+          {pages > 5 && (
+            <Pagination.First
+              disabled={page === 1 && true}
+              onClick={() => setPage(1)}
+            />
+          )}
+          <Pagination.Prev
             disabled={page === 1 && true}
-            onClick={() => setPage(1)}
+            onClick={() => setPage(prevState => prevState - 1)}
           />
-        )}
-        <Pagination.Prev
-          disabled={page === 1 && true}
-          onClick={() => setPage(prevState => prevState - 1)}
-        />
-        {items}
-        <Pagination.Next
-          disabled={page === pages && true}
-          onClick={() => setPage(prevState => prevState + 1)}
-        />
-        {pages > 5 && (
-          <Pagination.Last
+          {items}
+          <Pagination.Next
             disabled={page === pages && true}
-            onClick={() => setPage(pages)}
+            onClick={() => setPage(prevState => prevState + 1)}
           />
-        )}
-      </Pagination>
+          {pages > 5 && (
+            <Pagination.Last
+              disabled={page === pages && true}
+              onClick={() => setPage(pages)}
+            />
+          )}
+        </Pagination>
+      )}
     </div>
   )
 }

@@ -5,7 +5,7 @@ import BasicBarChart from "./StatsTab/BasicBarChart"
 import TwoLevelPieChart from "./StatsTab/TwoLevelPieChart"
 import ButtonGroup from "./StatsTab/ButtonGroup"
 
-const StatsTab = () => {
+const StatsTab = props => {
   const { mainDeck, buttonGroupValue } = useContext(DecklistContext)
 
   //Filter cards in deck by normalized type
@@ -313,7 +313,11 @@ const StatsTab = () => {
   return (
     <Card.Body
       style={{ fontSize: "0.75rem" }}
-      className="px-2 pr-md-0 pr-md-2 py-3 py-md-2"
+      className={
+        props.origin === "deckbuilder"
+          ? "px-2 pr-md-0 pr-md-2 py-3 py-md-2"
+          : "px-2 pr-md-0 pr-md-2 py-3 pt-md-0"
+      }
     >
       <Container className="d-flex flex-column px-0">
         <ButtonGroup avgCMC={avgCMC(mainDeck)} />

@@ -18,18 +18,31 @@ const Index = () => {
       const response = await axios.get("/api/")
       let list = []
       for (let deck of response.data) {
+        const {
+          _id,
+          name,
+          format,
+          matches,
+          comments,
+          colors,
+          matchups,
+          author,
+          authorUsername,
+          sideGuides
+        } = deck
         list.push(
           <DeckCard
-            id={deck._id}
-            name={deck.name}
-            format={deck.format}
-            key={`deckCard${deck._id}`}
-            matches={deck.matches}
-            comments={deck.comments}
-            colors={deck.colors}
-            matchups={deck.matchups}
-            author={deck.author}
-            authorUsername={deck.authorUsername}
+            id={_id}
+            name={name}
+            format={format}
+            key={`deckCard${_id}`}
+            matches={matches}
+            comments={comments}
+            colors={colors}
+            matchups={matchups}
+            author={author}
+            authorUsername={authorUsername}
+            sideGuides={sideGuides}
           />
         )
       }

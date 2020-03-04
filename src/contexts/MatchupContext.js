@@ -79,7 +79,6 @@ const MatchupContextProvider = props => {
     let index = 0
     let response = []
     let rows = []
-    console.log("ran")
     try {
       response = await axios.get(`/api/decks/${params.id}/matchups`, {
         params: {
