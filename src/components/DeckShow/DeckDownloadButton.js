@@ -3,8 +3,16 @@ import { DecklistContext } from "../../contexts/DecklistContext"
 import { dataSrc } from "../../helpers/"
 import { Button } from "react-bootstrap"
 
-const DeckHeader = () => {
+const DeckHeader = props => {
   const { deckObj, sideObj } = useContext(DecklistContext)
+
+  const classNameDisplay = () => {
+    if (props.display && props.display === "block") {
+      return "btn-sm btn-primary btn-block"
+    } else {
+      return "btn-sm btn-primary"
+    }
+  }
 
   const downloadTxtFile = () => {
     const element = document.createElement("a")
@@ -15,7 +23,11 @@ const DeckHeader = () => {
     element.click()
   }
   return (
-    <Button size="sm" onClick={() => downloadTxtFile()}>
+    <Button
+      size="sm"
+      className={classNameDisplay()}
+      onClick={() => downloadTxtFile()}
+    >
       Download
     </Button>
   )

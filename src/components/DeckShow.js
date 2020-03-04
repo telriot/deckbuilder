@@ -27,12 +27,12 @@ const DeckShow = () => {
       <Card className="border-0 bg-light">
         <Card.Header className=" border-0 py-1 py-md-2">
           <Row>
-            <Col xs={5} sm={7} md={8} lg={9} className="px-0">
+            <Col xs={7} sm={7} md={8} lg={9} className="px-0">
               <DeckHeader />
             </Col>
             {!isMD && (
               <Col
-                xs={4}
+                xs={5}
                 sm={3}
                 className="pl-0 d-flex align-items-center justify-content-end"
               >
@@ -40,14 +40,14 @@ const DeckShow = () => {
               </Col>
             )}
             <Col
-              xs={3}
+              xs={0}
               sm={2}
               md={4}
               lg={3}
               className="d-flex flex-row justify-content-end align-items-center px-0
 "
             >
-              <DeckDownloadButton />
+              {isMD && <DeckDownloadButton />}
               {deckInfo.author === auth.authUserId && isMD && (
                 <DeckEditButton />
               )}
@@ -74,7 +74,7 @@ const DeckShow = () => {
                 {deckContainerTab === "matchups" && <RadarChartTab />}
                 {deckContainerTab === "sideguide" && <SideDataTab />}
 
-                {!isLG && (
+                {!isLG && deckContainerTab === "list" && (
                   <Container className="d-flex align-items-baseline justify-content-center">
                     <div>
                       <PriceInfo />
@@ -97,10 +97,17 @@ const DeckShow = () => {
                   {deckInfo.matchups && <RadarChartTab />}
                 </Fragment>
               )}
+              {deckContainerTab === "sideguide" && (
+                <Fragment>
+                  <SideGuideContainer />
+                  <SideDataTab />
+                </Fragment>
+              )}
             </Fragment>
           )}
           {!isMD && (
             <Container className="px-4">
+              <DeckDownloadButton display="block" />
               <DeckEditButton display="block" />
               <DeckDeleteButton display="block" />
             </Container>

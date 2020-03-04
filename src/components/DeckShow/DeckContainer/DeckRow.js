@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Row, Col, OverlayTrigger, Popover, Image } from "react-bootstrap"
 import { manaCostFonts } from "../../../helpers/"
+import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
 
 const DeckRow = props => {
   const { card, arr } = props
+  const { isLG } = useContext(WindowSizeContext)
 
   return (
     <OverlayTrigger
@@ -18,7 +20,7 @@ const DeckRow = props => {
     >
       <Row
         className="mr-lg-2"
-        style={{ minWidth: "50%" }}
+        style={isLG ? { minWidth: "50%" } : { minWidth: "100%" }}
         key={`row${arr ? arr.label : "side"}${card.cardname}`}
       >
         <Col

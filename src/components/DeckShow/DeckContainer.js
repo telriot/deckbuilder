@@ -14,7 +14,7 @@ import PriceInfo from "./PriceInfo"
 
 const DeckContainer = () => {
   const { deckInfo } = useContext(DecklistContext)
-  const { isXS, isLG } = useContext(WindowSizeContext)
+  const { isXS, isMD, isLG } = useContext(WindowSizeContext)
   const [showList, setShowList] = useState([])
 
   //Execute if deck
@@ -58,6 +58,7 @@ const DeckContainer = () => {
   const finalList = buildFinalList()
 
   const typeList = () => {
+    console.log("list created")
     let display = []
     for (let arr of finalList) {
       if (arr.list && arr.list.length) {
@@ -82,7 +83,7 @@ const DeckContainer = () => {
 
   useEffect(() => {
     setShowList(typeList())
-  }, [deckInfo.mainboard])
+  }, [deckInfo.mainboard, isLG])
 
   const containerStyle = () => {
     if (isLG) {
