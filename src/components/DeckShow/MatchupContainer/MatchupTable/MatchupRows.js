@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react"
 import { WindowSizeContext } from "../../../../contexts/WindowSizeContext"
 import { MatchupContext } from "../../../../contexts/MatchupContext"
 import { DecklistContext } from "../../../../contexts/DecklistContext"
-
 import { useParams } from "react-router-dom"
 import { Popover, OverlayTrigger } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -18,7 +17,8 @@ const MatchupRows = props => {
   const { setDeckInfo } = useContext(DecklistContext)
   const { isXS, isSM, isLG } = useContext(WindowSizeContext)
   const [hover, setHover] = useState(false)
-  const { archetype, matchupDeck, comment, result, date, index, match } = props
+  const { index, match } = props
+  const { archetype, matchupDeck, comment, result, date } = match
   const { g1, g2, g3 } = result
   let params = useParams()
 
@@ -29,7 +29,7 @@ const MatchupRows = props => {
       data-matchid={id}
       onMouseEnter={e => setHover(e.target.dataset.name)}
       onMouseLeave={() => setHover("")}
-      style={{ padding: "1px 3px" }}
+      style={{ padding: "0px 3px" }}
     >
       <FontAwesomeIcon
         style={

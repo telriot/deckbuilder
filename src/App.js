@@ -13,6 +13,7 @@ import DecklistContextProvider from "./contexts/DecklistContext"
 import CommentContextProvider from "./contexts/CommentContext"
 import MatchupContextProvider from "./contexts/MatchupContext"
 import SideGuideContextProvider from "./contexts/SideGuideContext"
+import UserContextProvider from "./contexts/UserContext"
 
 const App = () => {
   return (
@@ -52,10 +53,14 @@ const App = () => {
           </DecklistContextProvider>
         </Route>
         <Route exact path="/users/:id">
-          <UserProfile />
+          <UserContextProvider>
+            <UserProfile />
+          </UserContextProvider>
         </Route>
         <Route exact path="/users/:id/settings">
-          <UserEdit />
+          <UserContextProvider>
+            <UserEdit />
+          </UserContextProvider>
         </Route>
       </Switch>
     </Fragment>

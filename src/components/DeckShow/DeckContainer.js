@@ -14,7 +14,7 @@ import PriceInfo from "./PriceInfo"
 
 const DeckContainer = () => {
   const { deckInfo } = useContext(DecklistContext)
-  const { isXS, isMD, isLG } = useContext(WindowSizeContext)
+  const { isXS, isLG } = useContext(WindowSizeContext)
   const [showList, setShowList] = useState([])
 
   //Execute if deck

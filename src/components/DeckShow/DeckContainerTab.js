@@ -13,7 +13,6 @@ const listIcon = (
     style={{ color: "#327BFF" }}
   />
 )
-
 const matchupIcon = (
   <FontAwesomeIcon
     icon={faPercentage}
@@ -21,7 +20,7 @@ const matchupIcon = (
     style={{ color: "#327BFF", marginLeft: "2px" }}
   />
 )
-const exchangeIcon = (
+const sideGuideIcon = (
   <FontAwesomeIcon
     icon={faExchangeAlt}
     data-targettype="icon"
@@ -32,6 +31,31 @@ const exchangeIcon = (
 const DeckContainerTab = props => {
   const { setDeckContainerTab } = useContext(DecklistContext)
   const [hover, setHover] = useState("")
+
+  const navigationItem = (name, icon) => {
+    return (
+      <Nav.Item>
+        <Nav.Link
+          className={
+            props.direction && props.direction === "row" ? "px-1" : undefined
+          }
+          href="#"
+          name={name}
+          onClick={() => setDeckContainerTab(name)}
+        >
+          <div
+            className="px-1"
+            data-name={name}
+            style={iconHoverStyle(name)}
+            onMouseEnter={e => setHover(e.target.dataset.name)}
+            onMouseLeave={() => setHover("")}
+          >
+            {icon}
+          </div>
+        </Nav.Link>
+      </Nav.Item>
+    )
+  }
 
   const iconHoverStyle = name => {
     return hover === name
@@ -54,67 +78,9 @@ const DeckContainerTab = props => {
       }
       defaultActiveKey="/home"
     >
-      <Nav.Item>
-        <Nav.Link
-          className={
-            props.direction && props.direction === "row" ? "px-1" : undefined
-          }
-          href="#"
-          name="list"
-          onClick={() => setDeckContainerTab("list")}
-        >
-          <div
-            className="px-1"
-            data-name="list"
-            style={iconHoverStyle("list")}
-            onMouseEnter={e => setHover(e.target.dataset.name)}
-            onMouseLeave={() => setHover("")}
-          >
-            {listIcon}
-          </div>
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          className={
-            props.direction && props.direction === "row" ? "px-1" : undefined
-          }
-          eventKey="link-1"
-          href="#"
-          name="matchups"
-          onClick={() => setDeckContainerTab("matchups")}
-        >
-          <div
-            className="px-1"
-            data-name="matchups"
-            style={iconHoverStyle("matchups")}
-            onMouseEnter={e => setHover(e.target.dataset.name)}
-            onMouseLeave={() => setHover("")}
-          >
-            {matchupIcon}
-          </div>
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          className={
-            props.direction && props.direction === "row" ? "px-1" : undefined
-          }
-          href="#"
-          name="sideguide"
-          onClick={() => setDeckContainerTab("sideguide")}
-        >
-          <div
-            className="px-1"
-            data-name="sideguide"
-            style={iconHoverStyle("sideguide")}
-            onMouseEnter={e => setHover(e.target.dataset.name)}
-            onMouseLeave={() => setHover("")}
-          >
-            {exchangeIcon}
-          </div>
-        </Nav.Link>
-      </Nav.Item>
+      {navigationItem("list", listIcon)}
+      {navigationItem("matchups", matchupIcon)}
+      {navigationItem("sideguide", sideGuideIcon)}
     </Nav>
   )
 }

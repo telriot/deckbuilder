@@ -42,12 +42,10 @@ const StatsTab = () => {
 
   const calculateAvgMWP = data => {
     if (data.length) {
-      console.log(data)
       let A = 0
       let B = 0
       let C = 0
       for (let matchup of data) {
-        console.log(matchup)
         A += matchup.A
         B += matchup.B
         C += matchup.C

@@ -38,7 +38,12 @@ const AuthContextProvider = props => {
   }
 
   useEffect(() => {
-    axios.get("/api/auth/").then(response => {
+    getAuth()
+  }, [])
+
+  const getAuth = async () => {
+    try {
+      const response = await axios.get("/api/auth/")
       if (response.data.user) {
         setAuth({
           isAuthenticated: true,
@@ -52,8 +57,10 @@ const AuthContextProvider = props => {
           authUserId: null
         })
       }
-    })
-  }, [])
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleValidation = (
     username,
@@ -72,7 +79,9 @@ const AuthContextProvider = props => {
     if (
       (password.length && !password.match(passw)) ||
       (username.length && !username.match(usr)) ||
-      !username.length || !password.length || !email.length
+      !username.length ||
+      !password.length ||
+      !email.length
     ) {
       result = false
     }

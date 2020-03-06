@@ -61,7 +61,7 @@ const SignupForm = () => {
 
   return (
     <Fragment>
-      <Form.Group controlId="formBasicUsername">
+      <Form.Group controlId="formUsername">
         <Form.Label>Username</Form.Label>
         <Form.Control
           value={signupData.username}
@@ -77,7 +77,7 @@ const SignupForm = () => {
         </Form.Text>
       </Form.Group>
 
-      <Form.Group controlId="formBasicEmail">
+      <Form.Group controlId="formEmail">
         <Form.Label>Email Address</Form.Label>
         <Form.Control
           value={signupData.email}
@@ -91,7 +91,7 @@ const SignupForm = () => {
         <Form.Text className="text-danger">{validation.email.error}</Form.Text>
       </Form.Group>
 
-      <Form.Group controlId="formBasicPassword">
+      <Form.Group controlId="formPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control
           value={signupData.password}
@@ -106,7 +106,7 @@ const SignupForm = () => {
           {validation.password.error}
         </Form.Text>
       </Form.Group>
-      <Form.Group controlId="formBasicPasswordConfirm">
+      <Form.Group controlId="formPasswordConfirm">
         <Form.Label>Confirm your password</Form.Label>
         <Form.Control
           value={signupData.passwordConfirmation}

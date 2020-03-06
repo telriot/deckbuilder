@@ -96,19 +96,8 @@ const MatchupContextProvider = props => {
 
     for (let match of matches) {
       index++
-      const { archetype, matchupDeck, comment, result, date } = match
-
       rows.push(
-        <MatchupRows
-          key={`matchuprow${index}`}
-          archetype={archetype}
-          matchupDeck={matchupDeck}
-          comment={comment}
-          result={result}
-          date={date}
-          index={index}
-          match={match}
-        />
+        <MatchupRows key={`matchuprow${index}`} index={index} match={match} />
       )
     }
     setRowsArr(rows)

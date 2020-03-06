@@ -8,19 +8,15 @@ const DeckEditButtonGroup = props => {
   let history = useHistory()
   let params = useParams()
 
-  const deleteHandleClick = e => {
+  const deleteHandleClick = async e => {
     e.preventDefault()
-    axios
-      .delete(`/api/decks/${params.id}`)
-      .then(response => {
-        if (response.status === 200) {
-          history.push("/")
-          console.log("deck successfully deleted")
-        }
-      })
-      .catch(error => {
-        console.log("Server error", error)
-      })
+    try {
+      axios.delete(`/api/decks/${params.id}`)
+      history.push("/")
+      console.log("deck successfully deleted")
+    } catch (error) {
+      console.log("Server error", error)
+    }
   }
 
   const classNameDisplay = () => {

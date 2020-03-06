@@ -34,22 +34,21 @@ const CommentContextProvider = props => {
     return commentsShow
   }
 
-  const destroyComment = (e, params) => {
+  const destroyComment = async (e, params) => {
     e.persist()
-    axios
-      .post(`/api/decks/${params.id}/comments/${e.target.dataset.commentid}`, {
-        deckId: params.id,
-        commentId: e.target.dataset.commentid
-      })
-      .then(response => {
-        if (response.status === 200) {
-          setCommentsArr([])
-          createComments()
+    try {
+      await axios.post(
+        `/api/decks/${params.id}/comments/${e.target.dataset.commentid}`,
+        {
+          deckId: params.id,
+          commentId: e.target.dataset.commentid
         }
-      })
-      .catch(error => {
-        console.log("Server error", error)
-      })
+      )
+      setCommentsArr([])
+      createComments()
+    } catch (error) {
+      console.log("Server error", error)
+    }
   }
 
   return (

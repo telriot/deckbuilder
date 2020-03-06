@@ -17,23 +17,21 @@ const DeckHeader = () => {
     color: "white",
     margin: "0.2rem"
   }
+
+  const pricePill = (value, symbol) => {
+    return (
+      <div style={pillStyle}>
+        {deckInfo.mainboard &&
+          getPrice(deckInfo.mainboard, deckInfo.sideboard)[value]}{" "}
+        {symbol}
+      </div>
+    )
+  }
   return (
     <Container className="d-flex mt-3 p-0">
-      <div style={pillStyle}>
-        {deckInfo.mainboard &&
-          getPrice(deckInfo.mainboard, deckInfo.sideboard).usd}{" "}
-        $
-      </div>
-      <div style={pillStyle}>
-        {deckInfo.mainboard &&
-          getPrice(deckInfo.mainboard, deckInfo.sideboard).eur}{" "}
-        €
-      </div>
-      <div style={pillStyle}>
-        {deckInfo.mainboard &&
-          getPrice(deckInfo.mainboard, deckInfo.sideboard).tix}{" "}
-        Tix
-      </div>
+      {pricePill("usd", "$")}
+      {pricePill("eur", "€")}
+      {pricePill("tix", "Tix")}
     </Container>
   )
 }
