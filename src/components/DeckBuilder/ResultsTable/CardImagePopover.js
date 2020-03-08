@@ -1,13 +1,24 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Popover, OverlayTrigger, Image } from "react-bootstrap"
+import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
+import { isMobile } from "react-device-detect"
 
 const CardImagePopover = props => {
-  const { index, image, name } = props
+  const { image, name, setHover } = props
+  const { isXS } = useContext(WindowSizeContext)
   return (
     <OverlayTrigger
-      placement="right"
+      key={`overlay${name}`}
+      placement={isMobile ? "bottom" : "right"}
+      delay={150}
+      onExit={() => setHover("")}
       overlay={
-        <Popover id="card-popover">
+        <Popover
+          onClick={() => {
+            isMobile && setHover("")
+          }}
+          id="card-popover"
+        >
           <Popover.Content>
             <Image src={image}></Image>
             <div style={{ fontSize: "0.7rem", textAlign: "center" }}>
@@ -19,9 +30,7 @@ const CardImagePopover = props => {
         </Popover>
       }
     >
-      <td className="py-0" key={`${index}name`}>
-        {name}
-      </td>
+      <span>{name}</span>
     </OverlayTrigger>
   )
 }

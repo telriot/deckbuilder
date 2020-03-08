@@ -14,6 +14,7 @@ const WindowSizeContextProvider = props => {
   const isMD = dimensions.width >= 768
   const isSM = dimensions.width >= 576
   const isXS = dimensions.width < 576
+  const isExactlyMD = dimensions.width >= 768 && dimensions.width <= 992
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,7 +37,8 @@ const WindowSizeContextProvider = props => {
         isLG,
         isMD,
         isSM,
-        isXS
+        isXS,
+        isExactlyMD
       }}
     >
       {props.children}

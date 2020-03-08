@@ -37,12 +37,14 @@ const MatchupRows = props => {
             ? {
                 fontSize: "0.9rem",
                 backgroundColor: "#bcbfc4",
-                color: "#2663CC"
+                color: "#2663CC",
+                cursor: "pointer"
               }
             : {
                 fontSize: "0.9rem",
                 color: "#327BFF",
-                transition: "color 0.15s ease-in-out"
+                transition: "color 0.15s ease-in-out",
+                cursor: "pointer"
               }
         }
         className="align-self-center mr-1"

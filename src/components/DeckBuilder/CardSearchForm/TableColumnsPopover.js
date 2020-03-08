@@ -50,7 +50,7 @@ const TableColumnsPopover = () => {
 
   const TableColumnsOverlay = () => (
     <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
-      <Button className="btn-sm float-right my-1 ml-1">Columns</Button>
+      <Button className="btn-sm float-right ml-2 mb-2">Columns</Button>
     </OverlayTrigger>
   )
   return <TableColumnsOverlay />

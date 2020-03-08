@@ -1,20 +1,30 @@
-import React, { Fragment, useContext } from "react"
+import React, { Fragment, useContext, useState } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 
 const CardCopiesController = props => {
   const { handleArrowCopiesChange } = useContext(DecklistContext)
+  const [hover, setHover] = useState("")
 
   const { obj, i, deck, setDeck } = props
 
-  const upIcon = (
-    <FontAwesomeIcon icon={faCaretUp} style={{ color: "#327BFF" }} />
-  )
-  const downIcon = (
+  const iconStyles = icon => {
+    return icon === "upIcon"
+      ? { color: hover === icon ? "#327BFF" : "#bcbfc4", cursor: "pointer" }
+      : {
+          color: hover === icon ? "#327BFF" : "#bcbfc4",
+          cursor: "pointer",
+          marginRight: "0.4rem"
+        }
+  }
+
+  const arrowIcon = icon => (
     <FontAwesomeIcon
-      icon={faCaretDown}
-      style={{ color: "#327BFF", marginRight: "0.4rem" }}
+      icon={icon === "upIcon" ? faCaretUp : faCaretDown}
+      style={iconStyles(icon)}
+      onMouseEnter={() => setHover(icon)}
+      onMouseLeave={() => setHover("")}
     />
   )
 
@@ -23,7 +33,7 @@ const CardCopiesController = props => {
       <span
         onClick={e => handleArrowCopiesChange(e, obj, i, deck, setDeck, "up")}
       >
-        {upIcon}
+        {arrowIcon("upIcon")}
       </span>
       <input
         size="sm"
@@ -43,7 +53,7 @@ const CardCopiesController = props => {
       <span
         onClick={e => handleArrowCopiesChange(e, obj, i, deck, setDeck, "down")}
       >
-        {downIcon}
+        {arrowIcon("downIcon")}
       </span>
     </Fragment>
   )

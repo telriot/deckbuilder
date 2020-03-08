@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap"
 import DeckTab from "./Decklist/DeckTab"
 import TabSelector from "./Decklist/TabSelector"
 import StatsTab from "./Decklist/StatsTab"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 const Decklist = () => {
   const {
@@ -17,6 +18,7 @@ const Decklist = () => {
     setSideboard,
     sideObj
   } = useContext(DecklistContext)
+  const { isXS } = useContext(WindowSizeContext)
 
   const activeTabSwitch = (tab, display) => {
     switch (tab) {
@@ -25,7 +27,7 @@ const Decklist = () => {
           "side"
         ) : (
           <DeckTab
-            data-origin="side"
+            origin="side"
             deck={sideboard}
             setDeck={setSideboard}
             obj={sideObj}
@@ -39,7 +41,7 @@ const Decklist = () => {
           "main"
         ) : (
           <DeckTab
-            data-origin="main"
+            origin="main"
             deck={mainDeck}
             setDeck={setMainDeck}
             obj={deckObj}
@@ -50,12 +52,13 @@ const Decklist = () => {
 
   return (
     <Fragment>
-      <Card>
+      <Card style={{ minHeight: "120px", marginBottom: "12px" }}>
         <Card.Header
           data-origin={activeTabSwitch(activeTab)}
           className="pt-2"
           onDragOver={e => onDragOver(e)}
           onDrop={e => onDrop(e)}
+          style={isXS ? { fontSize: "0.9rem" } : { fontSize: "1rem" }}
         >
           <TabSelector />
         </Card.Header>

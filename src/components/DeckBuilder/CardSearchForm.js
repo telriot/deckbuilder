@@ -8,7 +8,7 @@ import SearchFiltersPopover from "../DeckBuilder/CardSearchForm/SearchFiltersPop
 import SearchFilters from "./CardSearchForm/SearchFilters"
 
 const CardSearchForm = () => {
-  const { isSM, isXS } = useContext(WindowSizeContext)
+  const { isSM, isExactlyMD, isXS } = useContext(WindowSizeContext)
   const { setVisibleColumns, setSearchFilters } = useContext(DecklistContext)
 
   useEffect(() => {
@@ -25,34 +25,40 @@ const CardSearchForm = () => {
       cmc: false,
       rarity: false
     })
+
     isSM &&
+      !isExactlyMD &&
       setVisibleColumns({
         cost: true,
         type: true,
         cmc: false,
         rarity: false
       })
-    isSM &&
-      setSearchFilters({
-        color: true,
-        type: true,
-        cmc: true,
-        rarity: true
+    setSearchFilters({
+      color: true,
+      type: true,
+      cmc: true,
+      rarity: true
+    })
+    isExactlyMD &&
+      setVisibleColumns({
+        cost: true,
+        type: false,
+        cmc: false,
+        rarity: false
       })
-  }, [isSM, isXS])
+  }, [isSM, isXS, isExactlyMD])
 
   return (
     <Form>
-      <Form.Row>
-        <Col xl={8} lg={7} md={6} sm={8} xs={10}>
-          <SearchBar />
-        </Col>
-        <Col xl={4} lg={5} md={6} sm={4} xs={2}>
-          {isSM && <TableColumnsPopover />}
-          <SearchFiltersPopover />
-        </Col>
-      </Form.Row>
-      <Form.Row className="mb-1">
+      <div className="d-flex">
+        <SearchBar />
+
+        {isSM && <TableColumnsPopover />}
+        <SearchFiltersPopover />
+      </div>
+
+      <Form.Row className="mb-2">
         <SearchFilters />
       </Form.Row>
     </Form>

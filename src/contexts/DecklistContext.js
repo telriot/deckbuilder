@@ -6,6 +6,7 @@ import CardCopiesController from "../components/DeckBuilder/DeckDataForm/CardCop
 import CardDataSpan from "../components/DeckBuilder/DeckDataForm/CardDataSpan"
 import ControllerButton from "../components/DeckBuilder/DeckDataForm/ControllerButton"
 import axios from "axios"
+import DecklistRow from "../components/DeckBuilder/Decklist/DecklistRow"
 
 export const DecklistContext = createContext()
 
@@ -118,7 +119,7 @@ const DecklistContextProvider = props => {
   }, [searchString])
 
   // card search scryfall api get request
-  async function cardSearch(input, url) {
+  const cardSearch = async (input, url) => {
     let foundCards = []
 
     try {
@@ -188,9 +189,16 @@ const DecklistContextProvider = props => {
 
     let draggedCardName = e.target.dataset.name
     e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
-    const image = new Image()
+    const crt = e.target.childNodes[0].cloneNode(true)
+    crt.style.backgroundColor = "#bcbfc4"
+    crt.style.borderRadius = "4px"
+    crt.style.padding = "4px 8px"
+    document.body.appendChild(crt)
+    /*const image = new Image()
     image.src = e.target.dataset.dragimg
-    e.dataTransfer.setDragImage(image, 0, 0)
+    console.log(e)
+    console.log(image)*/
+    e.dataTransfer.setDragImage(crt, 0, 0)
   }
 
   const onDragStart = e => {
@@ -205,11 +213,13 @@ const DecklistContextProvider = props => {
     e.preventDefault()
   }
 
-  const onDrop = e => {
+  const onDrop = async e => {
     e.persist()
+
     let dropTarget = e.target.dataset.origin
     let droppedCardObject = []
     let droppedCardData = e.dataTransfer.getData("id").split(",")
+
     let droppedCardName = droppedCardData[0]
     let droppedCardOrigin = droppedCardData[1]
     //card gets dragged from the search results
@@ -295,46 +305,7 @@ const DecklistContextProvider = props => {
 
     for (let i of keys) {
       actualList.push(
-        <Form.Row
-          data-origin={`${deck === mainDeck ? "main" : "side"}`}
-          key={i}
-        >
-          <Col xs={8} data-origin={`${deck === mainDeck ? "main" : "side"}`}>
-            {/* n. of copies controller */}
-            <CardCopiesController
-              i={i}
-              obj={obj}
-              deck={deck}
-              setDeck={setDeck}
-            />
-            {/* card data */}
-            <CardDataSpan i={i} obj={obj} deck={deck} setDeck={setDeck} />
-          </Col>
-          <Col
-            xs={4}
-            className="m-0 align-self-center"
-            data-origin={`${deck === mainDeck ? "main" : "side"}`}
-          >
-            {/* delete button */}
-            <ControllerButton
-              i={i}
-              obj={obj}
-              deck={deck}
-              setDeck={setDeck}
-              handleFunction={handleDeleteButton}
-              type="deleteCard"
-            />
-            {/* main<>side button */}
-            <ControllerButton
-              i={i}
-              obj={obj}
-              deck={deck}
-              setDeck={setDeck}
-              handleFunction={handleSideToMainButton}
-              type="mainSideController"
-            />
-          </Col>
-        </Form.Row>
+        <DecklistRow deck={deck} setDeck={setDeck} obj={obj} i={i} />
       )
     }
     return sortOrder(actualList)
@@ -344,10 +315,8 @@ const DecklistContextProvider = props => {
   const sortOrder = list => {
     let sortedList = list.sort((a, b) => {
       const DOMTarget = x => {
-        const identifier = x.key
-        return x.props.children[0].props.children[1].props.obj[identifier][0][
-          sortingCriteria
-        ]
+        const identifier = x.props.i
+        return x.props.obj[identifier][0][sortingCriteria]
       }
 
       let nameA =

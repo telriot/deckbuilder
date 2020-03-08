@@ -9,9 +9,9 @@ const SearchBar = () => {
   return (
     <Fragment>
       <Form.Control
+        className="mb-2"
         as={DebounceInput}
         size="sm"
-        className="mx-0 my-1"
         type="text"
         debounceTimeout={400}
         placeholder="Type to search..."

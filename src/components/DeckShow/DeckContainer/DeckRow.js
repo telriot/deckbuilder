@@ -10,6 +10,7 @@ const DeckRow = props => {
   return (
     <OverlayTrigger
       placement="auto"
+      delay={150}
       overlay={
         <Popover id="card-popover">
           <Popover.Content>

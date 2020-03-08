@@ -3,6 +3,7 @@ import { mapResults } from "../../helpers"
 import { DecklistContext } from "../../contexts/DecklistContext"
 import axios from "axios"
 import rateLimit from "axios-rate-limit"
+import { Button } from "react-bootstrap"
 
 const FileReaderButton = () => {
   let fileReader

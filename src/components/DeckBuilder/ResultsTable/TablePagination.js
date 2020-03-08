@@ -62,7 +62,7 @@ const TablePagination = () => {
   }
 
   return (
-    <Pagination size="sm">
+    <Pagination size="sm" className="mt-3">
       {currentServerPage > 1 && (
         <Pagination.First
           onClick={e => handleServerPaginationClick(e, "prev")}

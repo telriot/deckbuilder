@@ -4,13 +4,10 @@ import { Card, Container } from "react-bootstrap"
 import RadarButtonGroup from "./RadarChartTab/RadarButtonGroup"
 import RadarChart from "./RadarChartTab/RadarChart"
 import MatchupModalButton from "./RadarChartTab/MatchupModalButton"
-import { MatchupContext } from "../../../contexts/MatchupContext"
 
 const StatsTab = () => {
   const { radarButtonGroupValue, deckInfo } = useContext(DecklistContext)
-  const { rowsArr } = useContext(MatchupContext)
   const [data, setData] = useState({})
-  const [avgMWP, setAvgMWP] = useState({})
 
   useEffect(() => {
     deckInfo.matchups && setData(matchupsDataToGraph(deckInfo.matchups))
