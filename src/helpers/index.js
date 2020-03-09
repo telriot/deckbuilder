@@ -245,3 +245,29 @@ export const setColors = (mainDeck, sideboard) => {
     { c: colorless }
   ]
 }
+
+export const palette = {
+  darkBlue: "#2663CC",
+  stdBlue: "#327BFF",
+  darkGray: "#bcbfc4",
+  stdGray: "#F0F1F2",
+  manaWhite: "#f2efe3",
+  manaGreen: "#139A43",
+  manaBlack: "#1D1E18",
+  manaBlue: "#4392F1",
+  manaRed: "#EE2E31",
+  manaColorless: "#CBCECE",
+  manaWhiteDark: "#e2dbc0",
+  manaGreenDark: "#0d6d2f",
+  manaBlackDark: "#030302",
+  manaBlueDark: "#1275ed",
+  manaRedDark: "#d91215",
+  manaColorlessDark: "#b0b5b5",
+  borderGray: "#ced4da",
+  hoverAzure: "#BEDCFB"
+}
+
+export const capitalize = s => {
+  if (typeof s !== "string") return ""
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}

@@ -2,6 +2,7 @@ import React, { useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { Form, Col } from "react-bootstrap"
 import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
+import { capitalize } from "../../../helpers"
 
 const FormatSelector = () => {
   const { deckFormat, setDeckFormat } = useContext(DecklistContext)
@@ -31,15 +32,19 @@ const FormatSelector = () => {
         <option value="" disabled>
           Pick one
         </option>
-        <option value="standard">Standard</option>
-        <option value="pioneer">Pioneer</option>
-        <option value="modern">Modern</option>
-        <option value="legacy">Legacy</option>
-        <option value="vintage">Vintage</option>
-        <option value="pauper">Pauper</option>
-        <option value="edh">EDH</option>
-        <option value="brawl">Brawl</option>
-        <option value="arena">Arena</option>
+        {[
+          "standard",
+          "pioneer",
+          "modern",
+          "legacy",
+          "vintage",
+          "pauper",
+          "edh",
+          "brawl",
+          "arena"
+        ].map(value => {
+          return <option value={value}>{capitalize(value)}</option>
+        })}
       </Form.Control>
     </Form.Group>
   )

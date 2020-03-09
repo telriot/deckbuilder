@@ -11,8 +11,7 @@ const SignupForm = () => {
   } = useContext(AuthContext)
   const [isVisible, setIsVisible] = useState(false)
 
-  function handleCheck(e) {
-    e.persist()
+  function handleCheck() {
     setIsVisible(prevState => !prevState)
   }
 
@@ -54,7 +53,7 @@ const SignupForm = () => {
     <Form.Check
       type="checkbox"
       label="Visible"
-      onChange={e => handleCheck(e)}
+      onChange={() => handleCheck()}
       checked={isVisible}
     />
   )

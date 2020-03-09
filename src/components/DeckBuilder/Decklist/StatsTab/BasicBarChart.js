@@ -14,8 +14,6 @@ const BasicBarChart = props => {
   return (
     <ResponsiveContainer width="100%" height="100%" minHeight="300px">
       <BarChart
-        width={300}
-        height={300}
         data={data}
         margin={{
           top: 20,

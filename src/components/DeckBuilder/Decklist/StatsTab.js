@@ -4,9 +4,24 @@ import { Card, Container } from "react-bootstrap"
 import BasicBarChart from "./StatsTab/BasicBarChart"
 import TwoLevelPieChart from "./StatsTab/TwoLevelPieChart"
 import ButtonGroup from "./StatsTab/ButtonGroup"
+import { palette } from "../../../helpers"
 
 const StatsTab = props => {
   const { mainDeck, buttonGroupValue } = useContext(DecklistContext)
+  const {
+    manaWhite,
+    manaRed,
+    manaGreen,
+    manaBlack,
+    manaBlue,
+    manaColorless,
+    manaWhiteDark,
+    manaRedDark,
+    manaGreenDark,
+    manaBlackDark,
+    manaBlueDark,
+    manaColorlessDark
+  } = palette
 
   //Filter cards in deck by normalized type
   const filterByType = (deck, type) => {
@@ -110,31 +125,31 @@ const StatsTab = props => {
       label: "White sources",
       color: "W",
       count: 0,
-      fill: "#FBF7D4"
+      fill: manaWhite
     }
     let blueData = {
       label: "Blue sources",
       color: "U",
       count: 0,
-      fill: "#96C4D4"
+      fill: manaBlue
     }
     let blackData = {
       label: "Black sources",
       color: "B",
       count: 0,
-      fill: "#626869"
+      fill: manaBlack
     }
     let redData = {
       label: "Red sources",
       color: "R",
       count: 0,
-      fill: "#D98F74"
+      fill: manaRed
     }
     let greenData = {
       label: "Green sources",
       color: "G",
       count: 0,
-      fill: "#83B592"
+      fill: manaGreen
     }
     let colorlessData = {
       label: "Colorless sources",
@@ -216,38 +231,38 @@ const StatsTab = props => {
       label: "White symbols",
       color: "W",
       count: 0,
-      fill: "#FBF7D4"
+      fill: manaWhite
     }
     let blueData = {
       label: "Blue symbols",
       color: "U",
       count: 0,
-      fill: "#96C4D4"
+      fill: manaBlue
     }
     let blackData = {
       label: "Black symbols",
       color: "B",
       count: 0,
-      fill: "#626869"
+      fill: manaBlack
     }
     let redData = {
       label: "Red symbols",
       color: "R",
       count: 0,
-      fill: "#D98F74"
+      fill: manaRed
     }
 
     let greenData = {
       label: "Green symbols",
       color: "G",
       count: 0,
-      fill: "#83B592"
+      fill: manaGreen
     }
     let colorlessData = {
       label: "Colorless symbols",
       color: "C",
       count: 0,
-      fill: "#CBCECE"
+      fill: manaColorless
     }
 
     let symbolsDataArray = [

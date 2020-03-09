@@ -1,10 +1,6 @@
 import React, { createContext, useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { Form, Col } from "react-bootstrap"
 import { groupByName, mapResults } from "../helpers"
-import CardCopiesController from "../components/DeckBuilder/DeckDataForm/CardCopiesController"
-import CardDataSpan from "../components/DeckBuilder/DeckDataForm/CardDataSpan"
-import ControllerButton from "../components/DeckBuilder/DeckDataForm/ControllerButton"
 import axios from "axios"
 import DecklistRow from "../components/DeckBuilder/Decklist/DecklistRow"
 
@@ -62,30 +58,29 @@ const DecklistContextProvider = props => {
 
   const URL = "https://api.scryfall.com/cards"
 
-  useEffect(() => {
-    async function showDeck() {
-      try {
-        setIsLoading(true)
-        const response = await axios.get(`/api/decks/${params.id}`)
-        const { mainboard, sideboard, name, format } = response.data
-        setDeckInfo(response.data)
-        if (mainboard) {
-          setDeckName(name)
-          setDeckFormat(format)
-          setMainDeck(mainboard)
-          setSideboard(sideboard)
-        }
-      } catch (error) {
-        if (axios.isCancel(error)) {
-        } else {
-          console.error(error.response)
-        }
+  const showDeck = async () => {
+    try {
+      const response = await axios.get(`/api/decks/${params.id}`)
+      const { mainboard, sideboard, name, format } = response.data
+      setDeckInfo(response.data)
+      if (mainboard) {
+        setDeckName(name)
+        setDeckFormat(format)
+        setMainDeck(mainboard)
+        setSideboard(sideboard)
       }
-      setIsLoading(false)
+    } catch (error) {
+      if (axios.isCancel(error)) {
+      } else {
+        console.error(error.response)
+      }
     }
+  }
+
+  useEffect(() => {
     if (params.id !== undefined) {
       showDeck()
-    } else if (params.id === undefined) {
+    } else {
       setMainDeck([])
       setSideboard([])
       setDeckName("")
@@ -152,12 +147,11 @@ const DecklistContextProvider = props => {
         }
       })
     } catch (error) {
+      setResultsInfo({})
+      setDisplayList([])
       if (axios.isCancel(error)) {
-        setResultsInfo({})
-        setDisplayList([])
+        console.log(error)
       } else {
-        setResultsInfo({})
-        setDisplayList([])
         console.error(error.response)
       }
     }

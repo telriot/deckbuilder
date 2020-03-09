@@ -108,8 +108,12 @@ const DeckShow = () => {
           {!isMD && (
             <Container className="px-2">
               <DeckDownloadButton display="block" />
-              <DeckEditButton display="block" />
-              <DeckDeleteButton display="block" />
+              {deckInfo.author === auth.authUserId && (
+                <DeckEditButton display="block" />
+              )}
+              {deckInfo.author === auth.authUserId && (
+                <DeckDeleteButton display="block" />
+              )}
             </Container>
           )}
         </Card.Body>

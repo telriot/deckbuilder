@@ -1,11 +1,17 @@
-import React, { Fragment, useContext, useEffect } from "react"
+import React, { Fragment, useContext, useEffect, useState } from "react"
 import { DecklistContext } from "../../contexts/DecklistContext"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import { Table } from "react-bootstrap"
 import TablePagination from "./ResultsTable/TablePagination"
 import LoadingOverlay from "./ResultsTable/LoadingOverlay"
 import TableRow from "./ResultsTable/TableRow"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faSortAmountUp,
+  faSortAmountDown
+} from "@fortawesome/free-solid-svg-icons"
 import { Scrollbars } from "react-custom-scrollbars"
+import { palette } from "../../helpers"
 
 const ResultsTable = () => {
   const {
@@ -20,8 +26,52 @@ const ResultsTable = () => {
     setResultsOrder,
     isLoading
   } = useContext(DecklistContext)
+  const [hover, setHover] = useState("")
+  const { isMD, isSM, isXS } = useContext(WindowSizeContext)
+  const { darkBlue, stdBlue, stdGray } = palette
 
-  const { isMD, isSM, isXS, isLG } = useContext(WindowSizeContext)
+  const tableHeightResponsive = () => {
+    if (isMD) {
+      return ((window.innerHeight - 200) * 95) / 100
+    } else if (isSM && !isMD) {
+      return ((window.innerHeight - 140) * 30) / 100
+    } else {
+      return ((window.innerHeight - 140) * 18) / 100
+    }
+  }
+
+  const headerSpanStyle = name => {
+    return hover === name
+      ? { color: darkBlue, cursor: "pointer" }
+      : { color: stdBlue, cursor: "pointer" }
+  }
+
+  const headerSpanWithSorting = (name, html) => {
+    return (
+      <Fragment>
+        <span
+          style={headerSpanStyle(name)}
+          data-name={name}
+          onClick={() => handleTableOrder(name)}
+          onMouseEnter={() => setHover(name)}
+          onMouseLeave={() => setHover("")}
+        >
+          {html}{" "}
+        </span>
+        <span>
+          {!isLoading && resultsOrder.orderCriteria === name ? (
+            resultsOrder.direction === "desc" ? (
+              <FontAwesomeIcon icon={faSortAmountUp} />
+            ) : (
+              <FontAwesomeIcon icon={faSortAmountDown} />
+            )
+          ) : (
+            ""
+          )}
+        </span>
+      </Fragment>
+    )
+  }
 
   //create new tables on cards status change
   useEffect(() => {
@@ -43,9 +93,7 @@ const ResultsTable = () => {
   }
 
   // handle the table line rendering order
-  const handleTableOrder = e => {
-    e.persist()
-    const name = e.target.dataset.name
+  const handleTableOrder = name => {
     setResultsOrder(prevState => {
       return {
         orderCriteria: name,
@@ -63,7 +111,7 @@ const ResultsTable = () => {
     <Fragment>
       <Scrollbars
         autoHeight
-        autoHeightMin={isMD ? 450 : 120}
+        autoHeightMin={tableHeightResponsive()}
         autoHeightMax={!isMD ? 130 : undefined}
         hideTracksWhenNotNeeded={true}
       >
@@ -74,22 +122,13 @@ const ResultsTable = () => {
             <thead
               className="border-0"
               style={{
-                backgroundColor: "#F0F1F2",
+                backgroundColor: stdGray,
                 fontSize: "0.85rem"
               }}
             >
               <tr>
-                <th
-                  className="border-0"
-                  data-name="name"
-                  onClick={e => handleTableOrder(e)}
-                >
-                  Name
-                  {!isLoading && resultsOrder.orderCriteria === "name"
-                    ? resultsOrder.direction === "desc"
-                      ? "↑"
-                      : "↓"
-                    : ""}
+                <th className="border-0" data-name="name">
+                  {headerSpanWithSorting("name", "Name")}
                 </th>
                 {visibleColumns.cost && (
                   <th className="border-0" style={{ minWidth: "80px" }}>
@@ -106,14 +145,8 @@ const ResultsTable = () => {
                     className="border-0"
                     data-name="rarity"
                     style={{ width: "60px", minWidth: "55px" }}
-                    onClick={e => handleTableOrder(e)}
                   >
-                    Rarity
-                    {!isLoading && resultsOrder.orderCriteria === "rarity"
-                      ? resultsOrder.direction === "desc"
-                        ? "↑"
-                        : "↓"
-                      : ""}
+                    {headerSpanWithSorting("rarity", "Rarity")}
                   </th>
                 )}
                 {visibleColumns.cmc && (
@@ -121,14 +154,8 @@ const ResultsTable = () => {
                     className="border-0"
                     data-name="cmc"
                     style={{ width: "55px", minWidth: "50px" }}
-                    onClick={e => handleTableOrder(e)}
                   >
-                    CMC
-                    {!isLoading && resultsOrder.orderCriteria === "cmc"
-                      ? resultsOrder.direction === "desc"
-                        ? "↑"
-                        : "↓"
-                      : ""}
+                    {headerSpanWithSorting("cmc", "CMC")}
                   </th>
                 )}
                 <th className="border-0" data-name="plus">
