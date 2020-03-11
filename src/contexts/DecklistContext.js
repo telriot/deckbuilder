@@ -178,15 +178,20 @@ const DecklistContextProvider = props => {
   }, [sideboard])
 
   // drag and drop handlers
+  //set variable for drag image in order to get it back later to delete it
+  let crt
   const resultsTableDragStart = e => {
     e.persist()
 
     let draggedCardName = e.target.dataset.name
     e.dataTransfer.setData("id", [draggedCardName, e.target.dataset.origin])
-    const crt = e.target.childNodes[0].cloneNode(true)
+    crt = e.target.childNodes[0].cloneNode(true)
     crt.style.backgroundColor = "#bcbfc4"
     crt.style.borderRadius = "4px"
     crt.style.padding = "4px 8px"
+    crt.style.position = "absolute"
+    crt.style.top = "-500px"
+    crt.style.left = "-500px"
     document.body.appendChild(crt)
     /*const image = new Image()
     image.src = e.target.dataset.dragimg
@@ -243,6 +248,7 @@ const DecklistContextProvider = props => {
       setSideboard(updatedDeck)
       setMainDeck(prevDeck => [...prevDeck, droppedCardObject])
     }
+    document.body.removeChild(crt)
   }
 
   // handler for copies n. change via arrows

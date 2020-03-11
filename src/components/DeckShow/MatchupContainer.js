@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Container } from "react-bootstrap"
 import MatchupTable from "./MatchupContainer/MatchupTable"
-import MatchupPagination from "./MatchupContainer/MatchupPagination"
+import { MatchupContext } from "../../contexts/MatchupContext"
+import BasicPagination from "../BasicPagination"
 
 const MatchupContainer = () => {
+  const { page, setPage, pages } = useContext(MatchupContext)
   return (
     <Container
       style={{
@@ -14,7 +16,7 @@ const MatchupContainer = () => {
       className="d-flex flex-wrap flex-column px-0 pr-md-3"
     >
       <MatchupTable />
-      <MatchupPagination />
+      <BasicPagination page={page} setPage={setPage} pages={pages} />
     </Container>
   )
 }

@@ -1,20 +1,21 @@
 import React, { useEffect, useContext, useState, Fragment } from "react"
-import { Container, Card, Row, Col, Button, Form } from "react-bootstrap"
-import axios from "axios"
-import ColorCheckbox from "./Index/ColorCheckbox"
-import { DecklistContext } from "../contexts/DecklistContext"
-import DeckCard from "./DeckCard"
-import { capitalize, palette } from "../helpers"
-import AndOrCheckBox from "./Index/AndOrCheckBox"
-import DecksSelect from "./Index/DecksSelect"
-import TextSearchForm from "./Index/TextSearchForm"
+import { Container, Card, Row, Col, Form } from "react-bootstrap"
 import { WindowSizeContext } from "../contexts/WindowSizeContext"
+import ColorCheckbox from "./Index/ColorCheckbox"
+import AndOrCheckBox from "./Index/AndOrCheckBox"
+import SelectDropdown from "./Index/SelectDropdown"
+import TextSearchForm from "./Index/TextSearchForm"
 import SubmitButton from "./Index/SubmitButton"
+import DeckDisplay from "./User/DeckDisplay"
+import DeckCard from "./DeckCard"
+import axios from "axios"
+import { palette } from "../helpers"
 
 const Index = () => {
   const [indexList, setIndexList] = useState([])
+  const [page, setPage] = useState(1)
+  const [pages, setPages] = useState(1)
   const { isLG, isExactlyMD, isMD, isSM, isXS } = useContext(WindowSizeContext)
-  const { isLoading, setIsLoading } = useContext(DecklistContext)
   const [deckSearchParams, setDeckSearchParams] = useState({
     name: "",
     author: "",
@@ -28,24 +29,34 @@ const Index = () => {
       C: false,
       and: true
     },
-    activity: ""
+    activity: "",
+    sortOrder: "date"
   })
   const { borderGray } = palette
 
   useEffect(() => {
     deckSearch()
-  }, [])
-  const deckSearch = async () => {
-    const { name, author, format, colors } = deckSearchParams
-    const { W, U, B, R, G, C, and } = colors
+  }, [page, deckSearchParams])
 
+  const deckSearch = async () => {
+    const {
+      name,
+      author,
+      format,
+      colors,
+      activity,
+      sortOrder
+    } = deckSearchParams
+    const { W, U, B, R, G, C, and } = colors
     try {
-      setIsLoading(true)
       const response = await axios.get("/api/", {
         params: {
           name,
           author,
           format,
+          activity,
+          page,
+          sortOrder,
           w: W ? "w" : "none",
           u: U ? "u" : "none",
           b: B ? "b" : "none",
@@ -56,7 +67,8 @@ const Index = () => {
         }
       })
       let list = []
-      for (let deck of response.data) {
+      console.log(response)
+      for (let deck of response.data.docs) {
         const {
           _id,
           name,
@@ -85,6 +97,7 @@ const Index = () => {
           />
         )
       }
+      setPages(response.data.totalPages)
       setIndexList(list)
     } catch (error) {
       if (axios.isCancel(error)) {
@@ -92,7 +105,6 @@ const Index = () => {
         console.error(error.response)
       }
     }
-    setIsLoading(false)
   }
 
   const deckNameForm = (
@@ -116,24 +128,25 @@ const Index = () => {
   const formatForm = (
     <Form.Group>
       <Form.Label>Format</Form.Label>
-      <DecksSelect
+      <SelectDropdown
         label="format"
         data={deckSearchParams}
         setData={setDeckSearchParams}
         arr={[
-          "standard",
-          "pioneer",
-          "modern",
-          "legacy",
-          "vintage",
-          "pauper",
-          "edh",
-          "brawl",
-          "arena"
+          ["standard", "Standard"],
+          ["pioneer", "Pioneer"],
+          ["modern", "Modern"],
+          ["legacy", "Legacy"],
+          ["vintage", "Vintage"],
+          ["pauper", "Pauper"],
+          ["edh", "EDH"],
+          ["brawl", "Brawl"],
+          ["arena", "Arena"]
         ]}
       />
     </Form.Group>
   )
+
   const colorForm = (
     <Form.Group>
       <Form.Label className="d-flex justify-content-between">
@@ -178,12 +191,17 @@ const Index = () => {
 
   const activityForm = (
     <Form.Group>
-      <Form.Label>Last activity</Form.Label>
-      <DecksSelect
+      <Form.Label>Last active</Form.Label>
+      <SelectDropdown
         label="activity"
         data={deckSearchParams}
         setData={setDeckSearchParams}
-        arr={["24 hours ago", "A week ago", "One month ago", "A year ago"]}
+        arr={[
+          [1, "24 hours ago"],
+          [7, "A week ago"],
+          [30, "One month ago"],
+          [365, "A year ago"]
+        ]}
       />
     </Form.Group>
   )
@@ -252,9 +270,9 @@ const Index = () => {
 
   return (
     <Container>
-      <Form>
-        <Row>
-          <Col lg={4} xl={3}>
+      <Row>
+        <Col lg={4} xl={3}>
+          <Form>
             <Card className="mb-3 border-0 bg-light">
               <Card.Header className="border-0" as="h6">
                 Deck Finder
@@ -267,12 +285,19 @@ const Index = () => {
                 {isXS && xsCardBody}
               </Card.Body>
             </Card>
-          </Col>
-          <Col lg={8} xl={9}>
-            <Row>{indexList}</Row>
-          </Col>
-        </Row>
-      </Form>
+          </Form>
+        </Col>
+        <Col lg={8} xl={9}>
+          <DeckDisplay
+            page={page}
+            setPage={setPage}
+            pages={pages}
+            deckSearchParams={deckSearchParams}
+            setDeckSearchParams={setDeckSearchParams}
+            decksDisplay={indexList}
+          />
+        </Col>
+      </Row>
     </Container>
   )
 }

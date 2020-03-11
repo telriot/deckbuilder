@@ -43,13 +43,14 @@ const UserProfile = () => {
               <MTGInfoCardBody origin="profile" />
             </Card>
           )}
-
-          <Card className="mb-3 border-0 bg-light">
-            <Card.Header className="border-0" as="h6">
-              Contacts
-            </Card.Header>
-            <ContactsCardBody origin="profile" />
-          </Card>
+          {(user.twitter || user.youtube || user.twitch) && (
+            <Card className="mb-3 border-0 bg-light">
+              <Card.Header className="border-0" as="h6">
+                Contacts
+              </Card.Header>
+              <ContactsCardBody origin="profile" />
+            </Card>
+          )}
         </Col>
         <Col lg={9}>
           <UserDeckDisplay params={params}></UserDeckDisplay>

@@ -74,7 +74,6 @@ const AuthContextProvider = props => {
     const emailregex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     let result = true
-    console.log(password, username, email)
 
     if (
       (password.length && !password.match(passw)) ||
@@ -87,7 +86,6 @@ const AuthContextProvider = props => {
     }
 
     if (password.length && !password.match(passw)) {
-      console.log("pswvalidationrun")
       setValidation(prevState => {
         return {
           ...prevState,
@@ -109,7 +107,6 @@ const AuthContextProvider = props => {
     }
 
     if (username.length && !username.match(usr)) {
-      console.log("usrvalidationrun")
       setValidation(prevState => {
         return {
           ...prevState,
@@ -152,7 +149,6 @@ const AuthContextProvider = props => {
       })
     }
     if (email.length && !email.match(emailregex)) {
-      console.log("email")
       setValidation(prevState => {
         return {
           ...prevState,

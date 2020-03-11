@@ -14,6 +14,8 @@ import CommentContextProvider from "./contexts/CommentContext"
 import MatchupContextProvider from "./contexts/MatchupContext"
 import SideGuideContextProvider from "./contexts/SideGuideContext"
 import UserContextProvider from "./contexts/UserContext"
+import PasswordResetForm from "./components/Auth/PasswordResetForm"
+import PasswordResetPage from "./components/Auth/PasswordResetPage"
 
 const App = () => {
   return (
@@ -61,6 +63,12 @@ const App = () => {
           <UserContextProvider>
             <UserEdit />
           </UserContextProvider>
+        </Route>
+        <Route exact path="/reset/credentials">
+          <PasswordResetForm />
+        </Route>
+        <Route exact path="/reset/:id">
+          <PasswordResetPage />
         </Route>
       </Switch>
     </Fragment>

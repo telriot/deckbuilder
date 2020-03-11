@@ -43,7 +43,11 @@ const FormatSelector = () => {
           "brawl",
           "arena"
         ].map(value => {
-          return <option value={value}>{capitalize(value)}</option>
+          return (
+            <option key={`option${value}`} value={value}>
+              {capitalize(value)}
+            </option>
+          )
         })}
       </Form.Control>
     </Form.Group>
