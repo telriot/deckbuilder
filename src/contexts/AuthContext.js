@@ -5,6 +5,7 @@ export const AuthContext = createContext()
 
 const AuthContextProvider = props => {
   const [auth, setAuth] = useState({ isAuthenticated: false, authUser: "" })
+  const [isLoading, setIsLoading] = useState(false)
   const [signupModalShow, setSignupModalShow] = useState(false)
   const [loginModalShow, setLoginModalShow] = useState(false)
   const [loginData, setLoginData] = useState({ username: "", password: "" })
@@ -14,6 +15,7 @@ const AuthContextProvider = props => {
     passwordConfirmation: "",
     email: ""
   })
+  const [signupSuccess, setSignupSuccess] = useState(false)
   const [validation, setValidation] = useState({
     password: { error: "" },
     username: { error: "" },
@@ -21,6 +23,7 @@ const AuthContextProvider = props => {
     passwordConfirmation: { error: "" },
     email: { error: "" }
   })
+  const [signupServerError, setSignupServerError] = useState(false)
 
   const loginDataInitialState = { username: "", password: "" }
   const signupDataInitialState = {
@@ -188,7 +191,13 @@ const AuthContextProvider = props => {
         handleValidation,
         validationInitialState,
         signupDataInitialState,
-        loginDataInitialState
+        loginDataInitialState,
+        signupSuccess,
+        setSignupSuccess,
+        isLoading,
+        setIsLoading,
+        signupServerError,
+        setSignupServerError
       }}
     >
       {props.children}

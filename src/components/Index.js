@@ -36,7 +36,7 @@ const Index = () => {
 
   useEffect(() => {
     deckSearch()
-  }, [page, deckSearchParams])
+  }, [page, deckSearchParams.sortOrder])
 
   const deckSearch = async () => {
     const {
@@ -67,7 +67,6 @@ const Index = () => {
         }
       })
       let list = []
-      console.log(response)
       for (let deck of response.data.docs) {
         const {
           _id,
@@ -126,7 +125,7 @@ const Index = () => {
     />
   )
   const formatForm = (
-    <Form.Group>
+    <Form.Group className={isXS ? "mb-2" : ""}>
       <Form.Label>Format</Form.Label>
       <SelectDropdown
         label="format"
@@ -148,7 +147,7 @@ const Index = () => {
   )
 
   const colorForm = (
-    <Form.Group>
+    <Form.Group className={isXS ? "mb-2" : ""}>
       <Form.Label className="d-flex justify-content-between">
         Colors
         <div className="d-flex ">
@@ -190,7 +189,7 @@ const Index = () => {
   )
 
   const activityForm = (
-    <Form.Group>
+    <Form.Group className={isXS ? "mb-2" : ""}>
       <Form.Label>Last active</Form.Label>
       <SelectDropdown
         label="activity"
@@ -278,7 +277,10 @@ const Index = () => {
                 Deck Finder
               </Card.Header>
 
-              <Card.Body>
+              <Card.Body
+                style={isMD ? { fontSize: "1rem" } : { fontSize: "0.9rem" }}
+                className={isMD ? "" : "py-2"}
+              >
                 {isLG && lgCardBody}
                 {isExactlyMD && mdCardBody}
                 {isSM && !isMD && smCardBody}

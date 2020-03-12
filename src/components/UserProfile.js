@@ -47,6 +47,7 @@ const UserProfile = () => {
             <Card className="mb-3 border-0 bg-light">
               <Card.Header className="border-0" as="h6">
                 Contacts
+                <AngleIcon origin="contacts" />
               </Card.Header>
               <ContactsCardBody origin="profile" />
             </Card>

@@ -1,13 +1,14 @@
 import React, { Fragment, useContext, useState } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
-import { Form } from "react-bootstrap"
+import { Form, FormCheck, Alert } from "react-bootstrap"
 
 const SignupForm = () => {
   const {
     signupData,
     setSignupData,
     validation,
-    handleValidation
+    handleValidation,
+    signupServerError
   } = useContext(AuthContext)
   const [isVisible, setIsVisible] = useState(false)
 
@@ -50,16 +51,23 @@ const SignupForm = () => {
   }
 
   const Checkbox = () => (
-    <Form.Check
-      type="checkbox"
-      label="Visible"
-      onChange={() => handleCheck()}
-      checked={isVisible}
-    />
+    <FormCheck className="d-flex">
+      <FormCheck.Label style={{ fontSize: "0.8rem", paddingTop: "0.1rem" }}>
+        Show Password
+      </FormCheck.Label>
+      <FormCheck.Input
+        type="checkbox"
+        onChange={() => handleCheck()}
+        checked={isVisible}
+      />
+    </FormCheck>
   )
 
   return (
     <Fragment>
+      {signupServerError && (
+        <Alert variant="danger">Something went wrong, please try again.</Alert>
+      )}
       <Form.Group controlId="formUsername">
         <Form.Label>Username</Form.Label>
         <Form.Control
@@ -90,7 +98,7 @@ const SignupForm = () => {
         <Form.Text className="text-danger">{validation.email.error}</Form.Text>
       </Form.Group>
 
-      <Form.Group controlId="formPassword">
+      <Form.Group controlId="formPassword" className="mb-2">
         <Form.Label>Password</Form.Label>
         <Form.Control
           value={signupData.password}
@@ -104,7 +112,9 @@ const SignupForm = () => {
         <Form.Text className="text-danger">
           {validation.password.error}
         </Form.Text>
+        <Checkbox />
       </Form.Group>
+
       <Form.Group controlId="formPasswordConfirm">
         <Form.Label>Confirm your password</Form.Label>
         <Form.Control
@@ -119,9 +129,7 @@ const SignupForm = () => {
           {validation.passwordConfirmation.error}
         </Form.Text>
       </Form.Group>
-      <Form.Group controlId="formPasswordCheck">
-        <Checkbox />
-      </Form.Group>
+      <Form.Group controlId="formPasswordCheck"></Form.Group>
     </Fragment>
   )
 }

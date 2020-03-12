@@ -54,6 +54,7 @@ const DecklistContextProvider = props => {
   const [buttonGroupValue, setButtonGroupValue] = useState(1)
   const [radarButtonGroupValue, setRadarButtonGroupValue] = useState(1)
   const [deckContainerTab, setDeckContainerTab] = useState("list")
+  const [fileReaderIsLoading, setFileReaderIsLoading] = useState(false)
   let params = useParams()
 
   const URL = "https://api.scryfall.com/cards"
@@ -89,14 +90,6 @@ const DecklistContextProvider = props => {
     setActiveTab("#main")
     return setDeckInfo({})
   }, [params])
-
-  useEffect(() => {
-    createList(mainDeck, setMainDeck, deckObj)
-  }, [mainDeck])
-
-  useEffect(() => {
-    createList(sideboard, setSideboard, sideObj)
-  }, [sideboard])
 
   // Make a suitable search string for server
   const searchString = `${userInput || "*"}${rarity ? "+r%3A" : ""}${rarity}${
@@ -300,6 +293,7 @@ const DecklistContextProvider = props => {
 
   // create decklist(mainDeck/sideboard, setMainDeck/setSideboard, deckObj/sideObj)
   const createList = (deck, setDeck, obj) => {
+    console.log("liststart")
     let keys = Object.keys(obj)
     let actualList = []
 
@@ -335,6 +329,7 @@ const DecklistContextProvider = props => {
       }
       return 0
     })
+
     return sortedList
   }
 
@@ -410,7 +405,9 @@ const DecklistContextProvider = props => {
         radarButtonGroupValue,
         setRadarButtonGroupValue,
         deckContainerTab,
-        setDeckContainerTab
+        setDeckContainerTab,
+        fileReaderIsLoading,
+        setFileReaderIsLoading
       }}
     >
       {props.children}

@@ -12,22 +12,19 @@ const CommentForm = () => {
   const { auth } = useContext(AuthContext)
   let params = useParams()
 
-  const commentHandleSubmit = e => {
+  const commentHandleSubmit = async e => {
     e.preventDefault()
-    axios
-      .post(`/api/decks/${params.id}/comments`, {
-        text: commentText,
-        deckId: params.id,
-        authorUsername: auth.authUser
-      })
-      .then(response => {
-        if (response.status === 200) {
-          createComments(params)
-        }
-      })
-      .catch(error => {
+    if (commentText)
+      try {
+        await axios.post(`/api/decks/${params.id}/comments`, {
+          text: commentText,
+          deckId: params.id,
+          authorUsername: auth.authUser
+        })
+        createComments(params)
+      } catch (error) {
         console.log("Server error", error)
-      })
+      }
     setCommentText("")
   }
 

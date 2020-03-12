@@ -1,9 +1,9 @@
 import React, { Fragment, useContext } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
-import { Form } from "react-bootstrap"
+import { Form, Alert } from "react-bootstrap"
 
 const LoginForm = () => {
-  const { loginData, setLoginData } = useContext(AuthContext)
+  const { loginData, setLoginData, signupSuccess } = useContext(AuthContext)
 
   const handleChange = e => {
     e.persist()
@@ -17,6 +17,7 @@ const LoginForm = () => {
 
   return (
     <Fragment>
+      {signupSuccess && <Alert variant="success">Signup Successful!</Alert>}
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Username</Form.Label>
         <Form.Control

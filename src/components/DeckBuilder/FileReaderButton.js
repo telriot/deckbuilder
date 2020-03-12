@@ -7,7 +7,9 @@ import { Button } from "react-bootstrap"
 
 const FileReaderButton = () => {
   let fileReader
-  let { setMainDeck, setSideboard } = useContext(DecklistContext)
+  let { setMainDeck, setSideboard, setFileReaderIsLoading } = useContext(
+    DecklistContext
+  )
 
   const http = rateLimit(axios.create(), {
     maxRequests: 1,
@@ -34,7 +36,8 @@ const FileReaderButton = () => {
     }
   }
 
-  const handleFileRead = async e => {
+  const handleFileRead = async () => {
+    console.log("filereaderstart")
     const content = fileReader.result.split("\n")
     let pile = "mainboard"
     for (let arr of content) {
@@ -50,12 +53,15 @@ const FileReaderButton = () => {
       setSideboard([])
       findAndAddCard(cardCopies, cardName, pile)
     }
+    console.log("filereaderfinish")
   }
 
   const handleFileChosen = file => {
-    fileReader = new FileReader()
-    fileReader.onloadend = handleFileRead
-    fileReader.readAsText(file)
+    if (file) {
+      fileReader = new FileReader()
+      fileReader.onloadend = handleFileRead
+      fileReader.readAsText(file)
+    }
   }
 
   return (

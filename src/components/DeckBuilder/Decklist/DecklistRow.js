@@ -16,7 +16,7 @@ const DecklistRow = props => {
     <Row
       className="px-2"
       data-origin={`${deck === mainDeck ? "main" : "side"}`}
-      key={i}
+      key={`row${i}`}
       onMouseEnter={() => {
         setHover(i)
       }}

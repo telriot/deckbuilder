@@ -56,32 +56,32 @@ const StatsTab = props => {
 
   //Create deck data array for card types
   const typesData = deck => {
-    let landsData = { label: "Lands", count: 0, fill: "#FFE2AB" }
+    let landsData = { label: "Lands", count: 0, fill: "#4F3824" }
     let creaturesData = {
       label: "Creatures",
       count: 0,
-      fill: "#2CFF67"
+      fill: "#0FA3B1"
     }
-    let instantsData = { label: "Instants", count: 0, fill: "#FB7474" }
+    let instantsData = { label: "Instants", count: 0, fill: "#FC7100" }
     let sorceriesData = {
       label: "Sorceries",
       count: 0,
-      fill: "#FA55C1"
+      fill: "#FA4967"
     }
     let enchantmentsData = {
       label: "Enchantments",
       count: 0,
-      fill: "#77ECFE"
+      fill: "#B5E2FA"
     }
     let artifactsData = {
       label: "Artifacts",
       count: 0,
-      fill: "#D9D8D8"
+      fill: "#404E4D"
     }
     let planeswalkersData = {
       label: "Planeswalkers",
       count: 0,
-      fill: "#B144F6"
+      fill: "#7261A3"
     }
     let othersData = { label: "Others", count: 0, fill: "#BAA8F0" }
 

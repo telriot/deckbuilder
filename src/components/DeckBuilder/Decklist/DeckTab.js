@@ -13,8 +13,9 @@ const DeckTab = props => {
       data-origin={origin}
       onDragOver={e => onDragOver(e)}
       onDrop={e => onDrop(e)}
+      key={`${deck}tab`}
     >
-      {createList(deck, setDeck, obj)}
+      {deck.length ? createList(deck, setDeck, obj) : ""}
     </Card.Body>
   )
 }
