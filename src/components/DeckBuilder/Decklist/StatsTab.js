@@ -14,13 +14,7 @@ const StatsTab = props => {
     manaGreen,
     manaBlack,
     manaBlue,
-    manaColorless,
-    manaWhiteDark,
-    manaRedDark,
-    manaGreenDark,
-    manaBlackDark,
-    manaBlueDark,
-    manaColorlessDark
+    manaColorless
   } = palette
 
   //Filter cards in deck by normalized type

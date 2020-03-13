@@ -1,11 +1,9 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Popover, OverlayTrigger, Image } from "react-bootstrap"
-import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
 import { isMobile } from "react-device-detect"
 
 const CardImagePopover = props => {
   const { image, name, setHover } = props
-  const { isXS } = useContext(WindowSizeContext)
   return (
     <OverlayTrigger
       key={`overlay${name}`}

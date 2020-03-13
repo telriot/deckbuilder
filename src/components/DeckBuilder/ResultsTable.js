@@ -77,7 +77,7 @@ const ResultsTable = () => {
   //create new tables on cards status change
   useEffect(() => {
     createTable(tableLength)
-  }, [cards])
+  }, [cards, tableLength])
 
   //display found cards in table, num = items shown
   const createTable = async () => {

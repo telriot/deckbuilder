@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
-import { Form, Col, Row } from "react-bootstrap"
+import { Form } from "react-bootstrap"
 import { WindowSizeContext } from "../../../contexts/WindowSizeContext"
 
 const DeckSortingSelector = () => {

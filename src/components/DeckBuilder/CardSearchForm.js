@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import { DecklistContext } from "../../contexts/DecklistContext"
-import { Form, Col } from "react-bootstrap"
+import { Form } from "react-bootstrap"
 import SearchBar from "./CardSearchForm/SearchBar"
 import TableColumnsPopover from "../DeckBuilder/CardSearchForm/TableColumnsPopover"
 import SearchFiltersPopover from "../DeckBuilder/CardSearchForm/SearchFiltersPopover"

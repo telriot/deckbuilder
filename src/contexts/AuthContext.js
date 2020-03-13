@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react"
+import { emailRegex } from "../helpers"
 import axios from "axios"
 
 export const AuthContext = createContext()
@@ -74,7 +75,6 @@ const AuthContextProvider = props => {
     //Regex validators
     const passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
     const usr = /^[A-Za-z]\w{4,14}$/
-    const emailregex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     let result = true
 
@@ -151,7 +151,7 @@ const AuthContextProvider = props => {
         }
       })
     }
-    if (email.length && !email.match(emailregex)) {
+    if (email.length && !email.match(emailRegex)) {
       setValidation(prevState => {
         return {
           ...prevState,
@@ -160,7 +160,7 @@ const AuthContextProvider = props => {
           }
         }
       })
-    } else if (email.length && email.match(emailregex)) {
+    } else if (email.length && email.match(emailRegex)) {
       setValidation(prevState => {
         return {
           ...prevState,
