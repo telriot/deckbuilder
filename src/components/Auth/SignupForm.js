@@ -1,6 +1,7 @@
 import React, { Fragment, useContext, useState } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
-import { Form, FormCheck, Alert } from "react-bootstrap"
+import { Form, Alert } from "react-bootstrap"
+import PasswordCheckbox from "./PasswordCheckbox"
 
 const SignupForm = () => {
   const {
@@ -11,10 +12,6 @@ const SignupForm = () => {
     signupServerError
   } = useContext(AuthContext)
   const [isVisible, setIsVisible] = useState(false)
-
-  function handleCheck() {
-    setIsVisible(prevState => !prevState)
-  }
 
   let password = ""
   let username = ""
@@ -49,19 +46,6 @@ const SignupForm = () => {
       email ? email : signupData.email
     )
   }
-
-  const Checkbox = () => (
-    <FormCheck className="d-flex">
-      <FormCheck.Label style={{ fontSize: "0.8rem", paddingTop: "0.1rem" }}>
-        Show Password
-      </FormCheck.Label>
-      <FormCheck.Input
-        type="checkbox"
-        onChange={() => handleCheck()}
-        checked={isVisible}
-      />
-    </FormCheck>
-  )
 
   return (
     <Fragment>
@@ -112,7 +96,7 @@ const SignupForm = () => {
         <Form.Text className="text-danger">
           {validation.password.error}
         </Form.Text>
-        <Checkbox />
+        <PasswordCheckbox isVisible={isVisible} setIsVisible={setIsVisible} />
       </Form.Group>
 
       <Form.Group controlId="formPasswordConfirm">

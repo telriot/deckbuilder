@@ -29,9 +29,10 @@ const DecklistContextProvider = props => {
     direction: "asc"
   })
   const [indexList, setIndexList] = useState([])
-
+  const [page, setPage] = useState(1)
+  const [pages, setPages] = useState(1)
   const [activePage, setActivePage] = useState(1)
-  const [tableLength] = useState(35)
+  const [tableLength] = useState(100)
   const [currentServerPage, setCurrentServerPage] = useState(1)
   const [adjacentPages, setAdjacentPages] = useState({
     prev_page: "",
@@ -56,8 +57,6 @@ const DecklistContextProvider = props => {
   const [deckContainerTab, setDeckContainerTab] = useState("list")
   const [fileReaderIsLoading, setFileReaderIsLoading] = useState(false)
   let params = useParams()
-
-  const URL = "https://api.scryfall.com/cards"
 
   const showDeck = async () => {
     try {
@@ -91,55 +90,46 @@ const DecklistContextProvider = props => {
     return setDeckInfo({})
   }, [params])
 
-  // Make a suitable search string for server
-  const searchString = `${userInput || "*"}${rarity ? "+r%3A" : ""}${rarity}${
-    type ? "+t%3A" : ""
-  }${type}${color ? "+c%3A" : ""}${color}${cmc ? "+cmc%3A" : ""}${cmc}${
-    resultsOrder.orderCriteria ? "+order%3A" : ""
-  }${resultsOrder.orderCriteria}${
-    resultsOrder.direction ? "+direction%3A" : ""
-  }${resultsOrder.direction}`
-
   // If searchString, prompt request to server
   useEffect(() => {
-    cardSearch(searchString)
+    setPage(1)
+    localCardSearch()
     return
-  }, [searchString])
+  }, [userInput, rarity, cmc, type, color])
 
-  // card search scryfall api get request
-  const cardSearch = async (input, url) => {
+  useEffect(() => {
+    localCardSearch()
+    return
+  }, [page])
+
+  // Cardsearch function from local db
+
+  const localCardSearch = async () => {
     let foundCards = []
+    const { orderCriteria, direction } = resultsOrder
 
     try {
       setIsLoading(true)
-      const response = await axios.get(
-        url ? url : input && input.length ? `${URL}/search?q=${input}` : URL
-      )
-      foundCards = response.data.data
-      const { next_page } = response.data
-
-      let prevPageHack = next_page
-        .split("&")
-        .map(arr => {
-          if (arr.includes("page")) {
-            return arr.replace(
-              parseInt(arr.slice(5)),
-              parseInt(arr.slice(5)) - 2
-            )
-          }
-          return arr
-        })
-        .join("&")
-      setResultsInfo(response)
-      setDisplayList([])
-      setAdjacentPages(prevState => {
-        return {
-          ...prevState,
-          next_page,
-          prev_page: prevPageHack
+      const response = await axios.get("/api/cards", {
+        params: {
+          name: userInput,
+          color,
+          cmc,
+          rarity,
+          page,
+          type,
+          orderCriteria,
+          direction
         }
       })
+      foundCards = response.data.docs
+
+      //set found cards
+      setPages(response.data.totalPages)
+      setCards(mapResults(foundCards))
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       setResultsInfo({})
       setDisplayList([])
       if (axios.isCancel(error)) {
@@ -148,11 +138,6 @@ const DecklistContextProvider = props => {
         console.error(error.response)
       }
     }
-    //set found cards
-    setCards(mapResults(foundCards))
-    setActivePage(1)
-    !url && setCurrentServerPage(1)
-    setIsLoading(false)
   }
 
   //keep the deck objects updated
@@ -186,10 +171,6 @@ const DecklistContextProvider = props => {
     crt.style.top = "-500px"
     crt.style.left = "-500px"
     document.body.appendChild(crt)
-    /*const image = new Image()
-    image.src = e.target.dataset.dragimg
-    console.log(e)
-    console.log(image)*/
     e.dataTransfer.setDragImage(crt, 0, 0)
   }
 
@@ -293,13 +274,18 @@ const DecklistContextProvider = props => {
 
   // create decklist(mainDeck/sideboard, setMainDeck/setSideboard, deckObj/sideObj)
   const createList = (deck, setDeck, obj) => {
-    console.log("liststart")
     let keys = Object.keys(obj)
     let actualList = []
 
     for (let i of keys) {
       actualList.push(
-        <DecklistRow deck={deck} setDeck={setDeck} obj={obj} i={i} />
+        <DecklistRow
+          key={`decklistRow${i}`}
+          deck={deck}
+          setDeck={setDeck}
+          obj={obj}
+          i={i}
+        />
       )
     }
     return sortOrder(actualList)
@@ -356,7 +342,6 @@ const DecklistContextProvider = props => {
         userInput,
         setUserInput,
         cards,
-        cardSearch,
         isLoading,
         setIsLoading,
         displayList,
@@ -407,7 +392,11 @@ const DecklistContextProvider = props => {
         deckContainerTab,
         setDeckContainerTab,
         fileReaderIsLoading,
-        setFileReaderIsLoading
+        setFileReaderIsLoading,
+        page,
+        setPage,
+        pages,
+        setPages
       }}
     >
       {props.children}

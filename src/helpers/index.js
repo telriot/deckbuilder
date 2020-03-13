@@ -194,7 +194,8 @@ export const mapResults = cards => {
       rarity: card.rarity ? card.rarity : "",
       flavor_text: card.flavor_text ? card.flavor_text : "",
       color_identity: card.color_identity ? card.color_identity : "",
-      prices: card.prices ? card.prices : ""
+      prices: card.prices ? card.prices : "",
+      legalities: card.legalities ? card.legalities : ""
     }
   })
 }
@@ -264,10 +265,19 @@ export const palette = {
   manaRedDark: "#d91215",
   manaColorlessDark: "#b0b5b5",
   borderGray: "#ced4da",
-  hoverAzure: "#BEDCFB"
+  hoverAzure: "#BEDCFB",
+  loadingOverlayColor: "rgba(190, 220, 251, 0.8)",
+  dangerLight: "#F8D7DA",
+  danger: "#731E26",
+  warningLight: "#FEF3CD",
+  warning: "#856403",
+  successLight: "#D4EDDA",
+  success: "#155724"
 }
 
 export const capitalize = s => {
   if (typeof s !== "string") return ""
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
+
+export const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

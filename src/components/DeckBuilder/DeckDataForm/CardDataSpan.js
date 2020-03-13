@@ -19,6 +19,7 @@ const CardDataSpan = props => {
       data-cmc={obj[i][0]["cmc"]}
       data-type={obj[i][0]["type_line"]}
       data-rarity={obj[i][0]["rarity"]}
+      //data-legality={obj[i][0]["legalities"]}
       onDoubleClick={() => handleCardDoubleClick(deck, obj, i, setDeck)}
     >
       {i}

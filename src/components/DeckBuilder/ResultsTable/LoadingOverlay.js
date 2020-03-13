@@ -1,12 +1,14 @@
 import React from "react"
+import { palette } from "../../../helpers"
 
 const LoadingOverlay = props => {
   const { size } = props
+  const { loadingOverlayColor } = palette
 
   const styleXS = () => {
     return {
       display: "block",
-      backgroundColor: "rgba(168, 168, 168, 0.8)",
+      backgroundColor: loadingOverlayColor,
       position: "absolute",
       textAlign: "center",
       top: "75px",
@@ -17,16 +19,17 @@ const LoadingOverlay = props => {
       marginBottom: "-100px",
       padding: "4px",
       border: "none",
+      borderRadius: "0.25rem",
       zIndex: 9
     }
   }
   const styleSM = () => {
     return {
       display: "block",
-      backgroundColor: "rgba(168, 168, 168, 0.8)",
+      backgroundColor: loadingOverlayColor,
       position: "absolute",
       textAlign: "center",
-      top: "170px",
+      top: "150px",
       left: "30%",
       width: "200px",
       height: "50px",
@@ -34,6 +37,7 @@ const LoadingOverlay = props => {
       marginBottom: "-100px",
       padding: "12px",
       border: "none",
+      borderRadius: "0.25rem",
       zIndex: 9
     }
   }

@@ -1,93 +1,77 @@
-import React, { useContext } from "react"
-import { DecklistContext } from "../../../contexts/DecklistContext"
+import React from "react"
 import { Pagination } from "react-bootstrap"
 
-const TablePagination = () => {
-  const {
-    activePage,
-    setActivePage,
-    cards,
-    resultsInfo,
-    tableLength,
-    cardSearch,
-    currentServerPage,
-    setCurrentServerPage,
-    adjacentPages
-  } = useContext(DecklistContext)
+const TablePagination = props => {
+  const { page, setPage, pages } = props
 
-  let active = activePage
+  let active = page
   let items = []
-  let paginationLength = Math.ceil(cards.length / tableLength)
-
-  //create pagination items
-  const createPagination = () => {
-    if (resultsInfo)
-      for (let number = 1; number <= paginationLength; number++) {
-        items.push(
-          <Pagination.Item
-            data-index={number}
-            key={number}
-            active={number === active}
-            onClick={e => handlePaginationClick(e)}
-          >
-            {(currentServerPage - 1) * 5 + number}
-          </Pagination.Item>
-        )
-      }
-  }
-
-  createPagination()
-
-  //click handlers
-  const handlePaginationClick = e => {
-    e.persist()
-    setActivePage(parseInt(e.target.dataset.index))
-  }
-  const handlePaginationDirectionClick = (e, direction) => {
-    e.persist()
-    setActivePage(prevState =>
-      direction === "next" ? prevState + 1 : prevState - 1
-    )
-  }
-  const handleServerPaginationClick = async (e, direction) => {
-    e.persist()
-    await cardSearch(
-      "",
-      direction === "next" ? adjacentPages.next_page : adjacentPages.prev_page
-    )
-    setCurrentServerPage(prevState =>
-      direction === "next" ? prevState + 1 : prevState - 1
-    )
-    setActivePage(1)
+  if (pages > 1 && pages <= 5 && page < 4) {
+    for (let number = 1; number <= pages; number++) {
+      items.push(
+        <Pagination.Item
+          key={number}
+          data-number={number}
+          active={number === active}
+          onClick={e => {
+            e.persist()
+            setPage(parseInt(e.target.dataset.number))
+          }}
+        >
+          {number}
+        </Pagination.Item>
+      )
+    }
+  } else if (pages > 1 && page < 4) {
+    for (let number = 1; number <= 5; number++) {
+      items.push(
+        <Pagination.Item
+          key={number}
+          data-number={number}
+          active={number === active}
+          onClick={e => {
+            e.persist()
+            setPage(parseInt(e.target.dataset.number))
+          }}
+        >
+          {number}
+        </Pagination.Item>
+      )
+    }
+  } else if (pages > 1 && page >= 4) {
+    for (let number = page - 2; number <= page + 2; number++) {
+      items.push(
+        <Pagination.Item
+          key={number}
+          data-number={number}
+          active={number === active}
+          onClick={e => {
+            e.persist()
+            setPage(parseInt(e.target.dataset.number))
+          }}
+        >
+          {number}
+        </Pagination.Item>
+      )
+    }
   }
 
   return (
-    <Pagination size="sm" className="mt-3">
-      {currentServerPage > 1 && (
-        <Pagination.First
-          onClick={e => handleServerPaginationClick(e, "prev")}
-        />
+    <div>
+      {pages > 1 && (
+        <Pagination size="sm">
+          <Pagination.Prev
+            disabled={page === 1 && true}
+            onClick={() => setPage(prevState => prevState - 1)}
+          />
+          {items}
+          <Pagination.Next
+            disabled={page === pages && true}
+            onClick={() => setPage(prevState => prevState + 1)}
+          />
+        </Pagination>
       )}
-      {active > 1 && (
-        <Pagination.Prev
-          onClick={e => handlePaginationDirectionClick(e, "prev")}
-        />
-      )}
-
-      {cards.length / tableLength > 1 && items}
-      {active < paginationLength && (
-        <Pagination.Next
-          onClick={e => handlePaginationDirectionClick(e, "next")}
-        />
-      )}
-
-      {resultsInfo.data && resultsInfo.data.has_more && (
-        <Pagination.Last
-          onClick={e => handleServerPaginationClick(e, "next")}
-        />
-      )}
-    </Pagination>
+    </div>
   )
 }
-
 export default TablePagination

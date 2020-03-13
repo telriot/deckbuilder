@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useState, useContext } from "react"
 import { Button, Form, Container } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import { CommentContext } from "../../../contexts/CommentContext"
@@ -10,21 +10,24 @@ const CommentForm = () => {
     CommentContext
   )
   const { auth } = useContext(AuthContext)
+  const [isLoading, setIsLoading] = useState(false)
   let params = useParams()
 
   const commentHandleSubmit = async e => {
     e.preventDefault()
-    if (commentText)
-      try {
-        await axios.post(`/api/decks/${params.id}/comments`, {
-          text: commentText,
-          deckId: params.id,
-          authorUsername: auth.authUser
-        })
-        createComments(params)
-      } catch (error) {
-        console.log("Server error", error)
-      }
+    if (commentText) setIsLoading(true)
+    try {
+      await axios.post(`/api/decks/${params.id}/comments`, {
+        text: commentText,
+        deckId: params.id,
+        authorUsername: auth.authUser
+      })
+      createComments(params)
+      setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+      console.log("Server error", error)
+    }
     setCommentText("")
   }
 
@@ -44,6 +47,7 @@ const CommentForm = () => {
         </div>
         <div>
           <Button
+            disabled={isLoading}
             size="sm"
             type="submit"
             className="btn-block"

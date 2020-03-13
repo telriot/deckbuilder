@@ -1,4 +1,4 @@
-import React, { useContext, useState, Fragment } from "react"
+import React, { useContext, useState } from "react"
 import { DecklistContext } from "../../../contexts/DecklistContext"
 import { Row, Col } from "react-bootstrap"
 import CardDataSpan from "../DeckDataForm/CardDataSpan"
@@ -16,13 +16,14 @@ const DecklistRow = props => {
     <Row
       className="px-2"
       data-origin={`${deck === mainDeck ? "main" : "side"}`}
-      key={`row${i}`}
+      key={`row${i}${deck}`}
       onMouseEnter={() => {
         setHover(i)
       }}
       onMouseLeave={() => setHover("")}
     >
       <Col
+        key={`col1${i}${deck}`}
         className="pl-2"
         xs={8}
         data-origin={`${deck === mainDeck ? "main" : "side"}`}
@@ -40,6 +41,7 @@ const DecklistRow = props => {
         />
       </Col>
       <Col
+        key={`col2${i}${deck}`}
         xs={4}
         className="m-0 pl-0 pr-2"
         data-origin={`${deck === mainDeck ? "main" : "side"}`}

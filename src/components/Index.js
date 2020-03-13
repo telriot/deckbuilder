@@ -32,6 +32,7 @@ const Index = () => {
     activity: "",
     sortOrder: "date"
   })
+  const [decksLoading, setDecksLoading] = useState(false)
   const { borderGray } = palette
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const Index = () => {
   }, [page, deckSearchParams.sortOrder])
 
   const deckSearch = async () => {
+    setDecksLoading(true)
     const {
       name,
       author,
@@ -98,11 +100,10 @@ const Index = () => {
       }
       setPages(response.data.totalPages)
       setIndexList(list)
+      setDecksLoading(false)
     } catch (error) {
-      if (axios.isCancel(error)) {
-      } else {
-        console.error(error.response)
-      }
+      setDecksLoading(false)
+      console.error(error.response)
     }
   }
 
@@ -212,7 +213,7 @@ const Index = () => {
       {formatForm}
       {colorForm}
       {activityForm}
-      <SubmitButton func={deckSearch} />
+      <SubmitButton loading={decksLoading} func={deckSearch} />
     </Fragment>
   )
 
@@ -229,7 +230,11 @@ const Index = () => {
         <Col md={4}> {activityForm}</Col>
 
         <Col md={3} className="d-flex align-items-center">
-          <SubmitButton className="py-1" func={deckSearch} />
+          <SubmitButton
+            className="py-1"
+            loading={decksLoading}
+            func={deckSearch}
+          />
         </Col>
       </Row>
     </Fragment>
@@ -246,7 +251,11 @@ const Index = () => {
         <Col sm={3}> {activityForm}</Col>
 
         <Col sm={3} className="d-flex align-items-center">
-          <SubmitButton className="py-1" func={deckSearch} />
+          <SubmitButton
+            className="py-1"
+            loading={decksLoading}
+            func={deckSearch}
+          />
         </Col>
       </Row>
     </Fragment>
@@ -263,7 +272,7 @@ const Index = () => {
 
       {colorForm}
 
-      <SubmitButton className="py-1" func={deckSearch} />
+      <SubmitButton className="py-1" loading={decksLoading} func={deckSearch} />
     </Fragment>
   )
 

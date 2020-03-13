@@ -11,9 +11,13 @@ import MTGInfoCardBody from "./User/MTGInfoCardBody"
 import ContactsCardBody from "./User/ContactsCardBody"
 
 const UserEdit = () => {
-  const { setVisibility, visibilityInitialState, user, getUser } = useContext(
-    UserContext
-  )
+  const {
+    setVisibility,
+    visibilityInitialState,
+    user,
+    getUser,
+    setIsLoading
+  } = useContext(UserContext)
   const [validation, setValidation] = useState([])
   const [show, setShow] = useState(true)
   const params = useParams()
@@ -24,7 +28,9 @@ const UserEdit = () => {
   }, [])
 
   const handleSubmit = async e => {
+    setIsLoading(true)
     e.preventDefault()
+
     try {
       await axios.put(
         `http://localhost:3000/api/users/${params.id}`,
@@ -35,7 +41,9 @@ const UserEdit = () => {
           "Content-Type": "raw"
         }
       )
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       let errArray = []
       for (let err of error.response.data.errors) {
         errArray.push(Object.values(err))

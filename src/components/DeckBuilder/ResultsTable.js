@@ -18,13 +18,14 @@ const ResultsTable = () => {
     cards,
     displayList,
     setDisplayList,
-    activePage,
     tableLength,
-    activeTab,
     visibleColumns,
     resultsOrder,
     setResultsOrder,
-    isLoading
+    isLoading,
+    page,
+    setPage,
+    pages
   } = useContext(DecklistContext)
   const [hover, setHover] = useState("")
   const { isMD, isSM, isXS } = useContext(WindowSizeContext)
@@ -75,18 +76,19 @@ const ResultsTable = () => {
 
   //create new tables on cards status change
   useEffect(() => {
-    createTable(tableLength, activePage - 1)
-  }, [cards, activePage, activeTab, visibleColumns, tableLength])
+    createTable(tableLength)
+  }, [cards])
 
   //display found cards in table, num = items shown
-  function createTable(num, page) {
+  const createTable = async () => {
     let tableData = []
-    // if we have search results
-    if (cards[page * num]) {
-      for (let index = page * num; index < page * num + num; index++) {
-        if (cards[index]) {
-          tableData.push(<TableRow key={`tableRow${index}`} index={index} />)
-        }
+    let index = 0
+    if (cards) {
+      for (let card of cards) {
+        tableData.push(
+          <TableRow card={card} key={`tableRow${index}`} index={index} />
+        )
+        index++
       }
       setDisplayList(tableData)
     }
@@ -144,7 +146,7 @@ const ResultsTable = () => {
                   <th
                     className="border-0"
                     data-name="rarity"
-                    style={{ width: "60px", minWidth: "55px" }}
+                    style={{ width: "70px", minWidth: "70px" }}
                   >
                     {headerSpanWithSorting("rarity", "Rarity")}
                   </th>
@@ -153,7 +155,7 @@ const ResultsTable = () => {
                   <th
                     className="border-0"
                     data-name="cmc"
-                    style={{ width: "55px", minWidth: "50px" }}
+                    style={{ width: "60px", minWidth: "60px" }}
                   >
                     {headerSpanWithSorting("cmc", "CMC")}
                   </th>
@@ -167,7 +169,7 @@ const ResultsTable = () => {
           {displayList}
         </Table>
       </Scrollbars>
-      <TablePagination />
+      <TablePagination page={page} setPage={setPage} pages={pages} />
     </Fragment>
   )
 }
